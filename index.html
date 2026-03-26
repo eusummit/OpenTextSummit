@@ -81,18 +81,28 @@
 
     <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width: 0%"></div>
 
-    <nav id="navbar" class="fixed w-full z-50 flex justify-between items-center px-10 py-5 transition-all duration-300 bg-transparent text-white">
-        <div class="text-2xl font-bold tracking-tight logo-text flex items-center gap-2">
-            <span class="w-8 h-8 bg-brand-primary rounded flex items-center justify-center text-white text-sm">K</span>
-            <span>KOMBIT <span class="font-light opacity-80">x Open Text</span></span>
+    <<nav id="navbar" class="fixed w-full z-50 flex justify-between items-center px-10 py-5 transition-all duration-300 bg-white shadow-sm">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl" style="font-family: Arial, sans-serif;">
+            <span>KOMB</span>
+            <div class="flex flex-col gap-[2px] mx-[2px] mt-[4px]">
+                <div class="w-[5px] h-[5px] bg-[#E3000F]"></div>
+                <div class="w-[5px] h-[5px] bg-[#E3000F]"></div>
+                <div class="w-[5px] h-[5px] bg-[#E3000F]"></div>
+            </div>
+            <span>T</span>
         </div>
-        <div class="hidden lg:flex space-x-8 text-sm font-semibold tracking-wide">
-            <a href="#kombit" class="hover:text-brand-accent transition">Who is KOMBIT</a>
-            <a href="#valueedge" class="hover:text-brand-accent transition">Why ValueEdge</a>
-            <a href="#workflow" class="hover:text-brand-accent transition">Everyday Work</a>
-            <a href="#ai" class="hover:text-brand-accent transition">Aviator AI</a>
-        </div>
-    </nav>
+        <div class="h-6 w-[1px] bg-gray-300 mx-1"></div>
+        <div class="text-gray-500 text-lg font-light">x Open Text</div>
+    </div>
+
+    <div class="hidden lg:flex space-x-8 text-xs font-bold uppercase tracking-widest text-brand-dark">
+        <a href="#kombit" class="hover:text-[#E3000F] transition">Who is KOMBIT</a>
+        <a href="#valueedge" class="hover:text-[#E3000F] transition">Why ValueEdge</a>
+        <a href="#workflow" class="hover:text-[#E3000F] transition">Everyday Work</a>
+        <a href="#ai" class="hover:text-[#E3000F] transition">Aviator AI</a>
+    </div>
+</nav>
 
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
         <div data-aos="fade-up" data-aos-duration="1000">
