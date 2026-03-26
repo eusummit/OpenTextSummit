@@ -81,7 +81,7 @@
 
     <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width: 0%"></div>
 
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent">
+    <<nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent">
     <div class="flex items-center gap-4">
         <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl" style="font-family: Arial, sans-serif;">
             <span>KOMB</span>
@@ -96,7 +96,7 @@
         <div class="h-6 w-[1.5px] bg-white/40 mx-1"></div>
 
         <div class="flex items-center gap-2">
-            <div class="w-7 h-7 bg-gradient-to-br from-[#0042da] to-[#0028a5] rounded-lg flex items-center justify-center">
+            <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center">
                 <span class="text-white text-[10px] font-bold" style="font-family: Arial, sans-serif;">ot</span>
             </div>
             <span class="text-white text-xl font-bold tracking-tight lowercase" style="font-family: Arial, sans-serif;">opentext</span>
@@ -343,5 +343,16 @@
             }
         });
     </script>
+    <script>
+    // Force page to the top on every refresh
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    // Also, check if you have an existing window.onload or DOMContentLoaded 
+    // script that contains ".scrollIntoView()" or "window.scrollTo()" 
+    // and remove those specific lines if they exist.
+</script>
 </body>
 </html>
