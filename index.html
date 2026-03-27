@@ -1,89 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <style>
-        /* Subtle Back to Top Button */
-#backToTop {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 99;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease;
-}
-
-#backToTop.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.btn-circle {
-    width: 45px;
-    height: 45px;
-    background: rgba(227, 0, 15, 0.8); /* Match KOMBIT brand red color */
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(227, 0, 15, 0.2);
-    transition: transform 0.3s ease, background 0.3s ease;
-}
-
-.btn-circle:hover {
-    background: #E3000F; /* Solid Brand Red on hover */
-    transform: translateY(-3px);
-}
-    /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
-    .typing-effect {
-        display: inline-block;
-        overflow: hidden;
-        border-right: 3px solid #E3000F; /* Cursor color */
-        white-space: nowrap;
-        width: 0;
-        padding-bottom: 0.15em; /* Fix for 'g' tail */
-        padding-right: 0.15em;  /* Fix for 'T' visibility */
-        line-height: 1.2;
-        vertical-align: bottom;
-        animation: 
-            typing 3.5s steps(30, end) forwards,
-            blink-caret 0.75s step-end infinite;
-    }
-
-    @keyframes typing {
-        from { width: 0 }
-        to { width: 104% }
-    }
-
-    @keyframes blink-caret {
-        from, to { border-color: transparent }
-        50% { border-color: #E3000F; }
-    }
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOMBIT Quality Engineering | TaaS & ValueEdge</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         brand: {
-                            dark: '#0B1B3D',   // Deep corporate blue
-                            primary: '#0052CC', // Action blue
-                            light: '#F4F7F9',   // Light gray/blue for backgrounds
-                            accent: '#00B8D9'   // Teal accent
+                            dark: '#0B1B3D',
+                            primary: '#0052CC',
+                            light: '#F4F7F9',
+                            accent: '#00B8D9',
+                            kombit: '#E3000F'
                         }
                     }
                 }
@@ -92,443 +30,303 @@
     </script>
 
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #F4F7F9; 
-            color: #1F2937; 
-            scroll-behavior: smooth;
-        }
+        /* Custom Transitions */
+        .theme-transition { transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease; }
         
-        .hero-bg {
-            background: linear-gradient(135deg, rgba(11, 27, 61, 0.95) 0%, rgba(0, 82, 204, 0.85) 100%), 
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed;
-            height: 100vh;
+        /* Hero Typing Effect */
+        .typing-effect {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 3px solid #E3000F;
+            white-space: nowrap;
+            width: 0;
+            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #E3000F; } }
+
+        /* Neural Map Styles */
+        .map-dot { fill: #cbd5e1; transition: fill 0.6s ease, filter 0.3s ease; }
+        .dark .map-dot { fill: #334155; }
+        .map-dot.active { fill: #E3000F; filter: drop-shadow(0 0 3px rgba(227, 0, 15, 0.8)); }
+
+        /* Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .btn-circle {
+            width: 50px;
+            height: 50px;
+            background: #E3000F;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(227, 0, 15, 0.4);
         }
 
-        .section-padding { padding: 100px 10%; }
-        
-        .corp-card {
-            background: #ffffff;
-            border: 1px solid #E5E7EB;
-            border-top: 4px solid #0052CC;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .corp-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border-top: 4px solid #00B8D9;
-        }
-
-        .bg-mesh {
-            background-color: #ffffff;
-            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-
+        /* Glassmorphism Nav */
         .nav-scrolled {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .nav-scrolled a { color: #1F2937; }
-        .nav-scrolled .logo-text { color: #0B1B3D; }
+        .dark .nav-scrolled {
+            background: rgba(5, 11, 26, 0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
-<body class="antialiased">
 
-    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width: 0%"></div>
+<body class="antialiased theme-transition bg-white text-slate-900 dark:bg-[#050B1A] dark:text-slate-100">
 
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent transition-all duration-300">
-    <div class="flex items-center gap-4">
-        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
-            <span class="flex-shrink-0">KOMB</span>
-            
-            <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px] flex-shrink-0">
-                <div class="w-full h-[5px] bg-[#E3000F]"></div>
-                <div class="w-full h-[5px] bg-[#E3000F] mt-[1.5px]"></div>
-                <div class="w-full h-[5px] bg-[#E3000F] mt-auto"></div>
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-kombit z-[100] transition-all duration-75" style="width: 0%"></div>
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-4 transition-all duration-300">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center text-brand-kombit font-black text-2xl tracking-tighter">
+                <span>KOMB</span>
+                <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[1px]">
+                    <div class="w-full h-[4px] bg-brand-kombit mb-[2px]"></div>
+                    <div class="w-full h-[4px] bg-brand-kombit mb-[2px]"></div>
+                    <div class="w-full h-[4px] bg-brand-kombit"></div>
+                </div>
+                <span>T</span>
             </div>
-            
-            <span class="flex-shrink-0">T</span>
+            <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+            <span class="font-bold text-xl tracking-tight dark:text-white">opentext</span>
         </div>
 
-        <div id="nav-divider" class="h-6 w-[1.5px] bg-white/40"></div>
-
-        <div class="flex items-center gap-2 flex-nowrap">
-            <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center flex-shrink-0">
-                <span class="text-white text-[10px] font-bold">ot</span>
+        <div class="flex items-center gap-8">
+            <div class="hidden lg:flex space-x-6 text-sm font-bold uppercase tracking-wider">
+                <a href="#kombit" class="hover:text-brand-kombit transition-colors">Who is KOMBIT</a>
+                <a href="#valueedge" class="hover:text-brand-kombit transition-colors">ValueEdge</a>
+                <a href="#ai" class="hover:text-brand-kombit transition-colors">Aviator AI</a>
             </div>
-            <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300" style="font-family: Arial, sans-serif;">opentext</span>
+
+            <button id="theme-toggle" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all hover:scale-110">
+                <svg id="moon-icon" class="w-5 h-5 hidden text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="sun-icon" class="w-5 h-5 text-slate-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464l-.707-.707a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414zm2.12 10.607a1 1 0 010-1.414l.706-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1z"></path></svg>
+            </button>
         </div>
-    </div>
+    </nav>
 
-    <div class="hidden lg:flex space-x-8 text-sm font-bold text-white">
-        <a href="#kombit" class="hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
-        <a href="#valueedge" class="hover:text-[#E3000F] transition-colors">Why ValueEdge</a>
-        <a href="#workflow" class="hover:text-[#E3000F] transition-colors">Everyday Work</a>
-        <a href="#ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
-    </div>
-</nav>
-
-    <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
-        <div data-aos="fade-up" data-aos-duration="1000">
-            <div class="inline-block px-4 py-1 mb-6 border border-white/30 rounded-full text-sm font-semibold tracking-wider bg-white/10 backdrop-blur-md">
-                ENTERPRISE QUALITY ENGINEERING
-            </div>
-            <h1 class="text-5xl md:text-7xl font-black mb-6">
-    <span class="typing-effect">
-        Modernising testing at <span class="text-[#E3000F]">KOMBIT</span>
-    </span>
-</h1>
-            <p class="text-xl max-w-2xl mb-10 text-gray-200 font-light leading-relaxed">
-                Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to drive efficiency across Danish municipal IT solutions.
+    <section class="relative min-h-screen flex items-center px-6 md:px-24 bg-brand-dark overflow-hidden">
+        <div class="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070')] bg-cover bg-center"></div>
+        <div class="relative z-10 max-w-4xl" data-aos="fade-up">
+            <span class="text-brand-accent font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Quality Engineering 2026</span>
+            <h1 class="text-4xl md:text-7xl font-black text-white mb-6 leading-tight">
+                Modernising testing at<br/>
+                <span class="text-brand-kombit typing-effect">KOMBIT</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl font-light">
+                Exploring the implementation of TaaS utilizing OpenText's ValueEdge to drive efficiency across Danish municipal IT solutions.
             </p>
-            <a href="#kombit" class="bg-brand-primary hover:bg-blue-600 text-white px-8 py-4 rounded font-bold transition-all shadow-lg inline-flex items-center gap-2">
-                Explore the Journey
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-            </a>
-        </div>
-    </section>
-
-    <section id="kombit" class="section-padding bg-white relative">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div data-aos="fade-right">
-                <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Introduction</h2>
-                <h3 class="text-4xl font-extrabold text-brand-dark mb-6">Who is KOMBIT?</h3>
-                <p class="text-gray-600 mb-4 leading-relaxed">
-                    KOMBIT is the IT project organization of the Danish municipalities. Founded to create cohesion and efficiency, KOMBIT purchases, manages, and develops IT solutions on behalf of the 98 municipalities in Denmark.
-                </p>
-                <p class="text-gray-600 mb-6 leading-relaxed">
-                    By centralizing IT procurement and management, KOMBIT ensures that critical infrastructure—serving millions of citizens—is secure, compliant, and cost-effective.
-                </p>
-                <ul class="space-y-3">
-                    <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
-                        Serving 98 Danish Municipalities
-                    </li>
-                    <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
-                        Managing complex supplier ecosystems
-                    </li>
-                    <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
-                        High standards for data security and stability
-                    </li>
-                </ul>
-            </div>
-            <div data-aos="fade-left" class="relative">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Corporate Office" class="rounded-lg shadow-2xl">
-                
-                <div class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
-                    <div>
-                        <div id="muni-counter" class="text-4xl font-bold text-brand-accent mb-1">0</div>
-                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Municipalities</div>
-                    </div>
-                    <div class="w-px h-10 bg-white/20"></div>
-                    <div>
-                        <div class="flex items-baseline gap-1">
-                            <span id="citizen-counter" class="text-4xl font-bold text-brand-accent mb-1">0</span>
-                            <span class="text-xl font-bold text-brand-accent">M</span>
-                        </div>
-                        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Citizens Served</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="valueedge" class="section-padding bg-brand-light">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Core Infrastructure</h2>
-                <h3 class="text-4xl font-extrabold text-brand-dark">Why ValueEdge (CSDP)?</h3>
-                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                    To manage complex municipal IT projects, KOMBIT requires a robust testing foundation. Testing as a Service (TaaS) combined with OpenText ValueEdge delivers exactly that.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="0">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-                    </div>
-                    <h4 class="text-xl font-bold text-brand-dark mb-3">TaaS & CSDP Integration</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the Core Software Devilery Platform) acts as the engine, providing a unified methodology across all of KOMBIT's testing initiatives.
-                    </p>
-                </div>
-
-                <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <h4 class="text-xl font-bold text-brand-dark mb-3">Supplier Tech-Stack Integration</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality metrics are captured.
-                    </p>
-                </div>
-
-                <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                    </div>
-                    <h4 class="text-xl font-bold text-brand-dark mb-3">Combined Data in One Place</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        A single source of truth. By pulling data from automation scripts, manual test runs, and pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release readiness and risk.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="workflow" class="section-padding bg-mesh relative">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                <div data-aos="fade-right" class="order-2 lg:order-1">
-                    <div class="bg-brand-dark rounded-xl p-8 shadow-2xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary rounded-full blur-3xl opacity-20"></div>
-                        <h4 class="text-white font-semibold mb-6 text-xl">The ValueEdge Workspace</h4>
-                        <div class="space-y-4">
-                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
-                                <div class="text-brand-accent mt-1">01</div>
-                                <div>
-                                    <div class="text-white font-bold text-sm">Cross-Project Visibility</div>
-                                    <div class="text-gray-400 text-xs mt-1">Test Managers navigate multiple municipal projects from a single dashboard.</div>
-                                </div>
-                            </div>
-                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
-                                <div class="text-brand-accent mt-1">02</div>
-                                <div>
-                                    <div class="text-white font-bold text-sm">Defect Triage</div>
-                                    <div class="text-gray-400 text-xs mt-1">Seamless communication between TaaS teams and external developers.</div>
-                                </div>
-                            </div>
-                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
-                                <div class="text-brand-accent mt-1">03</div>
-                                <div>
-                                    <div class="text-white font-bold text-sm">Traceability</div>
-                                    <div class="text-gray-400 text-xs mt-1">Linking business requirements directly to automated test executions.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div data-aos="fade-left" class="order-1 lg:order-2 flex flex-col justify-center">
-                    <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Operations</h2>
-                    <h3 class="text-4xl font-extrabold text-brand-dark mb-6">Working with ValueEdge</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead. 
-                    </p>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance. TaaS professionals use these workspaces to execute cycles, report bugs, and validate fixes efficiently.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="ai" class="section-padding bg-white border-t border-gray-200">
-        <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
-            <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The Future</h2>
-            <h3 class="text-4xl font-extrabold text-brand-dark">Using OpenText Aviator AI</h3>
-            <p class="text-gray-600 mt-4">Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.</p>
-        </div>
-
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-            <div class="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-1 bg-blue-100 -translate-y-1/2 z-0"></div>
-
-            <div class="bg-white p-10 rounded-xl border border-gray-200 shadow-lg relative z-10" data-aos="fade-right">
-                <div class="w-16 h-16 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-sm mx-auto">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                </div>
-                <h4 class="text-2xl font-bold text-center text-brand-dark mb-4">Phase 1: Successful POC</h4>
-                <p class="text-gray-600 text-center text-sm leading-relaxed">
-                    The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases , BDD , User Stories from raw description , images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.
-                </p>
-            </div>
-
-            <div class="bg-brand-dark p-10 rounded-xl shadow-2xl relative z-10" data-aos="fade-left">
-                <div class="w-16 h-16 bg-brand-primary text-white rounded-full flex items-center justify-center mb-6 border-4 border-brand-dark shadow-sm mx-auto">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h4 class="text-2xl font-bold text-center text-white mb-4">Phase 2: Now in Production</h4>
-                <p class="text-gray-300 text-center text-sm leading-relaxed">
-                    Moving beyond the POC, Aviator AI is now integrated into the production  workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-brand-dark text-white py-16 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-start gap-8">
-            
-            <div class="text-left">
-                <div class="flex items-center gap-4 mb-5">
-                    <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
-    <span class="flex-shrink-0">KOMB</span>
-    
-    <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] mt-[2px] flex-shrink-0 justify-between">
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-    </div>
-    
-    <span class="flex-shrink-0">T</span>
-</div>
-
-                    <div class="w-[1px] h-6 bg-white/20"></div>
-
-                    <span class="text-white/70 text-[11px] font-bold uppercase tracking-[0.25em] mt-[2px]">
-                        Success Story
-                    </span>
-                </div>
-                
-                <h4 class="text-lg font-semibold text-white">The ValueEdge Journey</h4>
-                <p class="text-gray-400 text-sm max-w-sm mt-2">
-                    Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.
-                </p>
-            </div>
-            
-            <div class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent transition">qxmbg@kombit.dk</a>
-                    <span class="hidden md:block opacity-20">|</span>
-                    <a href="tel:+37125657827" class="hover:text-brand-accent transition">+371 25657827</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-10 mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
-            <div class="flex space-x-6 mb-4 md:mb-0">
-                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="hover:text-white transition">LinkedIn</a>
-                <a href="https://www.kombit.dk/" target="_blank" class="hover:text-white transition">Kombit Denmark</a>
-                <a href="https://www.kl.dk/english/" target="_blank" class="hover:text-white transition">KL, Copenhagen</a>
-            </div>
-            <div class="text-center md:text-right">
-                &copy; 2026 
-                <a href="https://events.opentext.com/nordics-summit-2026" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="hover:text-white transition-colors duration-300 ml-1">
-                    OpenText Nordic Summit, Stockholm
+            <div class="flex gap-4">
+                <a href="#kombit" class="bg-brand-kombit hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold transition-all flex items-center gap-2">
+                    Start Exploration
                 </a>
             </div>
         </div>
+    </section>
+
+    <section id="kombit" class="py-24 px-6 md:px-24 theme-transition bg-white dark:bg-[#050B1A]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div data-aos="fade-right">
+                <h2 class="text-brand-primary dark:text-brand-accent font-bold uppercase tracking-widest text-sm mb-2">The Foundation</h2>
+                <h3 class="text-4xl font-extrabold mb-8">Who is KOMBIT?</h3>
+                <p class="text-slate-600 dark:text-slate-400 mb-6 text-lg leading-relaxed">
+                    KOMBIT is the IT project organization of the Danish municipalities. We purchase and manage critical IT solutions on behalf of all 98 municipalities.
+                </p>
+                <div class="grid grid-cols-2 gap-6 mt-10">
+                    <div class="p-6 bg-brand-light dark:bg-brand-dark rounded-2xl">
+                        <div id="muni-counter" class="text-4xl font-black text-brand-kombit mb-1">0</div>
+                        <p class="text-xs uppercase font-bold text-slate-500">Municipalities</p>
+                    </div>
+                    <div class="p-6 bg-brand-light dark:bg-brand-dark rounded-2xl">
+                        <div class="flex items-baseline gap-1">
+                            <span id="citizen-counter" class="text-4xl font-black text-brand-kombit">0</span>
+                            <span class="text-xl font-bold text-brand-kombit">M</span>
+                        </div>
+                        <p class="text-xs uppercase font-bold text-slate-500">Citizens Served</p>
+                    </div>
+                </div>
+            </div>
+
+            <div data-aos="fade-left" class="relative bg-slate-50 dark:bg-slate-900/50 p-8 rounded-3xl border border-slate-100 dark:border-slate-800">
+                <svg id="denmark-svg" viewBox="0 0 400 450" class="w-full h-auto">
+                    <g id="map-dots">
+                        </g>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <section id="valueedge" class="py-24 px-6 md:px-24 theme-transition bg-slate-50 dark:bg-[#0B1B3D]">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h3 class="text-4xl font-extrabold mb-4">Why ValueEdge?</h3>
+                <p class="text-slate-500 max-w-2xl mx-auto">Providing a unified methodology across Danish municipal IT initiatives.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 bg-white dark:bg-[#111C35] border-t-4 border-brand-primary rounded-xl shadow-sm dark:shadow-none" data-aos="zoom-in">
+                    <h4 class="font-bold text-xl mb-4">TaaS Engine</h4>
+                    <p class="text-slate-500 text-sm">Centralized testing services that scale effortlessly across 98 different environments.</p>
+                </div>
+                <div class="p-8 bg-white dark:bg-[#111C35] border-t-4 border-brand-accent rounded-xl shadow-sm dark:shadow-none" data-aos="zoom-in" data-aos-delay="100">
+                    <h4 class="font-bold text-xl mb-4">Ecosystem Agnostic</h4>
+                    <p class="text-slate-500 text-sm">Integrates with Jira, Git, and various CI/CD pipelines used by diverse municipal suppliers.</p>
+                </div>
+                <div class="p-8 bg-white dark:bg-[#111C35] border-t-4 border-brand-kombit rounded-xl shadow-sm dark:shadow-none" data-aos="zoom-in" data-aos-delay="200">
+                    <h4 class="font-bold text-xl mb-4">Risk Visibility</h4>
+                    <p class="text-slate-500 text-sm">Real-time dashboards showing release readiness for critical citizen-facing apps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ai" class="py-24 px-6 md:px-24 theme-transition bg-white dark:bg-[#050B1A]">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-brand-dark dark:bg-slate-900 rounded-[2rem] p-10 md:p-16 relative overflow-hidden text-white">
+                <div class="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                    <div class="flex-1" data-aos="fade-right">
+                        <span class="text-brand-accent font-bold text-xs uppercase tracking-tighter">New for 2026</span>
+                        <h3 class="text-4xl font-black mt-4 mb-6">Aviator AI Integration</h3>
+                        <p class="text-slate-300 leading-relaxed mb-8">
+                            We've moved beyond the POC phase. Aviator AI is now actively reducing test creation time by 40% in our core municipal production workflows.
+                        </p>
+                        <div class="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/20">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                            <span class="text-xs font-bold uppercase">Now in Production</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 gap-4" data-aos="fade-left">
+                        <div class="p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                            <h5 class="font-bold mb-2">Phase 1: Validation</h5>
+                            <p class="text-xs text-slate-400">Successful POC across 3 key municipalities.</p>
+                        </div>
+                        <div class="p-6 bg-brand-kombit rounded-2xl">
+                            <h5 class="font-bold mb-2 text-white">Phase 2: Full Rollout</h5>
+                            <p class="text-xs text-white/80">AI-driven defect prediction now live for all users.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 px-6 theme-transition border-t border-slate-100 dark:border-slate-800 text-center">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-[0.3em]">&copy; 2026 OpenText Nordic Summit | KOMBIT</p>
     </footer>
+
+    <button id="backToTop" title="Go to top">
+        <div class="btn-circle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7"></path></svg>
+        </div>
+    </button>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    // 1. Initialize Animations
-    AOS.init({
-        once: true,
-        offset: 50,
-        duration: 800,
-    });
+        AOS.init({ once: true, duration: 800 });
 
-    // 2. UPDATED COUNTER LOGIC: Animates both 98 and 5.9
-    const animateValue = (id, target, duration) => {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            // Format for decimal if it's the citizen counter
-            const current = progress * target;
-            if (target % 1 === 0) {
-                obj.innerHTML = Math.floor(current);
-            } else {
-                obj.innerHTML = current.toFixed(1);
-            }
+        // 1. Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
 
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                obj.innerHTML = target;
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // 2. Neural Map Dot Generation
+        const dotContainer = document.getElementById('map-dots');
+        const generateDots = () => {
+            for(let i=0; i<98; i++) {
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                // Randomly distributed cluster for Denmark-ish shape
+                const x = Math.random() * 300 + 50;
+                const y = Math.random() * 350 + 50;
+                circle.setAttribute("cx", x);
+                circle.setAttribute("cy", y);
+                circle.setAttribute("r", Math.random() * 2 + 3);
+                circle.setAttribute("class", "map-dot");
+                dotContainer.appendChild(circle);
             }
         };
-        window.requestAnimationFrame(step);
-    };
+        generateDots();
 
-    // Observer to trigger both counters when the section is visible
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateValue("muni-counter", 98, 2000);
-                animateValue("citizen-counter", 5.9, 2500);
-                counterObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
+        // 3. Counter & Map Animation
+        const animateValue = (id, target, duration) => {
+            const obj = document.getElementById(id);
+            let start = null;
+            const step = (ts) => {
+                if (!start) start = ts;
+                const progress = Math.min((ts - start) / duration, 1);
+                const val = progress * target;
+                obj.innerHTML = target % 1 === 0 ? Math.floor(val) : val.toFixed(1);
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        };
 
-    // 3. Scroll Logic for Progress Bar & Navbar
-    window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        document.getElementById("scroll-progress").style.width = scrolled + "%";
+        const mapObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateValue("muni-counter", 98, 2000);
+                    animateValue("citizen-counter", 5.9, 2500);
+                    const dots = document.querySelectorAll('.map-dot');
+                    dots.forEach((dot, index) => {
+                        setTimeout(() => dot.classList.add('active'), index * 15);
+                    });
+                    mapObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
 
-        const nav = document.getElementById('navbar');
-        const otWord = document.getElementById('opentext-word');
-        const divider = document.getElementById('nav-divider');
+        // 4. Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const trigger = document.getElementById('muni-counter');
+            if (trigger) mapObserver.observe(trigger);
 
-        if (winScroll > 50) {
-            nav.classList.add('nav-scrolled');
-            nav.classList.remove('bg-transparent');
-            if (otWord) otWord.style.color = 'black';
-            if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
-        } else {
-            nav.classList.remove('nav-scrolled');
-            nav.classList.add('bg-transparent');
-            if (otWord) otWord.style.color = 'white';
-            if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
-        }
-    });
+            const bttBtn = document.getElementById("backToTop");
+            const nav = document.getElementById('navbar');
 
-    // 4. Initialize State on Load
-    document.addEventListener('DOMContentLoaded', () => {
-        const triggerElement = document.getElementById('muni-counter');
-        if (triggerElement) counterObserver.observe(triggerElement);
+            window.addEventListener('scroll', () => {
+                // Progress Bar
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                document.getElementById("scroll-progress").style.width = (winScroll / height) * 100 + "%";
 
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0);
+                // Nav Appearance
+                if (winScroll > 50) nav.classList.add('nav-scrolled');
+                else nav.classList.remove('nav-scrolled');
 
-        // BACK TO TOP LOGIC (Moved inside DOMContentLoaded)
-        const bttBtn = document.getElementById("backToTop");
+                // Back to Top visibility
+                if (winScroll > 400) bttBtn.classList.add("show");
+                else bttBtn.classList.remove("show");
+            });
 
-        window.addEventListener('scroll', () => {
-            // Show button after scrolling down 400px
-            if (window.pageYOffset > 400) {
-                bttBtn.classList.add("show");
-            } else {
-                bttBtn.classList.remove("show");
-            }
-        });
-
-        bttBtn.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+            bttBtn.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
             });
         });
-    });
     </script>
-    
-    <button id="backToTop" title="Go to top">
-        <div class="btn-circle">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path>
-            </svg>
-        </div>
-    </button>
 </body>
 </html>
