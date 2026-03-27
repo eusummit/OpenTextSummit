@@ -74,7 +74,6 @@
 
         .section-padding { padding: 100px 10%; }
         
-        /* Modern Corporate Card Hover */
         .corp-card {
             background: #ffffff;
             border: 1px solid #E5E7EB;
@@ -88,7 +87,6 @@
             border-top: 4px solid #00B8D9;
         }
 
-        /* Abstract Backgrounds for sections */
         .bg-mesh {
             background-color: #ffffff;
             background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
@@ -139,6 +137,7 @@
         <a href="#ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
     </div>
 </nav>
+
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
         <div data-aos="fade-up" data-aos-duration="1000">
             <div class="inline-block px-4 py-1 mb-6 border border-white/30 rounded-full text-sm font-semibold tracking-wider bg-white/10 backdrop-blur-md">
@@ -188,8 +187,9 @@
             <div data-aos="fade-left" class="relative">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Corporate Office" class="rounded-lg shadow-2xl">
                 <div class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl max-w-xs text-white">
-                    <div class="text-3xl font-bold text-brand-accent mb-2">98</div>
-                    <div class="text-sm font-light">Municipalities relying on secure, centralized IT infrastructure.</div>
+                    <div id="muni-counter" class="text-4xl font-bold text-brand-accent mb-2">0</div>
+                    <div class="text-sm font-light uppercase tracking-wider">Danish Municipalities</div>
+                    <div class="text-xs text-gray-400 mt-2 font-light">Relying on secure, centralized IT infrastructure.</div>
                 </div>
             </div>
         </div>
@@ -323,7 +323,6 @@
             
             <div class="text-left">
                 <div class="flex items-center gap-4 mb-5">
-                    
                     <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
                         <span class="flex-shrink-0">KOMB</span>
                         <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px] flex-shrink-0">
@@ -368,11 +367,12 @@
                    target="_blank" 
                    rel="noopener noreferrer" 
                    class="hover:text-white transition-colors duration-300 ml-1">
-                   OpenText Nordic Summit, Stockholm
+                    OpenText Nordic Summit, Stockholm
                 </a>
             </div>
         </div>
     </footer>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
     // 1. Initialize Animations
@@ -382,45 +382,70 @@
         duration: 800,
     });
 
-    // 2. Scroll Logic for Progress Bar, Navbar Background, and Logo Colors
+    // 2. COUNTER LOGIC: Animated 98 Counter
+    const startCounter = (targetElement) => {
+        let count = 0;
+        const target = 98; 
+        const duration = 2000; // Time in ms (2 seconds)
+        const increment = target / (duration / 16); 
+
+        const updateCount = () => {
+            count += increment;
+            if (count < target) {
+                targetElement.innerText = Math.ceil(count);
+                requestAnimationFrame(updateCount);
+            } else {
+                targetElement.innerText = target;
+            }
+        };
+        updateCount();
+    };
+
+    // Observer to trigger the counter only when visible
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startCounter(entry.target);
+                counterObserver.unobserve(entry.target); // Run only once
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // 3. Scroll Logic for Progress Bar & Navbar
     window.addEventListener('scroll', () => {
-        // Progress bar calculation
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
         document.getElementById("scroll-progress").style.width = scrolled + "%";
 
-        // Select elements to change
         const nav = document.getElementById('navbar');
         const otWord = document.getElementById('opentext-word');
         const divider = document.getElementById('nav-divider');
 
         if (winScroll > 50) {
-            // Scrolled State
             nav.classList.add('nav-scrolled');
             nav.classList.remove('bg-transparent');
-            
-            // Swap "opentext" color (White -> Black)
             if (otWord) otWord.classList.replace('text-white', 'text-black');
-            // Swap divider color (Light -> Dark)
             if (divider) divider.classList.replace('bg-white/40', 'bg-black/20');
         } else {
-            // Top/Initial State
             nav.classList.remove('nav-scrolled');
             nav.classList.add('bg-transparent');
-            
-            // Swap "opentext" color (Black -> White)
             if (otWord) otWord.classList.replace('text-black', 'text-white');
-            // Swap divider color (Dark -> Light)
             if (divider) divider.classList.replace('bg-black/20', 'bg-white/40');
         }
     });
 
-    // 3. Force page to top on refresh
-    if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
-    }
-    window.scrollTo(0, 0);
+    // 4. Initialize State on Load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Start watching the counter element
+        const counterElement = document.getElementById('muni-counter');
+        if (counterElement) counterObserver.observe(counterElement);
+
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    });
 </script>
 </body>
 </html>
