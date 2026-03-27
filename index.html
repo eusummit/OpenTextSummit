@@ -2,48 +2,31 @@
 <html lang="en">
 <head>
     <style>
+    /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
     .typing-effect {
         display: inline-block;
         overflow: hidden;
-        border-right: 3px solid #E3000F;
+        border-right: 3px solid #E3000F; /* Cursor color */
         white-space: nowrap;
         width: 0;
-        padding-bottom: 0.15em;
-        padding-right: 0.15em;
+        padding-bottom: 0.15em; /* Fix for 'g' tail */
+        padding-right: 0.15em;  /* Fix for 'T' visibility */
         line-height: 1.2;
         vertical-align: bottom;
-        animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
-    }
-    @keyframes typing { from { width: 0 } to { width: 104% } }
-    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #E3000F; } }
-
-    /* New: Pulsing Status Dot */
-    .pulse-dot {
-        height: 8px;
-        width: 8px;
-        background-color: #10B981;
-        border-radius: 50%;
-        display: inline-block;
-        margin-right: 8px;
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 1);
-        animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        animation: 
+            typing 3.5s steps(30, end) forwards,
+            blink-caret 0.75s step-end infinite;
     }
 
-    /* New: Logo Marquee Animation */
-    @keyframes scroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 104% }
     }
-    .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
-    .marquee-content { display: inline-block; animation: scroll 30s linear infinite; }
-    
-    .workspace-item { cursor: pointer; transition: all 0.3s ease; }
-    .workspace-item.active { background: rgba(255,255,255,0.2) !important; border-color: #00B8D9 !important; }
+
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: #E3000F; }
+    }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,25 +39,67 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: { brand: { dark: '#0B1B3D', primary: '#0052CC', light: '#F4F7F9', accent: '#00B8D9' } }
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0B1B3D',   // Deep corporate blue
+                            primary: '#0052CC', // Action blue
+                            light: '#F4F7F9',   // Light gray/blue for backgrounds
+                            accent: '#00B8D9'   // Teal accent
+                        }
+                    }
                 }
             }
         }
     </script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F4F7F9; color: #1F2937; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #F4F7F9; 
+            color: #1F2937; 
+            scroll-behavior: smooth;
+        }
+        
         .hero-bg {
             background: linear-gradient(135deg, rgba(11, 27, 61, 0.95) 0%, rgba(0, 82, 204, 0.85) 100%), 
                         url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; height: 100vh;
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            height: 100vh;
         }
+
         .section-padding { padding: 100px 10%; }
-        .corp-card { background: #ffffff; border: 1px solid #E5E7EB; border-top: 4px solid #0052CC; transition: all 0.3s ease; }
-        .corp-card:hover { transform: translateY(-5px); border-top: 4px solid #00B8D9; }
-        .bg-mesh { background-color: #ffffff; background-image: radial-gradient(#E5E7EB 1px, transparent 1px); background-size: 24px 24px; }
-        .nav-scrolled { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        
+        .corp-card {
+            background: #ffffff;
+            border: 1px solid #E5E7EB;
+            border-top: 4px solid #0052CC;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .corp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid #00B8D9;
+        }
+
+        .bg-mesh {
+            background-color: #ffffff;
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .nav-scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .nav-scrolled a { color: #1F2937; }
+        .nav-scrolled .logo-text { color: #0B1B3D; }
     </style>
 </head>
 <body class="antialiased">
@@ -84,38 +109,45 @@
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent transition-all duration-300">
     <div class="flex items-center gap-4">
         <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
-            <span>KOMB</span>
-            <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px]">
+            <span class="flex-shrink-0">KOMB</span>
+            
+            <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px] flex-shrink-0">
                 <div class="w-full h-[5px] bg-[#E3000F]"></div>
                 <div class="w-full h-[5px] bg-[#E3000F] mt-[1.5px]"></div>
                 <div class="w-full h-[5px] bg-[#E3000F] mt-auto"></div>
             </div>
-            <span>T</span>
+            
+            <span class="flex-shrink-0">T</span>
         </div>
+
         <div id="nav-divider" class="h-6 w-[1.5px] bg-white/40"></div>
-        <div class="flex items-center gap-2">
-            <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center">
+
+        <div class="flex items-center gap-2 flex-nowrap">
+            <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span class="text-white text-[10px] font-bold">ot</span>
             </div>
-            <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase">opentext</span>
+            <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300" style="font-family: Arial, sans-serif;">opentext</span>
         </div>
     </div>
+
     <div class="hidden lg:flex space-x-8 text-sm font-bold text-white">
-        <a href="#kombit" class="hover:text-[#E3000F]">Who is KOMBIT</a>
-        <a href="#valueedge" class="hover:text-[#E3000F]">Why ValueEdge</a>
-        <a href="#workflow" class="hover:text-[#E3000F]">Everyday Work</a>
-        <a href="#ai" class="hover:text-[#E3000F]">Aviator AI</a>
+        <a href="#kombit" class="hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
+        <a href="#valueedge" class="hover:text-[#E3000F] transition-colors">Why ValueEdge</a>
+        <a href="#workflow" class="hover:text-[#E3000F] transition-colors">Everyday Work</a>
+        <a href="#ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
     </div>
 </nav>
 
-    <section id="hero-section" class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
+    <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
         <div data-aos="fade-up" data-aos-duration="1000">
             <div class="inline-block px-4 py-1 mb-6 border border-white/30 rounded-full text-sm font-semibold tracking-wider bg-white/10 backdrop-blur-md">
                 ENTERPRISE QUALITY ENGINEERING
             </div>
             <h1 class="text-5xl md:text-7xl font-black mb-6">
-                <span class="typing-effect">Modernising testing at <span class="text-[#E3000F]">KOMBIT</span></span>
-            </h1>
+    <span class="typing-effect">
+        Modernising testing at <span class="text-[#E3000F]">KOMBIT</span>
+    </span>
+</h1>
             <p class="text-xl max-w-2xl mb-10 text-gray-200 font-light leading-relaxed">
                 Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to drive efficiency across Danish municipal IT solutions.
             </p>
@@ -154,6 +186,7 @@
             </div>
             <div data-aos="fade-left" class="relative">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Corporate Office" class="rounded-lg shadow-2xl">
+                
                 <div class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
                     <div>
                         <div id="muni-counter" class="text-4xl font-bold text-brand-accent mb-1">0</div>
@@ -172,27 +205,6 @@
         </div>
     </section>
 
-    <div class="bg-white py-10 border-b border-gray-100">
-        <div class="marquee-wrapper">
-            <div class="marquee-content flex gap-20 items-center opacity-30 grayscale">
-                <span class="text-2xl font-black">JIRA</span>
-                <span class="text-2xl font-black">GITHUB</span>
-                <span class="text-2xl font-black">JENKINS</span>
-                <span class="text-2xl font-black">SELENIUM</span>
-                <span class="text-2xl font-black">AZURE DEVOPS</span>
-                <span class="text-2xl font-black">MICRO FOCUS</span>
-                <span class="text-2xl font-black">GITLAB</span>
-                <span class="text-2xl font-black">JIRA</span>
-                <span class="text-2xl font-black">GITHUB</span>
-                <span class="text-2xl font-black">JENKINS</span>
-                <span class="text-2xl font-black">SELENIUM</span>
-                <span class="text-2xl font-black">AZURE DEVOPS</span>
-                <span class="text-2xl font-black">MICRO FOCUS</span>
-                <span class="text-2xl font-black">GITLAB</span>
-            </div>
-        </div>
-    </div>
-
     <section id="valueedge" class="section-padding bg-brand-light">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
@@ -204,12 +216,14 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="corp-card p-8 rounded-lg" data-aos="fade-up">
+                <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="0">
                     <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
                     </div>
                     <h4 class="text-xl font-bold text-brand-dark mb-3">TaaS & CSDP Integration</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge acts as the engine, providing a unified methodology.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the Core Software Devilery Platform) acts as the engine, providing a unified methodology across all of KOMBIT's testing initiatives.
+                    </p>
                 </div>
 
                 <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="100">
@@ -217,7 +231,9 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                     </div>
                     <h4 class="text-xl font-bold text-brand-dark mb-3">Supplier Tech-Stack Integration</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks ensuring quality metrics are captured.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality metrics are captured.
+                    </p>
                 </div>
 
                 <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="200">
@@ -225,7 +241,9 @@
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                     </div>
                     <h4 class="text-xl font-bold text-brand-dark mb-3">Combined Data in One Place</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">A single source of truth. By pulling data from automation scripts and manual runs, leadership gets real-time visibility into release readiness.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        A single source of truth. By pulling data from automation scripts, manual test runs, and pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release readiness and risk.
+                    </p>
                 </div>
             </div>
         </div>
@@ -239,21 +257,21 @@
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary rounded-full blur-3xl opacity-20"></div>
                         <h4 class="text-white font-semibold mb-6 text-xl">The ValueEdge Workspace</h4>
                         <div class="space-y-4">
-                            <div class="workspace-item active bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4" onclick="toggleWorkspace(this)">
+                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">01</div>
                                 <div>
                                     <div class="text-white font-bold text-sm">Cross-Project Visibility</div>
                                     <div class="text-gray-400 text-xs mt-1">Test Managers navigate multiple municipal projects from a single dashboard.</div>
                                 </div>
                             </div>
-                            <div class="workspace-item bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4" onclick="toggleWorkspace(this)">
+                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">02</div>
                                 <div>
                                     <div class="text-white font-bold text-sm">Defect Triage</div>
                                     <div class="text-gray-400 text-xs mt-1">Seamless communication between TaaS teams and external developers.</div>
                                 </div>
                             </div>
-                            <div class="workspace-item bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4" onclick="toggleWorkspace(this)">
+                            <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">03</div>
                                 <div>
                                     <div class="text-white font-bold text-sm">Traceability</div>
@@ -267,8 +285,12 @@
                 <div data-aos="fade-left" class="order-1 lg:order-2 flex flex-col justify-center">
                     <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Operations</h2>
                     <h3 class="text-4xl font-extrabold text-brand-dark mb-6">Working with ValueEdge</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead.</p>
-                    <p class="text-gray-600 mb-6 leading-relaxed">ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance.</p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead. 
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance. TaaS professionals use these workspaces to execute cycles, report bugs, and validate fixes efficiently.
+                    </p>
                 </div>
             </div>
         </div>
@@ -277,101 +299,127 @@
     <section id="ai" class="section-padding bg-white border-t border-gray-200">
         <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
             <h2 class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The Future</h2>
-            <h3 class="text-4xl font-extrabold text-brand-dark flex items-center justify-center gap-3">
-                <span class="pulse-dot"></span> Using OpenText Aviator AI
-            </h3>
+            <h3 class="text-4xl font-extrabold text-brand-dark">Using OpenText Aviator AI</h3>
             <p class="text-gray-600 mt-4">Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.</p>
         </div>
 
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+            <div class="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-1 bg-blue-100 -translate-y-1/2 z-0"></div>
+
             <div class="bg-white p-10 rounded-xl border border-gray-200 shadow-lg relative z-10" data-aos="fade-right">
-                <div class="w-16 h-16 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 mx-auto">
+                <div class="w-16 h-16 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-sm mx-auto">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
                 </div>
                 <h4 class="text-2xl font-bold text-center text-brand-dark mb-4">Phase 1: Successful POC</h4>
-                <p class="text-gray-600 text-center text-sm leading-relaxed">The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases, BDD, and User Stories.</p>
+                <p class="text-gray-600 text-center text-sm leading-relaxed">
+                    The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases , BDD , User Stories from raw description , images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.
+                </p>
             </div>
 
-            <div class="bg-brand-dark p-10 rounded-xl shadow-2xl relative z-10 border-t-4 border-brand-accent" data-aos="fade-left">
-                <div class="mb-4 flex justify-center"><span class="px-3 py-1 bg-brand-accent text-brand-dark text-[10px] font-bold rounded-full uppercase tracking-tighter animate-pulse">Live in Production</span></div>
-                <div class="w-16 h-16 bg-brand-primary text-white rounded-full flex items-center justify-center mb-6 mx-auto">
+            <div class="bg-brand-dark p-10 rounded-xl shadow-2xl relative z-10" data-aos="fade-left">
+                <div class="w-16 h-16 bg-brand-primary text-white rounded-full flex items-center justify-center mb-6 border-4 border-brand-dark shadow-sm mx-auto">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <h4 class="text-2xl font-bold text-center text-white mb-4">Phase 2: Now in Production</h4>
-                <p class="text-gray-300 text-center text-sm leading-relaxed">Moving beyond the POC, Aviator AI is now integrated into the production workflow. Test Managers leverage it to accelerate test design and gain AI-driven insights.</p>
+                <p class="text-gray-300 text-center text-sm leading-relaxed">
+                    Moving beyond the POC, Aviator AI is now integrated into the production  workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.
+                </p>
             </div>
         </div>
     </section>
 
     <footer class="bg-brand-dark text-white py-16 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-start gap-8">
+            
             <div class="text-left">
                 <div class="flex items-center gap-4 mb-5">
                     <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
-                        <span>KOMB</span>
-                        <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px]">
+                        <span class="flex-shrink-0">KOMB</span>
+                        <div class="flex flex-col w-[6px] h-[18px] mx-[3px] mt-[0.5px] flex-shrink-0">
                             <div class="w-full h-[5px] bg-[#E3000F]"></div>
                             <div class="w-full h-[5px] bg-[#E3000F] mt-[1.5px]"></div>
                             <div class="w-full h-[5px] bg-[#E3000F] mt-auto"></div>
                         </div>
-                        <span>T</span>
+                        <span class="flex-shrink-0">T</span>
                     </div>
+
                     <div class="w-[1px] h-6 bg-white/20"></div>
-                    <span class="text-white/70 text-[11px] font-bold uppercase tracking-[0.25em]">Success Story</span>
+
+                    <span class="text-white/70 text-[11px] font-bold uppercase tracking-[0.25em] mt-[2px]">
+                        Success Story
+                    </span>
                 </div>
+                
                 <h4 class="text-lg font-semibold text-white">The ValueEdge Journey</h4>
-                <p class="text-gray-400 text-sm max-w-sm mt-2">Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.</p>
+                <p class="text-gray-400 text-sm max-w-sm mt-2">
+                    Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.
+                </p>
             </div>
+            
             <div class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
                 <div class="flex flex-col md:flex-row items-center gap-6">
-                    <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent">qxmbg@kombit.dk</a>
+                    <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent transition">qxmbg@kombit.dk</a>
                     <span class="hidden md:block opacity-20">|</span>
-                    <a href="tel:+37125657827" class="hover:text-brand-accent">+371 25657827</a>
+                    <a href="tel:+37125657827" class="hover:text-brand-accent transition">+371 25657827</a>
                 </div>
             </div>
         </div>
+
         <div class="max-w-7xl mx-auto px-10 mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
             <div class="flex space-x-6 mb-4 md:mb-0">
                 <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="hover:text-white transition">LinkedIn</a>
                 <a href="https://www.kombit.dk/" target="_blank" class="hover:text-white transition">Kombit Denmark</a>
+                <a href="https://www.kl.dk/english/" target="_blank" class="hover:text-white transition">KL, Copenhagen</a>
             </div>
-            <div>&copy; 2026 OpenText Nordic Summit, Stockholm</div>
+            <div class="text-center md:text-right">
+                &copy; 2026 
+                <a href="https://events.opentext.com/nordics-summit-2026" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="hover:text-white transition-colors duration-300 ml-1">
+                    OpenText Nordic Summit, Stockholm
+                </a>
+            </div>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    AOS.init({ once: true, offset: 50, duration: 800 });
-
-    // Workspace Toggle Logic
-    function toggleWorkspace(el) {
-        document.querySelectorAll('.workspace-item').forEach(item => item.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    // Parallax Effect
-    window.addEventListener('scroll', () => {
-        const hero = document.getElementById('hero-section');
-        let offset = window.pageYOffset;
-        hero.style.backgroundPositionY = offset * 0.7 + "px";
+    // 1. Initialize Animations
+    AOS.init({
+        once: true,
+        offset: 50,
+        duration: 800,
     });
 
-    // Counters
+    // 2. UPDATED COUNTER LOGIC: Animates both 98 and 5.9
     const animateValue = (id, target, duration) => {
         const obj = document.getElementById(id);
         if (!obj) return;
+        
         let startTimestamp = null;
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            // Format for decimal if it's the citizen counter
             const current = progress * target;
-            obj.innerHTML = (target % 1 === 0) ? Math.floor(current) : current.toFixed(1);
-            if (progress < 1) window.requestAnimationFrame(step);
-            else obj.innerHTML = target;
+            if (target % 1 === 0) {
+                obj.innerHTML = Math.floor(current);
+            } else {
+                obj.innerHTML = current.toFixed(1);
+            }
+
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                obj.innerHTML = target;
+            }
         };
         window.requestAnimationFrame(step);
     };
 
+    // Observer to trigger both counters when the section is visible
     const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -382,19 +430,39 @@
         });
     }, { threshold: 0.5 });
 
+    // 3. Scroll Logic for Progress Bar & Navbar
     window.addEventListener('scroll', () => {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
         document.getElementById("scroll-progress").style.width = scrolled + "%";
+
         const nav = document.getElementById('navbar');
-        if (winScroll > 50) nav.classList.add('nav-scrolled');
-        else nav.classList.remove('nav-scrolled');
+        const otWord = document.getElementById('opentext-word');
+        const divider = document.getElementById('nav-divider');
+
+        if (winScroll > 50) {
+            nav.classList.add('nav-scrolled');
+            nav.classList.remove('bg-transparent');
+            if (otWord) otWord.style.color = 'black';
+            if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
+        } else {
+            nav.classList.remove('nav-scrolled');
+            nav.classList.add('bg-transparent');
+            if (otWord) otWord.style.color = 'white';
+            if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
+        }
     });
 
+    // 4. Initialize State on Load
     document.addEventListener('DOMContentLoaded', () => {
-        const trigger = document.getElementById('muni-counter');
-        if (trigger) counterObserver.observe(trigger);
+        const triggerElement = document.getElementById('muni-counter');
+        if (triggerElement) counterObserver.observe(triggerElement);
+
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
     });
 </script>
 </body>
