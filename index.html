@@ -2,6 +2,42 @@
 <html lang="en">
 <head>
     <style>
+        /* Subtle Back to Top Button */
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.btn-circle {
+    width: 45px;
+    height: 45px;
+    background: rgba(11, 27, 61, 0.7); /* Match your brand dark color */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.btn-circle:hover {
+    background: #0052CC; /* Brand Primary on hover */
+    transform: translateY(-3px);
+}
     /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
     .typing-effect {
         display: inline-block;
@@ -464,6 +500,30 @@
         }
         window.scrollTo(0, 0);
     });
+    const bttBtn = document.getElementById("backToTop");
+
+window.addEventListener('scroll', () => {
+    // Show button after scrolling down 400px
+    if (window.pageYOffset > 400) {
+        bttBtn.classList.add("show");
+    } else {
+        bttBtn.classList.remove("show");
+    }
+});
+
+bttBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
 </script>
+<button id="backToTop" title="Go to top">
+    <div class="btn-circle">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path>
+        </svg>
+    </div>
+</button>
 </body>
 </html>
