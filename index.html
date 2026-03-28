@@ -182,29 +182,26 @@
             </div>
 
             <div class="relative inline-block text-left">
-                <button id="lang-menu-button" onclick="toggleLangMenu(event)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
-                    <span id="current-lang-flag">🇬🇧</span>
-                    <span id="current-lang-code">EN</span>
-                    <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                
-                <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] border border-gray-100">
-                    <div class="py-1">
-                        <button onclick="setLanguage('en')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                            <span>🇬🇧</span> English
-                        </button>
-                        <button onclick="setLanguage('da')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                            <span>🇩🇰</span> Dansk
-                        </button>
-                        <button onclick="setLanguage('sv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                            <span>🇸🇪</span> Svenska
-                        </button>
-                        
-                        
-                    </div>
-                </div>
-            </div>
+    <button id="lang-menu-button" onclick="toggleLangMenu(event)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
+        <img id="current-lang-flag" src="https://flagcdn.com/w20/gb.png" width="20" alt="flag">
+        <span id="current-lang-code">EN</span>
+        <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+    </button>
+    
+    <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] border border-gray-100">
+        <div class="py-1">
+            <button onclick="setLanguage('en')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                <img src="https://flagcdn.com/w20/gb.png" width="20" alt="EN"> English
+            </button>
+            <button onclick="setLanguage('da')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                <img src="https://flagcdn.com/w20/dk.png" width="20" alt="DA"> Dansk
+            </button>
+            <button onclick="setLanguage('sv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                <img src="https://flagcdn.com/w20/se.png" width="20" alt="SV"> Svenska
+            </button>
         </div>
+    </div>
+</div>
     </nav>
 
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
@@ -459,7 +456,7 @@
     // --- TRANSLATION DATA ---
     const i18n = {
         en: {
-            flag: '🇬🇧', code: 'EN',
+            flag: 'https://flagcdn.com/w20/gb.png',
             nav_who: "Who is KOMBIT", nav_why: "Why ValueEdge", nav_work: "Everyday Work", nav_ai: "Aviator AI",
             hero_badge: "ENTERPRISE QUALITY ENGINEERING",
             hero_title: "Modernising testing at ",
@@ -486,7 +483,7 @@
             ft_success: "Success Story", ft_title: "The ValueEdge Journey", ft_desc: "Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.", ft_cph: "KL, Copenhagen"
         },
         da: {
-            flag: '🇩🇰', code: 'DA',
+            flag: 'https://flagcdn.com/w20/dk.png',
             nav_who: "Hvem er KOMBIT", nav_why: "Hvorfor ValueEdge", nav_work: "Dagligt arbejde", nav_ai: "Aviator AI",
             hero_badge: "ENTERPRISE KVALITETSUDVIKLING",
             hero_title: "Testmodernisering hos ",
@@ -513,7 +510,7 @@
             ft_success: "Succeshistorie", ft_title: "ValueEdge Rejsen", ft_desc: "Styrkelse af de danske kommuner gennem Testing as a Service (TaaS) og centraliseret kvalitetsstyring.", ft_cph: "KL, København"
         },
         sv: {
-            flag: '🇸🇪', code: 'SV',
+            flag: 'https://flagcdn.com/w20/se.png',
             nav_who: "Vem är KOMBIT", nav_why: "Varför ValueEdge", nav_work: "Dagligt arbete", nav_ai: "Aviator AI",
             hero_badge: "ENTERPRISE KVALITETSTEKNIK",
             hero_title: "Testmodernisering på ",
@@ -547,7 +544,7 @@
         const data = i18n[lang];
         
         // Update Flag & Code
-        document.getElementById('current-lang-flag').innerText = data.flag;
+        document.getElementById('current-lang-flag').src = data.flag;
         document.getElementById('current-lang-code').innerText = data.code;
 
         // Update all elements with data-i18n
