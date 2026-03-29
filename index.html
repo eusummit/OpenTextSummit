@@ -38,24 +38,25 @@
     background: #E3000F; /* Solid Brand Red on hover */
     transform: translateY(-3px);
 }
-  /* Fixed Typing Effect: Dynamic Width */
+    /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
     .typing-effect {
-        display: inline-flex; /* Changed to inline-flex to wrap perfectly */
+        display: inline-block;
         overflow: hidden;
         border-right: 3px solid #E3000F; /* Cursor color */
         white-space: nowrap;
         width: 0;
-        padding-bottom: 0.15em; 
-        padding-right: 0.25em;  /* Slight padding so cursor sits 1 space after T */
+        padding-bottom: 0.15em; /* Fix for 'g' tail */
+        padding-right: 0.15em;  /* Fix for 'T' visibility */
         line-height: 1.2;
         vertical-align: bottom;
-        /* Removed fixed width animation */
-        animation: blink-caret 0.75s step-end infinite;
+        animation: 
+            typing 3.5s steps(30, end) forwards,
+            blink-caret 0.75s step-end infinite;
     }
 
-    @keyframes typing-dynamic {
+    @keyframes typing {
         from { width: 0 }
-        to { width: 100% } /* 100% of the inline-flex container */
+        to { width: 106% }
     }
 
     @keyframes blink-caret {
@@ -574,39 +575,21 @@
     function setLanguage(lang) {
         localStorage.setItem('preferred-lang', lang);
         const data = i18n[lang];
-        if (!data) return; // Safety check
- 
-        // Update Flag & Code (Using .src for images as discussed earlier)
-        const mainFlag = document.getElementById('current-lang-flag');
-        if (mainFlag) mainFlag.src = data.flag;
         
-        const mainCode = document.getElementById('current-lang-code');
-        if (mainCode) mainCode.innerText = data.code;
+        // Update Flag & Code
+        document.getElementById('current-lang-flag').src = data.flag;
+        document.getElementById('current-lang-code').innerText = data.code;
 
         // Update all elements with data-i18n
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (data[key]) {
-                 el.innerHTML = data[key];
+                el.innerHTML = data[key];
             }
         });
 
         // Hide Dropdown
         document.getElementById('lang-dropdown').classList.add('hidden');
-
-        // RE-TRIGGER DYNAMIC TYPING ANIMATION
-        const typingElement = document.querySelector('.typing-effect');
-        if (typingElement) {
-            // Remove animation to reset it
-            typingElement.style.animation = 'none';
-            typingElement.offsetHeight; // Trigger browser reflow
-            
-            // Calculate total characters (translation + " KOMBIT")
-            const textLength = typingElement.innerText.length;
-            
-            // Re-apply animation with dynamic steps
-            typingElement.style.animation = `typing-dynamic 3.5s steps(${textLength}, end) forwards, blink-caret 0.75s step-end infinite`;
-        }
     }
 
     function toggleLangMenu(e) {
