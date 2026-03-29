@@ -64,6 +64,48 @@
         from, to { border-color: transparent }
         50% { border-color: #E3000F; }
     }
+    /* Modern Infinite Ticker */
+    .ticker-container {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding: 2rem 0;
+        /* Fading edges mask */
+        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    }
+
+    .ticker-track {
+        display: inline-flex;
+        gap: 3rem;
+        animation: scroll-left 30s linear infinite;
+    }
+
+    .ticker-item {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: rgba(11, 27, 61, 0.4); /* Subtle brand dark blue */
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .ticker-item::before {
+        content: "";
+        width: 4px;
+        height: 4px;
+        background: #E3000F; /* Brand red dot separator */
+        border-radius: 50%;
+    }
+
+    @keyframes scroll-left {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } /* Scroll half the track for seamless loop */
+    }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -317,6 +359,31 @@
                 </div>
             </div>
         </div>
+        </div> <div class="mt-20 border-t border-gray-200/50">
+                <div class="ticker-container">
+                    <div class="ticker-track">
+                        <span class="ticker-item">Backlog Management</span>
+                        <span class="ticker-item">Functional Testing</span>
+                        <span class="ticker-item">Regression Suite</span>
+                        <span class="ticker-item">Automation Pipeline</span>
+                        <span class="ticker-item">Defect Tracking</span>
+                        <span class="ticker-item">Performance Metrics</span>
+                        <span class="ticker-item">Security Scans</span>
+                        <span class="ticker-item">Release Governance</span>
+                        
+                        <span class="ticker-item">Backlog Management</span>
+                        <span class="ticker-item">Functional Testing</span>
+                        <span class="ticker-item">Regression Suite</span>
+                        <span class="ticker-item">Automation Pipeline</span>
+                        <span class="ticker-item">Defect Tracking</span>
+                        <span class="ticker-item">Performance Metrics</span>
+                        <span class="ticker-item">Security Scans</span>
+                        <span class="ticker-item">Release Governance</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     </section>
 
     <section id="workflow" class="section-padding bg-mesh relative">
