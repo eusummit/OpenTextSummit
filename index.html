@@ -46,26 +46,24 @@
 }
     /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
     .typing-effect {
-    display: inline-block;
-    overflow: hidden;
-    border-right: 3px solid #E3000F; /* Cursor color */
-    white-space: nowrap;
-    width: 0;
-    padding-bottom: 0.15em;
-    padding-right: 0.05em; /* Reduced to keep cursor close */
-    line-height: 1.2;
-    vertical-align: bottom;
-    /* Use 'steps' equal to the total character count including spaces */
-    animation: 
-        typing 3.5s steps(30, end) forwards,
-        blink-caret 0.75s step-end infinite;
-}
+        display: inline-block;
+        overflow: hidden;
+        border-right: 3px solid #E3000F; /* Cursor color */
+        white-space: nowrap;
+        width: 0;
+        padding-bottom: 0.15em; /* Fix for 'g' tail */
+        padding-right: 0.15em;  /* Fix for 'T' visibility */
+        line-height: 1.2;
+        vertical-align: bottom;
+        animation: 
+            typing 3.5s steps(30, end) forwards,
+            blink-caret 0.75s step-end infinite;
+    }
 
-@keyframes typing {
-    from { width: 0; }
-    /* Changed from 106% to fit-content so it stops exactly after KOMBIT */
-    to { width: 100%; } 
-}
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 106% }
+    }
 
     @keyframes blink-caret {
         from, to { border-color: transparent }
