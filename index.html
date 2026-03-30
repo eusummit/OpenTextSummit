@@ -2,47 +2,7 @@
 <html lang="en">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
 <head>
-    /* --- TICKER STYLE --- */
-.custom-bottom-ticker {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #0b1b3d; /* Matches your brand dark blue */
-    color: rgba(255, 255, 255, 0.8);
-    z-index: 9998;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 6px 0;
-    border-top: 1px solid rgba(227, 0, 15, 0.3);
-    overflow: hidden;
-    pointer-events: none; /* Won't block clicks on buttons behind it */
-}
-
-.ticker-content-wrapper {
-    display: flex;
-    white-space: nowrap;
-    width: max-content;
-    animation: ticker-slide 30s linear infinite;
-}
-
-.ticker-text-item {
-    padding: 0 50px;
-    display: flex;
-    align-items: center;
-}
-
-.ticker-red {
-    color: #E3000F;
-    margin: 0 5px;
-    font-weight: bold;
-}
-
-@keyframes ticker-slide {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
+   
     <style>
         
         /* Subtle Back to Top Button */
@@ -201,6 +161,47 @@
         padding: 24px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
+     /* --- TICKER STYLE --- */
+.custom-bottom-ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0b1b3d; /* Matches your brand dark blue */
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 9998;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 0;
+    border-top: 1px solid rgba(227, 0, 15, 0.3);
+    overflow: hidden;
+    pointer-events: none; /* Won't block clicks on buttons behind it */
+}
+
+.ticker-content-wrapper {
+    display: flex;
+    white-space: nowrap;
+    width: max-content;
+    animation: ticker-slide 30s linear infinite;
+}
+
+.ticker-text-item {
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+}
+
+.ticker-red {
+    color: #E3000F;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+@keyframes ticker-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
