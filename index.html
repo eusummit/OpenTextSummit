@@ -493,18 +493,18 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 
                 <div data-aos="fade-right">
-                    <h2 class="text-3xl font-black text-brand-primary leading-tight mb-6">
+                    <h2 data-i18n="eco_title" class="text-3xl font-black text-brand-primary leading-tight mb-6">
                         Bridging the Gap Between <br>
                         <span class="text-red-600 font-black">Vendors & Governance</span>
                     </h2>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-8">
+                    <p data-i18n="eco_desc" class="text-gray-600 text-sm leading-relaxed mb-8">
                         ValueEdge creates a seamless "Single Source of Truth" by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.
                     </p>
                     
                     <div class="space-y-6">
                         <div class="integration-card rounded-lg">
-                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Source Ingestion</span>
-                            <p class="text-xs font-bold text-gray-800 mb-3">DevOps & Project Management Sync</p>
+                            <span data-i18n="eco_sync" class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Source Ingestion</span>
+                            <p data-i18n="eco_sync_sub" class="text-xs font-bold text-gray-800 mb-3">DevOps & Project Management Sync</p>
                             <div class="flex flex-wrap gap-2">
                                 <span class="ecosystem-tag">Jira</span>
                                 <span class="ecosystem-tag">Azure DevOps</span>
@@ -513,8 +513,8 @@
                         </div>
 
                         <div class="integration-card rounded-lg">
-                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Quality Streams</span>
-                            <p class="text-xs font-bold text-gray-800 mb-3">Automated Test Results & Pipelines</p>
+                            <span data-i18n="eco_quality" class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Quality Streams</span>
+                            <p data-i18n="eco_quality_sub" class="text-xs font-bold text-gray-800 mb-3">Automated Test Results & Pipelines</p>
                             <div class="flex flex-wrap gap-2">
                                 <span class="ecosystem-tag">Selenium</span>
                                 <span class="ecosystem-tag">Playwright</span>
@@ -528,22 +528,22 @@
                 <div class="relative" data-aos="fade-left">
                     <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
                         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
-                            <span class="text-xs font-bold text-brand-primary uppercase">Integration Status</span>
+                            <span data-i18n="eco_status_label" class="text-xs font-bold text-brand-primary uppercase">Integration Status</span>
                             <span class="flex items-center gap-1.5 text-[10px] text-green-600 font-bold uppercase">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live Sync
                             </span>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
-                                <span class="text-xs text-gray-500">Vendor Backlog Sync</span>
+                                <span data-i18n="eco_status_1" class="text-xs text-gray-500">Vendor Backlog Sync</span>
                                 <span class="text-xs font-mono font-bold text-brand-primary">COMPLETE</span>
                             </li>
                             <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
-                                <span class="text-xs text-gray-500">Automation Pipe (98 Munis)</span>
+                                <span data-i18n="eco_status_2" class="text-xs text-gray-500">Automation Pipe (98 Munis)</span>
                                 <span class="text-xs font-mono font-bold text-brand-primary">ACTIVE</span>
                             </li>
                             <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
-                                <span class="text-xs text-gray-500">TaaS Framework Validation</span>
+                                <span data-i18n="eco_status_3" class="text-xs text-gray-500">TaaS Framework Validation</span>
                                 <span class="text-xs font-mono font-bold text-brand-primary">OPTIMIZED</span>
                             </li>
                         </ul>
@@ -552,7 +552,7 @@
                                 <div class="h-full bg-red-600 w-[94%]"></div>
                             </div>
                             <div class="flex justify-between mt-2">
-                                <span class="text-[10px] font-bold text-gray-400">ECOSYSTEM UPTIME</span>
+                                <span data-i18n="eco_uptime" class="text-[10px] font-bold text-gray-400">ECOSYSTEM UPTIME</span>
                                 <span class="text-[10px] font-bold text-brand-primary">99.9%</span>
                             </div>
                         </div>
@@ -562,7 +562,7 @@
             </div>
         </div>
     </section>
-    <section id="ai" class="section-padding bg-white border-t border-gray-200">
+        <section id="ai" class="section-padding bg-white border-t border-gray-200">
         <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
             <h2 data-i18n="s4_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The Future</h2>
             <h3 data-i18n="s4_title" class="text-4xl font-extrabold text-brand-dark">Using OpenText Aviator AI</h3>
@@ -681,7 +681,19 @@
             s4_desc: "Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.",
             s4_c1_title: "Phase 1: Successful POC", s4_c1_desc: "The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases, BDD, User Stories from raw description, images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.",
             s4_c2_title: "Phase 2: Now in Production", s4_c2_desc: "Moving beyond the POC, Aviator AI is now integrated into the production workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.",
-            ft_success: "Success Story", ft_title: "The ValueEdge Journey", ft_desc: "Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.", ft_cph: "KL, Copenhagen"
+            ft_success: "Success Story", ft_title: "The ValueEdge Journey", ft_desc: "Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.", ft_cph: "KL, Copenhagen",
+            eco_title: "Bridging the Gap Between <br><span class='text-red-600'>Vendors & Governance</span>",
+        eco_desc: "ValueEdge creates a seamless 'Single Source of Truth' by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.",
+        eco_sync: "Source Ingestion",
+        eco_sync_sub: "DevOps & Project Management Sync",
+        eco_quality: "Quality Streams",
+        eco_quality_sub: "Automated Test Results & Pipelines",
+        eco_status_label: "Integration Status",
+        eco_status_1: "Vendor Backlog Sync",
+        eco_status_2: "Automation Pipe (98 Munis)",
+        eco_status_3: "TaaS Framework Validation",
+        eco_uptime: "ECOSYSTEM UPTIME"
+            
         },
         da: {
             flag: 'https://flagcdn.com/w20/dk.png',
@@ -709,7 +721,18 @@
             s4_desc: "Generativ AI transformerer vores tilgang til softwaretest. Hos KOMBIT repræsenterer brugen af Aviator AI skiftet fra manuel testskrivning til intelligent, automatiseret generering.",
             s4_c1_title: "Fase 1: Vellykket POC", s4_c1_desc: "Rejsen begyndte med et Proof of Concept for at validere Aviators evner. Vi testede dens evne til automatisk at generere manuelle testcases, BDD, User Stories fra rå beskrivelser, billeder og tekst og optimerede eksisterende arbejdsenheder. Resultaterne viste en drastisk reduktion i testforberedelse og udførelsestid.",
             s4_c2_title: "Fase 2: Nu i produktion", s4_c2_desc: "Vi er gået videre fra POC, og Aviator AI er nu integreret i produktionsworkflowet. Test Managers udnytter det til at fremskynde testdesign, opsummere fejl-tendenser og få AI-drevne indsigter i den overordnede risikoprofil for kommunale softwareudgivelser.",
-            ft_success: "Succeshistorie", ft_title: "ValueEdge Rejsen", ft_desc: "Styrkelse af de danske kommuner gennem Testing as a Service (TaaS) og centraliseret kvalitetsstyring.", ft_cph: "KL, København"
+            ft_success: "Succeshistorie", ft_title: "ValueEdge Rejsen", ft_desc: "Styrkelse af de danske kommuner gennem Testing as a Service (TaaS) og centraliseret kvalitetsstyring.", ft_cph: "KL, København",
+            eco_title: "Brobygning mellem <br><span class='text-red-600'>Leverandører & Governance</span>",
+        eco_desc: "ValueEdge skaber en problemfri 'Single Source of Truth' ved at integrere direkte med de udviklingsværktøjer, som jeres leverandører allerede bruger. Dette gør det muligt for KOMBIT at opretholde governance på højt niveau uden at forstyrre eksterne arbejdsgange.",
+        eco_sync: "Kilde-indtagelse",
+        eco_sync_sub: "DevOps & Projektstyrings-synk",
+        eco_quality: "Kvalitets-strømme",
+        eco_quality_sub: "Automatiserede testresultater & pipelines",
+        eco_status_label: "Integrationsstatus",
+        eco_status_1: "Synkronisering af Leverandør-backlog",
+        eco_status_2: "Automations-pipeline (98 kommuner)",
+        eco_status_3: "TaaS Framework Validering",
+        eco_uptime: "SYSTEM OPPETID"
         },
         sv: {
             flag: 'https://flagcdn.com/w20/se.png',
@@ -737,7 +760,18 @@
             s4_desc: "Generativ AI förändrar hur vi närmar oss mjukvarutestning. På KOMBIT representerar antagandet av Aviator AI övergången från manuell testförfattning till intelligent, automatiserad generering.",
             s4_c1_title: "Fas 1: Framgångsrik POC", s4_c1_desc: "Resan började med ett Proof of Concept för att validera Aviators funktioner. Vi testade dess förmåga att automatiskt generera manuella testfall, BDD, User Stories från rå beskrivning, bilder och text och optimerade befintliga arbetsenheter. Resultaten visade en drastisk minskning av testförberedelser och exekveringstid.",
             s4_c2_title: "Fas 2: Nu i produktion", s4_c2_desc: "Vi går bortom POC, och Aviator AI är nu integrerad i produktionsarbetsflödet. Test Managers utnyttjar det för att påskynda testdesign, sammanfatta defekttrender och få AI-drivna insikter i den övergripande riskprofilen för kommunala programvarureleaser.",
-            ft_success: "Framgångssaga", ft_title: "ValueEdge Resan", ft_desc: "Bemyndigande av danska kommuner genom Testing as a Service (TaaS) och centraliserad kvalitetsstyrning.", ft_cph: "KL, Köpenhamn"
+            ft_success: "Framgångssaga", ft_title: "ValueEdge Resan", ft_desc: "Bemyndigande av danska kommuner genom Testing as a Service (TaaS) och centraliserad kvalitetsstyrning.", ft_cph: "KL, Köpenhamn",
+            eco_title: "Överbrygga klyftan mellan <br><span class='text-red-600'>Leverantörer & Governance</span>",
+        eco_desc: "ValueEdge skapar en sömlös 'Single Source of Truth' genom att integrera direkt med de utvecklingsverktyg som era leverantörer redan använder. Detta gör det möjligt för KOMBIT att upprätthålla styrning på hög nivå utan att störa externa arbetsflöden.",
+        eco_sync: "Käll-intag",
+        eco_sync_sub: "DevOps & Projekthanterings-synk",
+        eco_quality: "Kvalitets-strömmar",
+        eco_quality_sub: "Automatiserade testresultat & pipelines",
+        eco_status_label: "Integrationsstatus",
+        eco_status_1: "Synkning av Leverantörs-backlog",
+        eco_status_2: "Automations-pipeline (98 kommuner)",
+        eco_status_3: "TaaS Framework Validering",
+        eco_uptime: "SYSTEMETS DRIFTTID"
         },
         lv: {
             flag: 'https://flagcdn.com/w20/lv.png', code: 'LV',
@@ -764,7 +798,18 @@
             s4_desc: "Ģeneratīvais AI pārveido mūsu pieeju programmatūras testēšanai. Uzņēmumā KOMBIT Aviator AI ieviešana atspoguļo pāreju no manuālas testu rakstīšanas uz inteliģentu, automatizētu ģenerēšanu.",
             s4_c1_title: "1. fāze: Veiksmīgs POC", s4_c1_desc: "Ceļojums sākās ar koncepcijas pierādījumu (POC), lai apstiprinātu Aviator iespējas. Mēs pārbaudījām tā spēju automātiski ģenerēt manuālus testa gadījumus, BDD un lietotāju stāstus no neapstrādāta apraksta, attēliem un teksta, kā arī optimizējām esošās darba vienības. Rezultāti uzrādīja krasu testu sagatavošanas un izpildes laika samazināšanos.",
             s4_c2_title: "2. fāze: Tagad ražošanā", s4_c2_desc: "Pārsniedzot POC, Aviator AI tagad ir integrēts ražošanas darbplūsmā. Testēšanas vadītāji to izmanto, lai paātrinātu testu plānošanu, apkopotu defektu tendences un iegūtu AI virzītus ieskatus par pašvaldību programmatūras laidienu kopējo riska profilu.",
-            ft_success: "Veiksmes stāsts", ft_title: "ValueEdge ceļojums", ft_desc: "Dānijas pašvaldību iespējināšana, izmantojot testēšanu kā pakalpojumu (TaaS) un centralizētu kvalitātes pārvaldību.", ft_cph: "KL, Kopenhāgena"
+            ft_success: "Veiksmes stāsts", ft_title: "ValueEdge ceļojums", ft_desc: "Dānijas pašvaldību iespējināšana, izmantojot testēšanu kā pakalpojumu (TaaS) un centralizētu kvalitātes pārvaldību.", ft_cph: "KL, Kopenhāgena",
+            eco_title: "Tiltu veidošana starp <br><span class='text-red-600'>Piegādātājiem un Pārvaldību</span>",
+        eco_desc: "ValueEdge izveido nevainojamu 'vienoto patiesības avotu', tieši integrējoties ar izstrādes rīkiem, ko jūsu piegādātāji jau izmanto. Tas ļauj KOMBIT uzturēt augsta līmeņa pārvaldību, netraucējot ārējās izstrādes darba plūsmas.",
+        eco_sync: "Avotu Integrācija",
+        eco_sync_sub: "DevOps un projektu vadības sinhronizācija",
+        eco_quality: "Kvalitātes Plūsmas",
+        eco_quality_sub: "Automatizēti testa rezultāti un cauruļvadi",
+        eco_status_label: "Integrācijas Statuss",
+        eco_status_1: "Piegādātāju prioritāšu sinhronizācija",
+        eco_status_2: "Automatizācijas plūsma (98 pašvaldības)",
+        eco_status_3: "TaaS ietvara validācija",
+        eco_uptime: "SISTĒMAS DARBĪBAS LAIKS",
         }
     };
 
