@@ -111,6 +111,28 @@
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); } /* Scroll half the track for seamless loop */
     }
+    /* Maintenance Notification Styles */
+    #maintenance-banner {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        text-align: center;
+        padding: 10px 20px;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    /* Push navbar down when maintenance is active */
+    body.maintenance-active #navbar {
+        top: 40px; /* Adjust based on banner height */
+    }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,6 +216,7 @@
     </style>
 </head>
 <body class="antialiased">
+    <div id="maintenance-banner"></div>
 
     <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width: 0%"></div>
 
@@ -744,7 +767,33 @@
     });
 
     // 4. Initialize State on Load
+   // --- MAINTENANCE CONTROL PANEL ---
+    const maintenanceConfig = {
+        enabled: true,           // Set to false to hide the notification
+        message: "SYSTEM UPDATE: ValueEdge TaaS protocols are being optimized.", 
+        bgColor: "#E3000F",      // Background color (KOMBIT Red)
+        textColor: "#ffffff",    // Text color
+        icon: "🛠️",              // Custom icon or emoji
+        showPulse: true          // Adds a subtle glow effect
+    };
+
+    function initMaintenance() {
+        const banner = document.getElementById('maintenance-banner');
+        if (maintenanceConfig.enabled) {
+            banner.style.display = 'flex';
+            banner.style.backgroundColor = maintenanceConfig.bgColor;
+            banner.style.color = maintenanceConfig.textColor;
+            banner.innerHTML = `<span>${maintenanceConfig.icon}</span> ${maintenanceConfig.message}`;
+            document.body.classList.add('maintenance-active');
+            
+            if (maintenanceConfig.showPulse) {
+                banner.style.animation = "pulse-bg 2s infinite";
+            }
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+        initMaintenance(); // Run maintenance check
         // Load Language
         const savedLang = localStorage.getItem('preferred-lang') || 'en';
         setLanguage(savedLang);
