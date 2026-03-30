@@ -240,6 +240,35 @@
             color: #1F2937;
             background: #F3F4F6;
         }
+        /* Value Calculator Custom Slider */
+        .value-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            outline: none;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        .value-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #E3000F; /* KOMBIT Red */
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(227, 0, 15, 0.4);
+            transition: transform 0.1s;
+        }
+        .value-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .metric-box {
+            background: linear-gradient(135deg, #0B1B3D 0%, #001E3C 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -559,6 +588,71 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+    <section class="section-padding bg-gray-50 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 data-i18n="calc_subtitle" class="text-sm font-bold text-red-600 tracking-widest uppercase mb-2">Business Impact</h2>
+                <h3 data-i18n="calc_title" class="text-4xl font-extrabold text-brand-dark">Value Realization Calculator</h3>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100" data-aos="fade-up">
+                <div class="lg:col-span-2 flex flex-col justify-center pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_muni" class="text-xs font-bold text-gray-400 uppercase">Municipalities</label>
+                            <span id="disp-muni" class="text-xl font-black text-brand-primary">98</span>
+                        </div>
+                        <input type="range" id="input-muni" class="value-slider" min="1" max="98" value="98">
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_hours" class="text-xs font-bold text-gray-400 uppercase">Manual Hours / Release</label>
+                            <span id="disp-hours" class="text-xl font-black text-brand-primary">40</span>
+                        </div>
+                        <input type="range" id="input-hours" class="value-slider" min="5" max="200" value="40" step="5">
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_releases" class="text-xs font-bold text-gray-400 uppercase">Releases / Year</label>
+                            <span id="disp-releases" class="text-xl font-black text-brand-primary">4</span>
+                        </div>
+                        <input type="range" id="input-releases" class="value-slider" min="1" max="12" value="4">
+                    </div>
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_eff" class="text-xs font-bold text-gray-400 uppercase">Automation Gain</label>
+                            <span id="disp-eff" class="text-xl font-black text-brand-primary">75%</span>
+                        </div>
+                        <input type="range" id="input-eff" class="value-slider" min="10" max="95" value="75" step="5">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_rate" class="text-xs font-bold text-gray-400 uppercase">Hourly Rate (€)</label>
+                            <span id="disp-rate" class="text-xl font-black text-brand-primary">120</span>
+                        </div>
+                        <input type="range" id="input-rate" class="value-slider" min="50" max="300" value="120" step="10">
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 grid sm:grid-cols-2 gap-4">
+                    <div class="metric-box p-8 rounded-xl">
+                        <span data-i18n="calc_res_hours" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Hours Recovered</span>
+                        <span id="res-hours" class="text-4xl font-black text-white">11,760</span>
+                        <span data-i18n="calc_annually" class="text-xs text-green-400 font-bold block mt-1">Annually</span>
+                    </div>
+                    <div class="metric-box p-8 rounded-xl">
+                        <span data-i18n="calc_res_cost" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Financial Gain</span>
+                        <span class="text-4xl font-black text-white">€<span id="res-cost">1.41M</span></span>
+                        <span data-i18n="calc_budget" class="text-xs text-green-400 font-bold block mt-1">Reinvestable Budget</span>
+                    </div>
+                    <div class="sm:col-span-2 bg-red-50 p-6 rounded-xl border border-red-100 flex items-center justify-between">
+                        <span data-i18n="calc_cycle" class="text-sm font-bold text-gray-800">Delivery cycle reduction</span>
+                        <span id="res-big-eff" class="text-3xl font-black text-red-600">75%</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -938,6 +1032,49 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // --- Value Realization Calculator Logic ---
+        const calcInputs = {
+            muni: document.getElementById('input-muni'),
+            hours: document.getElementById('input-hours'),
+            releases: document.getElementById('input-releases'),
+            eff: document.getElementById('input-eff'),
+            rate: document.getElementById('input-rate')
+        };
+        const calcDisplays = {
+            muni: document.getElementById('disp-muni'),
+            hours: document.getElementById('disp-hours'),
+            releases: document.getElementById('disp-releases'),
+            eff: document.getElementById('disp-eff'),
+            rate: document.getElementById('disp-rate'),
+            resHours: document.getElementById('res-hours'),
+            resCost: document.getElementById('res-cost'),
+            bigEff: document.getElementById('res-big-eff')
+        };
+
+        function updateCalculator() {
+            if(!calcInputs.muni) return;
+            const m = parseInt(calcInputs.muni.value);
+            const h = parseInt(calcInputs.hours.value);
+            const r = parseInt(calcInputs.releases.value);
+            const e = parseInt(calcInputs.eff.value) / 100;
+            const rt = parseInt(calcInputs.rate.value);
+
+            const recovered = m * h * r * e;
+            const savings = recovered * rt;
+
+            calcDisplays.muni.innerText = m;
+            calcDisplays.hours.innerText = h;
+            calcDisplays.releases.innerText = r;
+            calcDisplays.eff.innerText = (e * 100) + "%";
+            calcDisplays.rate.innerText = rt;
+            calcDisplays.bigEff.innerText = (e * 100) + "%";
+            
+            calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
+            calcDisplays.resCost.innerText = savings >= 1000000 ? (savings/1000000).toFixed(2) + "M" : (savings/1000).toFixed(0) + "K";
+        }
+
+        Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
+        updateCalculator();
         initMaintenance(); // Run maintenance check
         // Load Language
         const savedLang = localStorage.getItem('preferred-lang') || 'en';
