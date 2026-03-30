@@ -19,33 +19,7 @@
     opacity: 1;
     visibility: visible;
 }
-/* Compact Telemetry Clock */
-    .telemetry-unit {
-        display: none; /* Hidden by default */
-        align-items: center;
-        padding: 2px 8px;
-        background: rgba(0, 0, 0, 0.04);
-        border-radius: 4px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        height: 22px;
-        margin-right: 12px;
-    }
-    /* Only shows on Large Screens so it doesn't break the menu */
-    @media (min-width: 1280px) {
-        .telemetry-unit { display: flex; }
-    }
-    #summit-clock {
-        font-variant-numeric: tabular-nums;
-        font-family: monospace;
-        font-size: 10px;
-        font-weight: 700;
-        color: #1f2937;
-    }
-/* Stockholm Clock Styling */
-    #summit-clock {
-        font-variant-numeric: tabular-nums;
-        min-width: 80px;
-    }
+
 .btn-circle {
     width: 45px;
     height: 45px;
@@ -250,13 +224,7 @@
                 <a href="#workflow" data-i18n="nav_work" class="hover:text-[#E3000F] transition-colors">Everyday Work</a>
                 <a href="#ai" data-i18n="nav_ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
             </div>
-<div class="telemetry-unit">
-            <div class="relative flex h-1.5 w-1.5 mr-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-600"></span>
-            </div>
-            <span id="summit-clock">00:00:00 CEST</span>
-        </div>
+
             <div class="relative inline-block text-left">
                 
     <button id="lang-menu-button" onclick="toggleLangMenu(event)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
@@ -773,21 +741,6 @@
 
     // 4. Initialize State on Load
     document.addEventListener('DOMContentLoaded', () => {
-    // Stockholm Clock Engine
-        const updateSummitClock = () => {
-            const el = document.getElementById('summit-clock');
-            if (!el) return;
-            const time = new Date().toLocaleTimeString('en-GB', {
-                timeZone: 'Europe/Stockholm',
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            el.innerText = time + " CEST";
-        };
-        setInterval(updateSummitClock, 1000);
-        updateSummitClock();
         // Load Language
         const savedLang = localStorage.getItem('preferred-lang') || 'en';
         setLanguage(savedLang);
