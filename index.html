@@ -202,55 +202,7 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
-/* --- Floating Terminal Styles --- */
-.floating-terminal {
-    position: absolute;
-    right: 10%;
-    top: 55%;
-    transform: translateY(-50%);
-    width: 450px;
-    z-index: 5;
-    pointer-events: none; /* So it doesn't block clicks */
-}
 
-.term-window {
-    background: rgba(11, 27, 61, 0.85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.term-header {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px 15px;
-    display: flex;
-    gap: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.red-dot { background: #ff5f56; }
-.yellow-dot { background: #ffbd2e; }
-.green-dot { background: #27c93f; }
-
-.term-body { padding: 20px; font-size: 13px; color: #d1d5db; }
-
-/* Typing sequences */
-.t-line { opacity: 0; margin-bottom: 4px; }
-.t-1 { animation: term-fade 0s forwards 1.2s; }
-.t-2 { animation: term-fade 0s forwards 2.0s; }
-.t-3 { animation: term-fade 0s forwards 2.8s; }
-.t-4 { animation: term-fade 0s forwards 3.5s; color: #10b981; }
-
-@keyframes term-fade { to { opacity: 1; } }
-
-/* Hide on mobile to prevent clutter */
-@media (max-width: 1024px) {
-    .floating-terminal { display: none; }
-}
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -444,30 +396,6 @@
                 <span data-i18n="hero_btn">Explore the Journey</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
             </a>
-            <div class="floating-terminal" data-aos="fade-left" data-aos-delay="500">
-    <div class="term-window">
-        <div class="term-header">
-            <div class="dot red-dot"></div>
-            <div class="dot yellow-dot"></div>
-            <div class="dot green-dot"></div>
-        </div>
-        <div class="term-body">
-            <div class="flex gap-2 mb-3">
-                <span class="text-[#E3000F] font-bold">➜</span>
-                <span class="text-blue-400">~/kombit/taas</span>
-                <span class="text-white">git push origin main</span>
-            </div>
-            <div class="t-line t-1">Enumerating objects: 24, done.</div>
-            <div class="t-line t-2">Counting objects: 100% (24/24), done.</div>
-            <div class="t-line t-3">Delta compression using up to 8 threads.</div>
-            <div class="t-line t-4 font-bold">✓ Deployment to ValueEdge Successful</div>
-            <div class="mt-4 flex gap-2">
-                <span class="text-blue-400">➜</span>
-                <span class="animate-pulse bg-gray-400 w-2 h-4"></span>
-            </div>
-        </div>
-    </div>
-</div>
         </div>
     </section>
 
