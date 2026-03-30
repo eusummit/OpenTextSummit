@@ -202,47 +202,6 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
-/* --- Footer Terminal Style --- */
-.footer-terminal {
-    width: 95%;
-    max-width: 650px; 
-    margin: 40px auto; /* This centers the box and adds space top/bottom */
-    position: relative;
-    display: block;
-}
-
-.term-window {
-    background: rgba(11, 27, 61, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.term-header {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px 15px;
-    display: flex;
-    gap: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.red-dot { background: #ff5f56; }
-.yellow-dot { background: #ffbd2e; }
-.green-dot { background: #27c93f; }
-
-.term-body { padding: 20px; font-size: 13px; color: #d1d5db; text-align: left; }
-
-.t-line { opacity: 0; margin-bottom: 4px; }
-.t-1 { animation: term-fade 0s forwards 1.2s; }
-.t-2 { animation: term-fade 0s forwards 2.0s; }
-.t-3 { animation: term-fade 0s forwards 2.8s; }
-.t-4 { animation: term-fade 0s forwards 3.5s; color: #E3000F; }
-
-@keyframes term-fade { to { opacity: 1; } }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -860,30 +819,7 @@
                         Success Story
                     </span>
                 </div>
-                <div class="footer-terminal" data-aos="zoom-in">
-    <div class="term-window">
-        <div class="term-header">
-            <div class="dot red-dot"></div>
-            <div class="dot yellow-dot"></div>
-            <div class="dot green-dot"></div>
-        </div>
-        <div class="term-body">
-            <div class="flex gap-2 mb-3">
-                <span class="text-[#E3000F] font-bold">➜</span>
-                <span class="text-blue-400">~/kombit/success-logs</span>
-                <span class="text-white">cat summary.log</span>
-            </div>
-            <div class="t-line t-1">[INFO] Loading municipal metrics...</div>
-            <div class="t-line t-2">[INFO] 98 Municipalities active.</div>
-            <div class="t-line t-3">[INFO] TaaS implementation: 100% complete.</div>
-            <div class="t-line t-4 font-bold">✓ STATUS: EXCELLENCE ACHIEVED</div>
-            <div class="mt-4 flex gap-2">
-                <span class="text-blue-400">➜</span>
-                <span class="animate-pulse bg-gray-400 w-2 h-4 inline-block"></span>
-            </div>
-        </div>
-    </div>
-</div>
+                
                 <h4 data-i18n="ft_title" class="text-lg font-semibold text-white">The ValueEdge Journey</h4>
                 <p data-i18n="ft_desc" class="text-gray-400 text-sm max-w-sm mt-2">
                     Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.
