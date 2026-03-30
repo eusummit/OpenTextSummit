@@ -134,6 +134,32 @@
     body.maintenance-active #navbar {
         top: 40px; /* Adjust based on banner height */
     }
+    /* Ecosystem Section Styles */
+    .ecosystem-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #495057;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+    .ecosystem-tag:hover {
+        border-color: #E3000F;
+        color: #E3000F;
+        transform: translateY(-2px);
+    }
+    .integration-card {
+        background: white;
+        border-left: 4px solid #E3000F;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -462,7 +488,80 @@
             </div>
         </div>
     </section>
+<section class="py-20 bg-gray-50/50 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 md:px-24">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl font-black text-brand-primary leading-tight mb-6">
+                        Bridging the Gap Between <br>
+                        <span class="text-red-600 font-black">Vendors & Governance</span>
+                    </h2>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-8">
+                        ValueEdge creates a seamless "Single Source of Truth" by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="integration-card rounded-lg">
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Source Ingestion</span>
+                            <p class="text-xs font-bold text-gray-800 mb-3">DevOps & Project Management Sync</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="ecosystem-tag">Jira</span>
+                                <span class="ecosystem-tag">Azure DevOps</span>
+                                <span class="ecosystem-tag">GitHub</span>
+                            </div>
+                        </div>
 
+                        <div class="integration-card rounded-lg">
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Quality Streams</span>
+                            <p class="text-xs font-bold text-gray-800 mb-3">Automated Test Results & Pipelines</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="ecosystem-tag">Selenium</span>
+                                <span class="ecosystem-tag">Playwright</span>
+                                <span class="ecosystem-tag">UFT One</span>
+                                <span class="ecosystem-tag">Jenkins</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative" data-aos="fade-left">
+                    <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+                        <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
+                            <span class="text-xs font-bold text-brand-primary uppercase">Integration Status</span>
+                            <span class="flex items-center gap-1.5 text-[10px] text-green-600 font-bold uppercase">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live Sync
+                            </span>
+                        </div>
+                        <ul class="space-y-4">
+                            <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
+                                <span class="text-xs text-gray-500">Vendor Backlog Sync</span>
+                                <span class="text-xs font-mono font-bold text-brand-primary">COMPLETE</span>
+                            </li>
+                            <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
+                                <span class="text-xs text-gray-500">Automation Pipe (98 Munis)</span>
+                                <span class="text-xs font-mono font-bold text-brand-primary">ACTIVE</span>
+                            </li>
+                            <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
+                                <span class="text-xs text-gray-500">TaaS Framework Validation</span>
+                                <span class="text-xs font-mono font-bold text-brand-primary">OPTIMIZED</span>
+                            </li>
+                        </ul>
+                        <div class="mt-8 pt-6">
+                            <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-600 w-[94%]"></div>
+                            </div>
+                            <div class="flex justify-between mt-2">
+                                <span class="text-[10px] font-bold text-gray-400">ECOSYSTEM UPTIME</span>
+                                <span class="text-[10px] font-bold text-brand-primary">99.9%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
     <section id="ai" class="section-padding bg-white border-t border-gray-200">
         <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
             <h2 data-i18n="s4_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The Future</h2>
