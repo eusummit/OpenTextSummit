@@ -2,6 +2,47 @@
 <html lang="en">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
 <head>
+    /* --- TICKER STYLE --- */
+.custom-bottom-ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #0b1b3d; /* Matches your brand dark blue */
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 9998;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 0;
+    border-top: 1px solid rgba(227, 0, 15, 0.3);
+    overflow: hidden;
+    pointer-events: none; /* Won't block clicks on buttons behind it */
+}
+
+.ticker-content-wrapper {
+    display: flex;
+    white-space: nowrap;
+    width: max-content;
+    animation: ticker-slide 30s linear infinite;
+}
+
+.ticker-text-item {
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+}
+
+.ticker-red {
+    color: #E3000F;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+@keyframes ticker-slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
     <style>
         
         /* Subtle Back to Top Button */
@@ -1256,6 +1297,16 @@ s4_uc4_desc: "Automātiski konvertējiet biznesa prasības uz 'Given-When-Then' 
             });
         });
     });
+    /* --- TICKER CONTROL --- */
+function updateTickerMessage(message) {
+    const target = document.getElementById('ticker-target');
+    if (target) {
+        target.innerHTML = `
+            <div class="ticker-text-item">${message}</div>
+            <div class="ticker-text-item">${message}</div>
+        `;
+    }
+}
     </script>
     
     <button id="backToTop" title="Go to top">
@@ -1265,5 +1316,15 @@ s4_uc4_desc: "Automātiski konvertējiet biznesa prasības uz 'Given-When-Then' 
             </svg>
         </div>
     </button>
+    <div class="custom-bottom-ticker" id="global-ticker">
+    <div class="ticker-content-wrapper" id="ticker-target">
+        <div class="ticker-text-item">
+            DESIGNED AND DEVELOPED BY <span class="ticker-red">KOMBIT QE TEAM</span> • 2024 QUALITY ENGINEERING PLATFORM • STATUS: OPERATIONAL
+        </div>
+        <div class="ticker-text-item">
+            DESIGNED AND DEVELOPED BY <span class="ticker-red">KOMBIT QE TEAM</span> • 2024 QUALITY ENGINEERING PLATFORM • STATUS: OPERATIONAL
+        </div>
+    </div>
+</div>
 </body>
 </html>
