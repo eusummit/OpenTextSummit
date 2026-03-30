@@ -106,6 +106,31 @@
     @keyframes scroll-left {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); } /* Scroll half the track for seamless loop */
+
+        /* Success HUD Bar - Floating Dashboard */
+    .success-hud {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        z-index: 100; background: rgba(11, 27, 61, 0.85); backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px;
+        padding: 8px 24px; display: flex; align-items: center; gap: 32px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .hud-stat { display: flex; flex-direction: column; align-items: center; }
+    .hud-value { color: #E3000F; font-weight: 800; font-size: 14px; line-height: 1; }
+    .hud-label { color: rgba(255, 255, 255, 0.6); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+    
+    /* Card Mouse Glow Logic */
+    .corp-card { position: relative; overflow: hidden; }
+    .corp-card::before {
+        content: ""; position: absolute; top: var(--mouse-y, 0); left: var(--mouse-x, 0);
+        transform: translate(-50%, -50%); width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(227, 0, 15, 0.1) 0%, transparent 70%);
+        opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .corp-card:hover::before { opacity: 1; }
+
+    @media (max-width: 768px) { .success-hud { display: none; } }
+    </style>
     }
     </style>
     <meta charset="UTF-8">
@@ -524,6 +549,29 @@
         </div>
     </footer>
 
+    <div class="success-hud" data-aos="fade-up" data-aos-delay="1000">
+        <div class="hud-stat">
+            <span class="hud-value">98</span>
+            <span class="hud-label">Municipalities</span>
+        </div>
+        <div class="w-px h-6 bg-white/10"></div>
+        <div class="hud-stat">
+            <span class="hud-value">100%</span>
+            <span class="hud-label">Governance</span>
+        </div>
+        <div class="w-px h-6 bg-white/10"></div>
+        <div class="hud-stat">
+            <span class="hud-value">TaaS</span>
+            <span class="hud-label">Ready</span>
+        </div>
+        <div class="ml-4">
+            <div class="flex items-center gap-2 px-3 py-1 bg-green-500/20 rounded-full border border-green-500/30">
+                <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-[9px] font-bold text-green-400 uppercase tracking-widest">System Live</span>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
     // --- TRANSLATION DATA ---
@@ -741,6 +789,14 @@
 
     // 4. Initialize State on Load
     document.addEventListener('DOMContentLoaded', () => {
+        // Interactive Mouse Glow Logic
+        document.querySelectorAll('.corp-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            });
+        });
         // Load Language
         const savedLang = localStorage.getItem('preferred-lang') || 'en';
         setLanguage(savedLang);
