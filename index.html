@@ -202,6 +202,15 @@
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
+/* Smooth transition for the rectangular video player */
+.aviator-video-fluid {
+    filter: grayscale(100%) contrast(1.05);
+    transition: filter 0.7s ease-in-out;
+}
+
+.aviator-video-fluid:hover {
+    filter: grayscale(0%) contrast(1);
+}
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
