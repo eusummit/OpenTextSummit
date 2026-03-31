@@ -1322,27 +1322,33 @@ s4_vid_c2_desc: "Novērojiet nevainojamu integrāciju starp biznesa loģiku un a
             bigEff: document.getElementById('res-big-eff')
         };
 
-        function updateCalculator() {
-            if(!calcInputs.muni) return;
-            const m = parseInt(calcInputs.muni.value);
-            const h = parseInt(calcInputs.hours.value);
-            const r = parseInt(calcInputs.releases.value);
-            const e = parseInt(calcInputs.eff.value) / 100;
-            const rt = parseInt(calcInputs.rate.value);
+        function updateCalculator() { 
+    if(!calcInputs.muni) return; 
+    
+    const m = parseInt(calcInputs.muni.value); 
+    const h = parseInt(calcInputs.hours.value); 
+    const r = parseInt(calcInputs.releases.value); 
+    const e = parseInt(calcInputs.eff.value) / 100; 
+    const rt = parseInt(calcInputs.rate.value);
 
-            const recovered = m * h * r * e;
-            const savings = recovered * rt;
+    const recovered = m * h * r * e; 
+    const savings = recovered * rt; 
 
-            calcDisplays.muni.innerText = m;
-            calcDisplays.hours.innerText = h;
-            calcDisplays.releases.innerText = r;
-            calcDisplays.eff.innerText = (e * 100) + "%";
-            calcDisplays.rate.innerText = rt;
-            calcDisplays.bigEff.innerText = (e * 100) + "%";
-            
-            calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
-            calcDisplays.resCost.innerText = savings >= 1000000 ? (savings/1000000).toFixed(2) + "M" : (savings/1000).toFixed(0) + "K";
-        }
+    // Update Displays
+    calcDisplays.muni.innerText = m;
+    calcDisplays.hours.innerText = h; 
+    calcDisplays.releases.innerText = r; 
+    
+    // FIX: Math.round removes the 55.000000000001 glitch
+    calcDisplays.eff.innerText = Math.round(e * 100) + "%"; 
+    calcDisplays.rate.innerText = rt;
+    calcDisplays.bigEff.innerText = Math.round(e * 100) + "%"; 
+
+    calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US'); 
+    calcDisplays.resCost.innerText = savings >= 1000000 ?
+        (savings/1000000).toFixed(2) + "M" : 
+        (savings/1000).toFixed(0) + "K"; 
+}
 
         Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
         updateCalculator();
