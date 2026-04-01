@@ -1680,8 +1680,8 @@
     
     // Financial Gain formatting (M or K)
     calcDisplays.resCost.innerText = savings >= 1000000 ?
-        (savings / 1000000).toFixed(2) + "M" :
-        (savings / 1000).toFixed(0) + "K";
+    (savings / 1000000).toFixed(2) + "M" :
+    (savings / 1000).toFixed(1) + "K"; // Changed to .toFixed(1)
 
     // 6. NEW: Update Progress Bars
     
