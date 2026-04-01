@@ -843,8 +843,20 @@
 
             <div class="grid lg:grid-cols-5 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100"
                 data-aos="fade-up">
-                <div
+               <div
                     class="lg:col-span-2 flex flex-col justify-center pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
+                    
+                    <div class="flex items-start gap-4 mb-8 bg-blue-50 p-5 rounded-xl border border-blue-100 shadow-sm transition-all hover:border-[#0052CC]/40">
+                        <div class="relative flex h-3 w-3 mt-1 flex-shrink-0">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0052CC] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0052CC]"></span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-black text-[#0B1B3D] uppercase tracking-widest mb-1.5">Interactive Simulator</span>
+                            <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider leading-relaxed">Drag the sliders below to calculate live business impact</span>
+                        </div>
+                    </div>
+
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
                             <label data-i18n="calc_muni"
@@ -888,29 +900,46 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-3 grid sm:grid-cols-2 gap-4">
-                    <div class="metric-box p-8 rounded-xl">
-                        <span data-i18n="calc_res_hours"
-                            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Hours
-                            Recovered</span>
-                        <span id="res-hours" class="text-4xl font-black text-white">11,760</span>
-                        <span data-i18n="calc_annually"
-                            class="text-xs text-green-400 font-bold block mt-1">Annually</span>
+                <div class="lg:col-span-3 flex flex-col gap-5">
+                    
+                    <div class="metric-box p-8 md:p-10 rounded-xl relative overflow-hidden shadow-lg border border-white/20">
+                        <div class="absolute -top-20 -right-20 w-64 h-64 bg-green-500 rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
+                        
+                        <div class="relative z-10 flex flex-col justify-center h-full">
+                            <span data-i18n="calc_res_cost" class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4 block">
+                                Financial Gain
+                            </span>
+                            
+                            <div class="flex flex-col md:flex-row md:items-baseline gap-3 md:gap-6 mb-2">
+                                <span class="text-6xl md:text-7xl font-black text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.15)] tracking-tighter">
+                                    €<span id="res-cost">1.41M</span>
+                                </span>
+                                <span data-i18n="calc_annually" class="text-xs md:text-sm text-green-400 font-bold whitespace-nowrap uppercase tracking-widest bg-green-400/10 px-3 py-1.5 rounded-md">
+                                    Annually across selected Municipalities
+                                </span>
+                            </div>
+                            
+                            <span data-i18n="calc_budget" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-4 border-t border-white/10 pt-4">
+                                Reinvestable Budget
+                            </span>
+                        </div>
                     </div>
-                    <div class="metric-box p-8 rounded-xl">
-                        <span data-i18n="calc_res_cost"
-                            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Financial
-                            Gain</span>
-                        <span class="text-4xl font-black text-white">€<span id="res-cost">1.41M</span></span>
-                        <span data-i18n="calc_budget" class="text-xs text-green-400 font-bold block mt-1">Reinvestable
-                            Budget</span>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="bg-blue-50 p-8 rounded-xl border border-blue-100 flex flex-col justify-center shadow-sm hover:shadow-md transition-shadow">
+                            <span data-i18n="calc_res_hours" class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 block">
+                                Hours Recovered
+                            </span>
+                            <span id="res-hours" class="text-4xl font-black text-[#0052CC]">11,760</span>
+                        </div>
+                        <div class="bg-red-50 p-8 rounded-xl border border-red-100 flex flex-col justify-center shadow-sm hover:shadow-md transition-shadow">
+                            <span data-i18n="calc_cycle" class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 block">
+                                Delivery Cycle Reduction
+                            </span>
+                            <span id="res-big-eff" class="text-4xl font-black text-[#E3000F]">75%</span>
+                        </div>
                     </div>
-                    <div
-                        class="sm:col-span-2 bg-red-50 p-6 rounded-xl border border-red-100 flex items-center justify-between">
-                        <span data-i18n="calc_cycle" class="text-sm font-bold text-gray-800">Delivery cycle
-                            reduction</span>
-                        <span id="res-big-eff" class="text-3xl font-black text-red-600">75%</span>
-                    </div>
+
                 </div>
             </div>
         </div>
