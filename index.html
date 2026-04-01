@@ -284,6 +284,17 @@
         }
         .nav-scrolled a { color: #1F2937; }
         .nav-scrolled .logo-text { color: #0B1B3D; }
+
+        /* Change the button background and border when scrolled */
+.nav-scrolled .nav-home-icon {
+    background: #0B1B3D10; /* Very light brand blue */
+    border-color: #0B1B3D20;
+}
+
+/* Change the house icon color to brand blue when scrolled */
+.nav-scrolled .nav-home-icon svg {
+    color: #0B1B3D;
+}
         
         /* Language Toggle Scrolled State */
         .nav-scrolled #lang-menu-button {
@@ -352,7 +363,11 @@
         </div>
 
         <div class="flex items-center gap-6">
-            
+            <a href="#" class="nav-home-icon group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/20 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:bg-white/10 hover:border-[#E3000F]/50 transition-all duration-300" title="Go to Home">
+    <svg class="w-5 h-5 text-white/90 group-hover:text-[#E3000F] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+    </svg>
+</a>
             <div class="hidden lg:flex space-x-8 text-sm font-bold text-white">
                 <a href="#kombit" data-i18n="nav_who" class="hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
                 <a href="#valueedge" data-i18n="nav_why" class="hover:text-[#E3000F] transition-colors">Why ValueEdge</a>
