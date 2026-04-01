@@ -1,216 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
+
 <head>
-   
+
     <style>
-        
         /* Subtle Back to Top Button */
-#backToTop {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 99;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease;
-}
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
 
-#backToTop.show {
-    opacity: 1;
-    visibility: visible;
-}
-/* Stockholm Clock Styling */
-    #summit-clock {
-        font-variant-numeric: tabular-nums;
-        min-width: 80px;
-    }
-.btn-circle {
-    width: 45px;
-    height: 45px;
-    background: rgba(227, 0, 15, 0.8); /* Match KOMBIT brand red color */
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(227, 0, 15, 0.2);
-    transition: transform 0.3s ease, background 0.3s ease;
-}
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
-.btn-circle:hover {
-    background: #E3000F; /* Solid Brand Red on hover */
-    transform: translateY(-3px);
-}
-    /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
-    .typing-effect {
-        display: inline-block;
-        overflow: hidden;
-        border-right: 3px solid #E3000F; /* Cursor color */
-        white-space: nowrap;
-        width: 0;
-        padding-bottom: 0.15em; /* Fix for 'g' tail */
-        padding-right: 0.15em;  /* Fix for 'T' visibility */
-        line-height: 1.2;
-        vertical-align: bottom;
-        animation: 
-            typing 3.5s steps(30, end) forwards,
-            blink-caret 0.75s step-end infinite;
-    }
+        /* Stockholm Clock Styling */
+        #summit-clock {
+            font-variant-numeric: tabular-nums;
+            min-width: 80px;
+        }
 
-    @keyframes typing {
-        from { width: 0 }
-        to { width: 106% }
-    }
+        .btn-circle {
+            width: 45px;
+            height: 45px;
+            background: rgba(227, 0, 15, 0.8);
+            /* Match KOMBIT brand red color */
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(227, 0, 15, 0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
 
-    @keyframes blink-caret {
-        from, to { border-color: transparent }
-        50% { border-color: #E3000F; }
-    }
-    /* Modern Infinite Ticker */
-    .ticker-container {
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-        padding: 2rem 0;
-        /* Fading edges mask */
-        mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    }
+        .btn-circle:hover {
+            background: #E3000F;
+            /* Solid Brand Red on hover */
+            transform: translateY(-3px);
+        }
 
-    .ticker-track {
-        display: inline-flex;
-        gap: 3rem;
-        animation: scroll-left 30s linear infinite;
-    }
+        /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
+        .typing-effect {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 3px solid #E3000F;
+            /* Cursor color */
+            white-space: nowrap;
+            width: 0;
+            padding-bottom: 0.15em;
+            /* Fix for 'g' tail */
+            padding-right: 0.15em;
+            /* Fix for 'T' visibility */
+            line-height: 1.2;
+            vertical-align: bottom;
+            animation:
+                typing 3.5s steps(30, end) forwards,
+                blink-caret 0.75s step-end infinite;
+        }
 
-    .ticker-item {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: rgba(11, 27, 61, 0.4); /* Subtle brand dark blue */
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
+        @keyframes typing {
+            from {
+                width: 0
+            }
 
-    .ticker-item::before {
-        content: "";
-        width: 4px;
-        height: 4px;
-        background: #E3000F; /* Brand red dot separator */
-        border-radius: 50%;
-    }
+            to {
+                width: 106%
+            }
+        }
 
-    @keyframes scroll-left {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); } /* Scroll half the track for seamless loop */
-        
-    }
-    /* Maintenance Notification Styles */
-    #maintenance-banner {
-        display: none; /* Hidden by default */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 9999;
-        text-align: center;
-        padding: 10px 20px;
-        font-weight: 700;
-        font-size: 14px;
-        letter-spacing: 0.5px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
-    /* Push navbar down when maintenance is active */
-    body.maintenance-active #navbar {
-        top: 40px; /* Adjust based on banner height */
-    }
-    /* Ecosystem Section Styles */
-    .ecosystem-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 14px;
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 700;
-        color: #495057;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-    .ecosystem-tag:hover {
-        border-color: #E3000F;
-        color: #E3000F;
-        transform: translateY(-2px);
-    }
-    .integration-card {
-        background: white;
-        border-left: 4px solid #E3000F;
-        padding: 24px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    }
-     /* --- TICKER STYLE --- */
-.custom-bottom-ticker {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #0b1b3d; /* Matches your brand dark blue */
-    color: rgba(255, 255, 255, 0.8);
-    z-index: 9998;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 6px 0;
-    border-top: 1px solid rgba(227, 0, 15, 0.3);
-    overflow: hidden;
-    pointer-events: none; /* Won't block clicks on buttons behind it */
-}
+        @keyframes blink-caret {
 
-.ticker-content-wrapper {
-    display: flex;
-    white-space: nowrap;
-    width: max-content;
-    animation: ticker-slide 30s linear infinite;
-}
+            from,
+            to {
+                border-color: transparent
+            }
 
-.ticker-text-item {
-    padding: 0 50px;
-    display: flex;
-    align-items: center;
-}
+            50% {
+                border-color: #E3000F;
+            }
+        }
 
-.ticker-red {
-    color: #E3000F;
-    margin: 0 5px;
-    font-weight: bold;
-}
+        /* Modern Infinite Ticker */
+        .ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding: 2rem 0;
+            /* Fading edges mask */
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
 
-@keyframes ticker-slide {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-/* Smooth transition for the rectangular video player */
-.aviator-video-fluid {
-    filter: grayscale(100%) contrast(1.05);
-    transition: filter 0.7s ease-in-out;
-}
+        .ticker-track {
+            display: inline-flex;
+            gap: 3rem;
+            animation: scroll-left 30s linear infinite;
+        }
 
-.aviator-video-fluid:hover {
-    filter: grayscale(0%) contrast(1);
-}
+        .ticker-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(11, 27, 61, 0.4);
+            /* Subtle brand dark blue */
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ticker-item::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            background: #E3000F;
+            /* Brand red dot separator */
+            border-radius: 50%;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+
+            /* Scroll half the track for seamless loop */
+
+        }
+
+        /* Maintenance Notification Styles */
+        #maintenance-banner {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            text-align: center;
+            padding: 10px 20px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Push navbar down when maintenance is active */
+        body.maintenance-active #navbar {
+            top: 40px;
+            /* Adjust based on banner height */
+        }
+
+        /* Ecosystem Section Styles */
+        .ecosystem-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .ecosystem-tag:hover {
+            border-color: #E3000F;
+            color: #E3000F;
+            transform: translateY(-2px);
+        }
+
+        .integration-card {
+            background: white;
+            border-left: 4px solid #E3000F;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- TICKER STYLE --- */
+        .custom-bottom-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #0b1b3d;
+            /* Matches your brand dark blue */
+            color: rgba(255, 255, 255, 0.8);
+            z-index: 9998;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            padding: 6px 0;
+            border-top: 1px solid rgba(227, 0, 15, 0.3);
+            overflow: hidden;
+            pointer-events: none;
+            /* Won't block clicks on buttons behind it */
+        }
+
+        .ticker-content-wrapper {
+            display: flex;
+            white-space: nowrap;
+            width: max-content;
+            animation: ticker-slide 30s linear infinite;
+        }
+
+        .ticker-text-item {
+            padding: 0 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-red {
+            color: #E3000F;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+
+        @keyframes ticker-slide {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Smooth transition for the rectangular video player */
+        .aviator-video-fluid {
+            filter: grayscale(100%) contrast(1.05);
+            transition: filter 0.7s ease-in-out;
+        }
+
+        .aviator-video-fluid:hover {
+            filter: grayscale(0%) contrast(1);
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,7 +264,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -240,24 +286,26 @@
     </script>
 
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #F4F7F9; 
-            color: #1F2937; 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F7F9;
+            color: #1F2937;
             scroll-behavior: smooth;
         }
-        
+
         .hero-bg {
-            background: linear-gradient(135deg, rgba(11, 27, 61, 0.95) 0%, rgba(0, 82, 204, 0.85) 100%), 
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; 
-            background-position: center; 
+            background: linear-gradient(135deg, rgba(11, 27, 61, 0.95) 0%, rgba(0, 82, 204, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
             background-attachment: fixed;
             height: 100vh;
         }
 
-        .section-padding { padding: 100px 10%; }
-        
+        .section-padding {
+            padding: 100px 10%;
+        }
+
         .corp-card {
             background: #ffffff;
             border: 1px solid #E5E7EB;
@@ -265,6 +313,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
+
         .corp-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -282,26 +331,34 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-        .nav-scrolled a { color: #1F2937; }
-        .nav-scrolled .logo-text { color: #0B1B3D; }
+
+        .nav-scrolled a {
+            color: #1F2937;
+        }
+
+        .nav-scrolled .logo-text {
+            color: #0B1B3D;
+        }
 
         /* Change the button background and border when scrolled */
-.nav-scrolled .nav-home-icon {
-    background: #0B1B3D10; /* Very light brand blue */
-    border-color: #0B1B3D20;
-}
+        .nav-scrolled .nav-home-icon {
+            background: #0B1B3D10;
+            /* Very light brand blue */
+            border-color: #0B1B3D20;
+        }
 
-/* Change the house icon color to brand blue when scrolled */
-.nav-scrolled .nav-home-icon svg {
-    color: #0B1B3D;
-}
-        
+        /* Change the house icon color to brand blue when scrolled */
+        .nav-scrolled .nav-home-icon svg {
+            color: #0B1B3D;
+        }
+
         /* Language Toggle Scrolled State */
         .nav-scrolled #lang-menu-button {
             border-color: #E5E7EB;
             color: #1F2937;
             background: #F3F4F6;
         }
+
         /* Value Calculator Custom Slider */
         .value-slider {
             -webkit-appearance: none;
@@ -313,123 +370,162 @@
             margin-top: 15px;
             margin-bottom: 25px;
         }
+
         .value-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #E3000F; /* KOMBIT Red */
+            background: #E3000F;
+            /* KOMBIT Red */
             cursor: pointer;
             box-shadow: 0 0 10px rgba(227, 0, 15, 0.4);
             transition: transform 0.1s;
         }
+
         .value-slider::-webkit-slider-thumb:hover {
             transform: scale(1.15);
         }
+
         .metric-box {
             background: linear-gradient(135deg, #0B1B3D 0%, #001E3C 100%);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
+
 <body class="antialiased">
     <div id="maintenance-banner"></div>
 
-    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width: 0%"></div>
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75"
+        style="width: 0%"></div>
 
-    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent transition-all duration-300">
+    <nav id="navbar"
+        class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent transition-all duration-300">
         <div class="flex items-center gap-4">
-            <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
+            <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none"
+                style="font-family: Arial, sans-serif;">
                 <span class="flex-shrink-0">KOMB</span>
-                
-                <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] flex-shrink-0 justify-between translate-y-[1.5px]">
-    <div class="w-full h-[4px] bg-[#E3000F]"></div>
-    <div class="w-full h-[4px] bg-[#E3000F]"></div>
-    <div class="w-full h-[4px] bg-[#E3000F]"></div>
-</div>
-                
+
+                <div
+                    class="flex flex-col w-[6px] h-[16px] mx-[3.5px] flex-shrink-0 justify-between translate-y-[1.5px]">
+                    <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                    <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                    <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                </div>
+
                 <span class="flex-shrink-0">T</span>
             </div>
 
             <div id="nav-divider" class="h-6 w-[1.5px] bg-white/40"></div>
 
             <div class="flex items-center gap-2 flex-nowrap">
-                <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center flex-shrink-0">
+                <div
+                    class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center flex-shrink-0">
                     <span class="text-white text-[10px] font-bold">ot</span>
                 </div>
-                <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300" style="font-family: Arial, sans-serif;">opentext</span>
+                <span id="opentext-word"
+                    class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300"
+                    style="font-family: Arial, sans-serif;">opentext</span>
             </div>
         </div>
 
         <div class="flex items-center gap-6">
-            <a href="#" class="nav-home-icon group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/20 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:bg-white/10 hover:border-[#E3000F]/50 transition-all duration-300" title="Sweet Home">
-    <svg class="w-5 h-5 text-white/90 group-hover:text-[#E3000F] transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-    </svg>
-</a>
+            <a href="#"
+                class="nav-home-icon group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/20 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:bg-white/10 hover:border-[#E3000F]/50 transition-all duration-300"
+                title="Sweet Home">
+                <svg class="w-5 h-5 text-white/90 group-hover:text-[#E3000F] transition-colors duration-300" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+            </a>
             <div class="hidden lg:flex space-x-8 text-sm font-bold text-white">
                 <a href="#kombit" data-i18n="nav_who" class="hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
-                <a href="#valueedge" data-i18n="nav_why" class="hover:text-[#E3000F] transition-colors">Why ValueEdge</a>
-                <a href="#workflow" data-i18n="nav_work" class="hover:text-[#E3000F] transition-colors">Everyday Work</a>
-                <a href="#calculator" data-i18n="nav_calc" class="hover:text-[#E3000F] transition-colors">Financial Impact</a>
+                <a href="#valueedge" data-i18n="nav_why" class="hover:text-[#E3000F] transition-colors">Why
+                    ValueEdge</a>
+                <a href="#workflow" data-i18n="nav_work" class="hover:text-[#E3000F] transition-colors">Everyday
+                    Work</a>
+                <a href="#calculator" data-i18n="nav_calc" class="hover:text-[#E3000F] transition-colors">Financial
+                    Impact</a>
                 <a href="#ai" data-i18n="nav_ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
             </div>
 
             <div class="relative inline-block text-left">
-                
-    <button id="lang-menu-button" onclick="toggleLangMenu(event)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
-        <img id="current-lang-flag" src="https://flagcdn.com/w20/gb.png" width="20" alt="flag">
-        <span id="current-lang-code">EN</span>
-        <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
-    </button>
-    
-    <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] border border-gray-100">
-        <div class="py-1">
-            <button onclick="setLanguage('en')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                <img src="https://flagcdn.com/w20/gb.png" width="20" alt="EN"> English
-            </button>
-            <button onclick="setLanguage('da')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                <img src="https://flagcdn.com/w20/dk.png" width="20" alt="DA"> Dansk
-            </button>
-            <button onclick="setLanguage('sv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                <img src="https://flagcdn.com/w20/se.png" width="20" alt="SV"> Svenska
-            </button>
-            <button onclick="setLanguage('lv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-    <img src="https://flagcdn.com/w20/lv.png" width="20" alt="LV"> Latviešu
-</button>
-        </div>
-    </div>
-</div>
+
+                <button id="lang-menu-button" onclick="toggleLangMenu(event)"
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
+                    <img id="current-lang-flag" src="https://flagcdn.com/w20/gb.png" width="20" alt="flag">
+                    <span id="current-lang-code">EN</span>
+                    <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div id="lang-dropdown"
+                    class="hidden absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] border border-gray-100">
+                    <div class="py-1">
+                        <button onclick="setLanguage('en')"
+                            class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                            <img src="https://flagcdn.com/w20/gb.png" width="20" alt="EN"> English
+                        </button>
+                        <button onclick="setLanguage('da')"
+                            class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                            <img src="https://flagcdn.com/w20/dk.png" width="20" alt="DA"> Dansk
+                        </button>
+                        <button onclick="setLanguage('sv')"
+                            class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                            <img src="https://flagcdn.com/w20/se.png" width="20" alt="SV"> Svenska
+                        </button>
+                        <button onclick="setLanguage('lv')"
+                            class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                            <img src="https://flagcdn.com/w20/lv.png" width="20" alt="LV"> Latviešu
+                        </button>
+                    </div>
+                </div>
+            </div>
     </nav>
 
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
         <div data-aos="fade-up" data-aos-duration="1000">
-            <div class="inline-flex items-center gap-3 px-4 py-1.5 mb-6 border border-white/20 rounded-full text-[10px] md:text-xs font-black tracking-[0.25em] bg-white/5 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:bg-white/10 hover:border-white/40 transition-all duration-300 cursor-default">
-                
+            <div
+                class="inline-flex items-center gap-3 px-4 py-1.5 mb-6 border border-white/20 rounded-full text-[10px] md:text-xs font-black tracking-[0.25em] bg-white/5 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:bg-white/10 hover:border-white/40 transition-all duration-300 cursor-default">
+
                 <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E3000F] opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-[#E3000F] shadow-[0_0_8px_#E3000F]"></span>
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E3000F] opacity-75"></span>
+                    <span
+                        class="relative inline-flex rounded-full h-2 w-2 bg-[#E3000F] shadow-[0_0_8px_#E3000F]"></span>
                 </span>
-                
+
                 <span data-i18n="hero_badge" class="text-white/90 uppercase">Enterprise Quality Engineering</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-black mb-6">
                 <span class="typing-effect">
-                    <span id="hero-typing-text" data-i18n="hero_title">Modernising testing at </span><span class="text-[#E3000F]">KOMBIT</span>
+                    <span id="hero-typing-text" data-i18n="hero_title">Modernising testing at </span><span
+                        class="text-[#E3000F]">KOMBIT</span>
                 </span>
             </h1>
             <p data-i18n="hero_desc" class="text-xl max-w-2xl mb-10 text-gray-200 font-light leading-relaxed">
-                Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to drive efficiency across Danish municipal IT solutions.
+                Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to
+                drive efficiency across Danish municipal IT solutions.
             </p>
-            <a href="#kombit" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#0052CC]/80 backdrop-blur-md rounded-full font-bold text-white overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(227,0,15,0.4)] border border-white/20">
-                
-                <div class="absolute inset-0 bg-[#E3000F] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+            <a href="#kombit"
+                class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#0052CC]/80 backdrop-blur-md rounded-full font-bold text-white overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(227,0,15,0.4)] border border-white/20">
 
-                <span data-i18n="hero_btn" class="relative z-10 tracking-widest uppercase text-xs md:text-sm">Explore the Journey</span>
-                
-                <svg class="relative z-10 w-4 h-4 md:w-5 md:h-5 animate-bounce group-hover:animate-none group-hover:translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                <div
+                    class="absolute inset-0 bg-[#E3000F] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                </div>
+
+                <span data-i18n="hero_btn" class="relative z-10 tracking-widest uppercase text-xs md:text-sm">Explore
+                    the Journey</span>
+
+                <svg class="relative z-10 w-4 h-4 md:w-5 md:h-5 animate-bounce group-hover:animate-none group-hover:translate-y-1 transition-transform duration-300"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </a>
         </div>
@@ -438,36 +534,49 @@
     <section id="kombit" class="section-padding bg-white relative">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-                <h2 data-i18n="s1_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Introduction</h2>
+                <h2 data-i18n="s1_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">
+                    Introduction</h2>
                 <h3 data-i18n="s1_title" class="text-4xl font-extrabold text-brand-dark mb-6">Who is KOMBIT?</h3>
                 <p data-i18n="s1_p1" class="text-gray-600 mb-4 leading-relaxed">
-                    KOMBIT is the IT project organization of the Danish municipalities. Founded to create cohesion and efficiency, KOMBIT purchases, manages, and develops IT solutions on behalf of the 98 municipalities in Denmark.
+                    KOMBIT is the IT project organization of the Danish municipalities. Founded to create cohesion and
+                    efficiency, KOMBIT purchases, manages, and develops IT solutions on behalf of the 98 municipalities
+                    in Denmark.
                 </p>
                 <p data-i18n="s1_p2" class="text-gray-600 mb-6 leading-relaxed">
-                    By centralizing IT procurement and management, KOMBIT ensures that critical infrastructure—serving millions of citizens—is secure, compliant, and cost-effective.
+                    By centralizing IT procurement and management, KOMBIT ensures that critical infrastructure—serving
+                    millions of citizens—is secure, compliant, and cost-effective.
                 </p>
                 <ul class="space-y-3">
                     <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
+                        <div
+                            class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">
+                            ✓</div>
                         <span data-i18n="s1_li1">Serving 98 Danish Municipalities</span>
                     </li>
                     <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
+                        <div
+                            class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">
+                            ✓</div>
                         <span data-i18n="s1_li2">Managing complex supplier ecosystems</span>
                     </li>
                     <li class="flex items-center gap-3 text-brand-dark font-semibold">
-                        <div class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">✓</div>
+                        <div
+                            class="w-6 h-6 rounded-full bg-blue-100 text-brand-primary flex items-center justify-center">
+                            ✓</div>
                         <span data-i18n="s1_li3">High standards for data security and stability</span>
                     </li>
                 </ul>
             </div>
             <div data-aos="fade-left" class="relative">
-                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="Corporate Office" class="rounded-lg shadow-2xl">
-                
-                <div class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+                    alt="Corporate Office" class="rounded-lg shadow-2xl">
+
+                <div
+                    class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
                     <div>
                         <div id="muni-counter" class="text-4xl font-bold text-brand-accent mb-1">0</div>
-                        <div data-i18n="s1_stat1" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Municipalities</div>
+                        <div data-i18n="s1_stat1" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                            Municipalities</div>
                     </div>
                     <div class="w-px h-10 bg-white/20"></div>
                     <div>
@@ -475,7 +584,8 @@
                             <span id="citizen-counter" class="text-4xl font-bold text-brand-accent mb-1">0</span>
                             <span class="text-xl font-bold text-brand-accent">M</span>
                         </div>
-                        <div data-i18n="s1_stat2" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Citizens Served</div>
+                        <div data-i18n="s1_stat2" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                            Citizens Served</div>
                     </div>
                 </div>
             </div>
@@ -485,70 +595,97 @@
     <section id="valueedge" class="section-padding bg-brand-light">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
-                <h2 data-i18n="s2_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Core Infrastructure</h2>
+                <h2 data-i18n="s2_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">
+                    Core Infrastructure</h2>
                 <h3 data-i18n="s2_title" class="text-4xl font-extrabold text-brand-dark">Why ValueEdge (CSDP)?</h3>
                 <p data-i18n="s2_desc" class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                    To manage complex municipal IT projects, KOMBIT requires a robust testing foundation. Testing as a Service (TaaS) combined with OpenText ValueEdge delivers exactly that.
+                    To manage complex municipal IT projects, KOMBIT requires a robust testing foundation. Testing as a
+                    Service (TaaS) combined with OpenText ValueEdge delivers exactly that.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="0">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    <div
+                        class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                            </path>
+                        </svg>
                     </div>
-                    <h4 data-i18n="s2_c1_title" class="text-xl font-bold text-brand-dark mb-3">TaaS & CSDP Integration</h4>
+                    <h4 data-i18n="s2_c1_title" class="text-xl font-bold text-brand-dark mb-3">TaaS & CSDP Integration
+                    </h4>
                     <p data-i18n="s2_c1_desc" class="text-gray-600 text-sm leading-relaxed">
-                        Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the Core Software Devilery Platform) acts as the engine, providing a unified methodology across all of KOMBIT's testing initiatives.
+                        Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the
+                        Core Software Devilery Platform) acts as the engine, providing a unified methodology across all
+                        of KOMBIT's testing initiatives.
                     </p>
                 </div>
 
                 <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <div
+                        class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
                     </div>
-                    <h4 data-i18n="s2_c2_title" class="text-xl font-bold text-brand-dark mb-3">Supplier Tech-Stack Integration</h4>
+                    <h4 data-i18n="s2_c2_title" class="text-xl font-bold text-brand-dark mb-3">Supplier Tech-Stack
+                        Integration</h4>
                     <p data-i18n="s2_c2_desc" class="text-gray-600 text-sm leading-relaxed">
-                        KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality metrics are captured.
+                        KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse
+                        tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality
+                        metrics are captured.
                     </p>
                 </div>
 
                 <div class="corp-card p-8 rounded-lg" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    <div
+                        class="w-12 h-12 bg-blue-50 text-brand-primary rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
                     </div>
-                    <h4 data-i18n="s2_c3_title" class="text-xl font-bold text-brand-dark mb-3">Combined Data in One Place</h4>
+                    <h4 data-i18n="s2_c3_title" class="text-xl font-bold text-brand-dark mb-3">Combined Data in One
+                        Place</h4>
                     <p data-i18n="s2_c3_desc" class="text-gray-600 text-sm leading-relaxed">
-                        A single source of truth. By pulling data from automation scripts, manual test runs, and pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release readiness and risk.
+                        A single source of truth. By pulling data from automation scripts, manual test runs, and
+                        pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release
+                        readiness and risk.
                     </p>
                 </div>
             </div>
         </div>
-        </div> <div class="mt-20 border-t border-gray-200/50">
-                <div class="ticker-container">
-                    <div class="ticker-track">
-                        <span class="ticker-item">Backlog Management</span>
-                        <span class="ticker-item">Functional Testing</span>
-                        <span class="ticker-item">Regression Suite</span>
-                        <span class="ticker-item">Automation Pipeline</span>
-                        <span class="ticker-item">Defect Tracking</span>
-                        <span class="ticker-item">Performance Metrics</span>
-                        <span class="ticker-item">Security Scans</span>
-                        <span class="ticker-item">Release Governance</span>
-                        
-                        <span class="ticker-item">Backlog Management</span>
-                        <span class="ticker-item">Functional Testing</span>
-                        <span class="ticker-item">Regression Suite</span>
-                        <span class="ticker-item">Automation Pipeline</span>
-                        <span class="ticker-item">Defect Tracking</span>
-                        <span class="ticker-item">Performance Metrics</span>
-                        <span class="ticker-item">Security Scans</span>
-                        <span class="ticker-item">Release Governance</span>
-                    </div>
+        </div>
+        <div class="mt-20 border-t border-gray-200/50">
+            <div class="ticker-container">
+                <div class="ticker-track">
+                    <span class="ticker-item">Backlog Management</span>
+                    <span class="ticker-item">Functional Testing</span>
+                    <span class="ticker-item">Regression Suite</span>
+                    <span class="ticker-item">Automation Pipeline</span>
+                    <span class="ticker-item">Defect Tracking</span>
+                    <span class="ticker-item">Performance Metrics</span>
+                    <span class="ticker-item">Security Scans</span>
+                    <span class="ticker-item">Release Governance</span>
+
+                    <span class="ticker-item">Backlog Management</span>
+                    <span class="ticker-item">Functional Testing</span>
+                    <span class="ticker-item">Regression Suite</span>
+                    <span class="ticker-item">Automation Pipeline</span>
+                    <span class="ticker-item">Defect Tracking</span>
+                    <span class="ticker-item">Performance Metrics</span>
+                    <span class="ticker-item">Security Scans</span>
+                    <span class="ticker-item">Release Governance</span>
                 </div>
             </div>
         </div>
-    
+        </div>
+
     </section>
 
     <section id="workflow" class="section-padding bg-mesh relative">
@@ -556,64 +693,80 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                 <div data-aos="fade-right" class="order-2 lg:order-1">
                     <div class="bg-brand-dark rounded-xl p-8 shadow-2xl relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary rounded-full blur-3xl opacity-20"></div>
-                        <h4 data-i18n="s3_box_title" class="text-white font-semibold mb-6 text-xl">The ValueEdge Workspace</h4>
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary rounded-full blur-3xl opacity-20">
+                        </div>
+                        <h4 data-i18n="s3_box_title" class="text-white font-semibold mb-6 text-xl">The ValueEdge
+                            Workspace</h4>
                         <div class="space-y-4">
                             <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">01</div>
                                 <div>
-                                    <div data-i18n="s3_i1_t" class="text-white font-bold text-sm">Cross-Project Visibility</div>
-                                    <div data-i18n="s3_i1_d" class="text-gray-400 text-xs mt-1">Test Managers navigate multiple municipal projects from a single dashboard.</div>
+                                    <div data-i18n="s3_i1_t" class="text-white font-bold text-sm">Cross-Project
+                                        Visibility</div>
+                                    <div data-i18n="s3_i1_d" class="text-gray-400 text-xs mt-1">Test Managers navigate
+                                        multiple municipal projects from a single dashboard.</div>
                                 </div>
                             </div>
                             <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">02</div>
                                 <div>
                                     <div data-i18n="s3_i2_t" class="text-white font-bold text-sm">Defect Triage</div>
-                                    <div data-i18n="s3_i2_d" class="text-gray-400 text-xs mt-1">Seamless communication between TaaS teams and external developers.</div>
+                                    <div data-i18n="s3_i2_d" class="text-gray-400 text-xs mt-1">Seamless communication
+                                        between TaaS teams and external developers.</div>
                                 </div>
                             </div>
                             <div class="bg-white/10 p-4 rounded border border-white/5 flex items-start gap-4">
                                 <div class="text-brand-accent mt-1">03</div>
                                 <div>
                                     <div data-i18n="s3_i3_t" class="text-white font-bold text-sm">Traceability</div>
-                                    <div data-i18n="s3_i3_d" class="text-gray-400 text-xs mt-1">Linking business requirements directly to automated test executions.</div>
+                                    <div data-i18n="s3_i3_d" class="text-gray-400 text-xs mt-1">Linking business
+                                        requirements directly to automated test executions.</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div data-aos="fade-left" class="order-1 lg:order-2 flex flex-col justify-center">
-                    <h2 data-i18n="s3_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Operations</h2>
-                    <h3 data-i18n="s3_title" class="text-4xl font-extrabold text-brand-dark mb-6">Working with ValueEdge</h3>
+                    <h2 data-i18n="s3_intro"
+                        class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">Operations</h2>
+                    <h3 data-i18n="s3_title" class="text-4xl font-extrabold text-brand-dark mb-6">Working with ValueEdge
+                    </h3>
                     <p data-i18n="s3_p1" class="text-gray-600 mb-6 leading-relaxed">
-                        For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead. 
+                        For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows
+                        without getting lost in administrative overhead.
                     </p>
                     <p data-i18n="s3_p2" class="text-gray-600 mb-6 leading-relaxed">
-                        ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance. TaaS professionals use these workspaces to execute cycles, report bugs, and validate fixes efficiently.
+                        ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains,
+                        ensuring data privacy while allowing high-level test governance. TaaS professionals use these
+                        workspaces to execute cycles, report bugs, and validate fixes efficiently.
                     </p>
                 </div>
             </div>
         </div>
     </section>
-<section class="py-20 bg-gray-50/50 border-t border-gray-100">
+    <section class="py-20 bg-gray-50/50 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-6 md:px-24">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
-                
+
                 <div data-aos="fade-right">
                     <h2 data-i18n="eco_title" class="text-3xl font-black text-brand-primary leading-tight mb-6">
                         Bridging the Gap Between <br>
                         <span class="text-red-600 font-black">Vendors & Governance</span>
                     </h2>
                     <p data-i18n="eco_desc" class="text-gray-600 text-sm leading-relaxed mb-8">
-                        ValueEdge creates a seamless "Single Source of Truth" by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.
+                        ValueEdge creates a seamless "Single Source of Truth" by integrating directly with the
+                        development tools your vendors already use. This allows KOMBIT to maintain high-level governance
+                        without disrupting external development workflows.
                     </p>
-                    
+
                     <div class="space-y-6">
                         <div class="integration-card rounded-lg">
-                            <span data-i18n="eco_sync" class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Source Ingestion</span>
-                            <p data-i18n="eco_sync_sub" class="text-xs font-bold text-gray-800 mb-3">DevOps & Project Management Sync</p>
+                            <span data-i18n="eco_sync"
+                                class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Source
+                                Ingestion</span>
+                            <p data-i18n="eco_sync_sub" class="text-xs font-bold text-gray-800 mb-3">DevOps & Project
+                                Management Sync</p>
                             <div class="flex flex-wrap gap-2">
                                 <span class="ecosystem-tag">Jira</span>
                                 <span class="ecosystem-tag">Azure DevOps</span>
@@ -622,8 +775,11 @@
                         </div>
 
                         <div class="integration-card rounded-lg">
-                            <span data-i18n="eco_quality" class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Quality Streams</span>
-                            <p data-i18n="eco_quality_sub" class="text-xs font-bold text-gray-800 mb-3">Automated Test Results & Pipelines</p>
+                            <span data-i18n="eco_quality"
+                                class="text-[10px] font-black uppercase tracking-[0.2em] text-red-600 mb-2 block">Quality
+                                Streams</span>
+                            <p data-i18n="eco_quality_sub" class="text-xs font-bold text-gray-800 mb-3">Automated Test
+                                Results & Pipelines</p>
                             <div class="flex flex-wrap gap-2">
                                 <span class="ecosystem-tag">Selenium</span>
                                 <span class="ecosystem-tag">Playwright</span>
@@ -637,7 +793,8 @@
                 <div class="relative" data-aos="fade-left">
                     <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
                         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
-                            <span data-i18n="eco_status_label" class="text-xs font-bold text-brand-primary uppercase">Integration Status</span>
+                            <span data-i18n="eco_status_label"
+                                class="text-xs font-bold text-brand-primary uppercase">Integration Status</span>
                             <span class="flex items-center gap-1.5 text-[10px] text-green-600 font-bold uppercase">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live Sync
                             </span>
@@ -648,11 +805,13 @@
                                 <span class="text-xs font-mono font-bold text-brand-primary">COMPLETE</span>
                             </li>
                             <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
-                                <span data-i18n="eco_status_2" class="text-xs text-gray-500">Automation Pipe (98 Munis)</span>
+                                <span data-i18n="eco_status_2" class="text-xs text-gray-500">Automation Pipe (98
+                                    Munis)</span>
                                 <span class="text-xs font-mono font-bold text-brand-primary">ACTIVE</span>
                             </li>
                             <li class="flex justify-between items-center py-2 border-b border-gray-50/50">
-                                <span data-i18n="eco_status_3" class="text-xs text-gray-500">TaaS Framework Validation</span>
+                                <span data-i18n="eco_status_3" class="text-xs text-gray-500">TaaS Framework
+                                    Validation</span>
                                 <span class="text-xs font-mono font-bold text-brand-primary">OPTIMIZED</span>
                             </li>
                         </ul>
@@ -661,7 +820,8 @@
                                 <div class="h-full bg-red-600 w-[94%]"></div>
                             </div>
                             <div class="flex justify-between mt-2">
-                                <span data-i18n="eco_uptime" class="text-[10px] font-bold text-gray-400">ECOSYSTEM UPTIME</span>
+                                <span data-i18n="eco_uptime" class="text-[10px] font-bold text-gray-400">ECOSYSTEM
+                                    UPTIME</span>
                                 <span class="text-[10px] font-bold text-brand-primary">99.9%</span>
                             </div>
                         </div>
@@ -672,252 +832,332 @@
         </div>
     </section>
     <section id="calculator" class="section-padding bg-mesh relative">
-        
+
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-12" data-aos="fade-up">
-                <h2 data-i18n="calc_subtitle" class="text-sm font-bold text-red-600 tracking-widest uppercase mb-2">Business Impact</h2>
-                <h3 data-i18n="calc_title" class="text-4xl font-extrabold text-brand-dark">Value Realization Calculator</h3>
+                <h2 data-i18n="calc_subtitle" class="text-sm font-bold text-red-600 tracking-widest uppercase mb-2">
+                    Business Impact</h2>
+                <h3 data-i18n="calc_title" class="text-4xl font-extrabold text-brand-dark">Value Realization Calculator
+                </h3>
             </div>
 
-            <div class="grid lg:grid-cols-5 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100" data-aos="fade-up">
-                <div class="lg:col-span-2 flex flex-col justify-center pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
+            <div class="grid lg:grid-cols-5 gap-8 bg-white p-8 rounded-2xl shadow-sm border border-gray-100"
+                data-aos="fade-up">
+                <div
+                    class="lg:col-span-2 flex flex-col justify-center pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_muni" class="text-xs font-bold text-gray-400 uppercase">Municipalities</label>
+                            <label data-i18n="calc_muni"
+                                class="text-xs font-bold text-gray-400 uppercase">Municipalities</label>
                             <span id="disp-muni" class="text-xl font-black text-brand-primary">98</span>
                         </div>
                         <input type="range" id="input-muni" class="value-slider" min="1" max="98" value="98">
                     </div>
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_hours" class="text-xs font-bold text-gray-400 uppercase">Manual Hours / Release</label>
+                            <label data-i18n="calc_hours" class="text-xs font-bold text-gray-400 uppercase">Manual Hours
+                                / Release</label>
                             <span id="disp-hours" class="text-xl font-black text-brand-primary">40</span>
                         </div>
                         <input type="range" id="input-hours" class="value-slider" min="5" max="200" value="40" step="5">
                     </div>
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_releases" class="text-xs font-bold text-gray-400 uppercase">Releases / Year</label>
+                            <label data-i18n="calc_releases" class="text-xs font-bold text-gray-400 uppercase">Releases
+                                / Year</label>
                             <span id="disp-releases" class="text-xl font-black text-brand-primary">4</span>
                         </div>
                         <input type="range" id="input-releases" class="value-slider" min="1" max="12" value="4">
                     </div>
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_eff" class="text-xs font-bold text-gray-400 uppercase">Automation Gain</label>
+                            <label data-i18n="calc_eff" class="text-xs font-bold text-gray-400 uppercase">Automation
+                                Gain</label>
                             <span id="disp-eff" class="text-xl font-black text-brand-primary">75%</span>
                         </div>
                         <input type="range" id="input-eff" class="value-slider" min="10" max="95" value="75" step="5">
                     </div>
                     <div>
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_rate" class="text-xs font-bold text-gray-400 uppercase">Hourly Rate (€)</label>
+                            <label data-i18n="calc_rate" class="text-xs font-bold text-gray-400 uppercase">Hourly Rate
+                                (€)</label>
                             <span id="disp-rate" class="text-xl font-black text-brand-primary">120</span>
                         </div>
-                        <input type="range" id="input-rate" class="value-slider" min="50" max="300" value="120" step="10">
+                        <input type="range" id="input-rate" class="value-slider" min="50" max="300" value="120"
+                            step="10">
                     </div>
                 </div>
 
                 <div class="lg:col-span-3 grid sm:grid-cols-2 gap-4">
                     <div class="metric-box p-8 rounded-xl">
-                        <span data-i18n="calc_res_hours" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Hours Recovered</span>
+                        <span data-i18n="calc_res_hours"
+                            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Hours
+                            Recovered</span>
                         <span id="res-hours" class="text-4xl font-black text-white">11,760</span>
-                        <span data-i18n="calc_annually" class="text-xs text-green-400 font-bold block mt-1">Annually</span>
+                        <span data-i18n="calc_annually"
+                            class="text-xs text-green-400 font-bold block mt-1">Annually</span>
                     </div>
                     <div class="metric-box p-8 rounded-xl">
-                        <span data-i18n="calc_res_cost" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Financial Gain</span>
+                        <span data-i18n="calc_res_cost"
+                            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 block">Financial
+                            Gain</span>
                         <span class="text-4xl font-black text-white">€<span id="res-cost">1.41M</span></span>
-                        <span data-i18n="calc_budget" class="text-xs text-green-400 font-bold block mt-1">Reinvestable Budget</span>
+                        <span data-i18n="calc_budget" class="text-xs text-green-400 font-bold block mt-1">Reinvestable
+                            Budget</span>
                     </div>
-                    <div class="sm:col-span-2 bg-red-50 p-6 rounded-xl border border-red-100 flex items-center justify-between">
-                        <span data-i18n="calc_cycle" class="text-sm font-bold text-gray-800">Delivery cycle reduction</span>
+                    <div
+                        class="sm:col-span-2 bg-red-50 p-6 rounded-xl border border-red-100 flex items-center justify-between">
+                        <span data-i18n="calc_cycle" class="text-sm font-bold text-gray-800">Delivery cycle
+                            reduction</span>
                         <span id="res-big-eff" class="text-3xl font-black text-red-600">75%</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-        <section id="ai" class="section-padding bg-white border-t border-gray-200">
+    <section id="ai" class="section-padding bg-white border-t border-gray-200">
         <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
-            <h2 data-i18n="s4_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The Future</h2>
+            <h2 data-i18n="s4_intro" class="text-sm font-bold text-brand-primary tracking-widest uppercase mb-2">The
+                Future</h2>
             <h3 data-i18n="s4_title" class="text-4xl font-extrabold text-brand-dark">Using OpenText Aviator AI</h3>
-            <p data-i18n="s4_desc" class="text-gray-600 mt-4">Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.</p>
+            <p data-i18n="s4_desc" class="text-gray-600 mt-4">Generative AI is transforming how we approach software
+                testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to
+                intelligent, automated generation.</p>
         </div>
 
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 relative">
             <div class="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-1 bg-blue-100 -translate-y-1/2 z-0"></div>
 
             <div class="bg-white p-10 rounded-xl border border-gray-200 shadow-lg relative z-10" data-aos="fade-right">
-                <div class="w-16 h-16 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-sm mx-auto">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                <div
+                    class="w-16 h-16 bg-blue-50 text-brand-primary rounded-full flex items-center justify-center mb-6 border-4 border-white shadow-sm mx-auto">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                        </path>
+                    </svg>
                 </div>
-                <h4 data-i18n="s4_c1_title" class="text-2xl font-bold text-center text-brand-dark mb-4">Phase 1: Successful POC</h4>
+                <h4 data-i18n="s4_c1_title" class="text-2xl font-bold text-center text-brand-dark mb-4">Phase 1:
+                    Successful POC</h4>
                 <p data-i18n="s4_c1_desc" class="text-gray-600 text-center text-sm leading-relaxed">
-                    The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases , BDD , User Stories from raw description , images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.
+                    The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability
+                    to automatically generate manual test cases , BDD , User Stories from raw description , images and
+                    text and optimized existing work entities. The results showed a drastic reduction in test
+                    preparation and execution time.
                 </p>
             </div>
 
             <div class="bg-brand-dark p-10 rounded-xl shadow-2xl relative z-10" data-aos="fade-left">
-                <div class="w-16 h-16 bg-brand-primary text-white rounded-full flex items-center justify-center mb-6 border-4 border-brand-dark shadow-sm mx-auto">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <div
+                    class="w-16 h-16 bg-brand-primary text-white rounded-full flex items-center justify-center mb-6 border-4 border-brand-dark shadow-sm mx-auto">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
                 </div>
-                <h4 data-i18n="s4_c2_title" class="text-2xl font-bold text-center text-white mb-4">Phase 2: Now in Production</h4>
+                <h4 data-i18n="s4_c2_title" class="text-2xl font-bold text-center text-white mb-4">Phase 2: Now in
+                    Production</h4>
                 <p data-i18n="s4_c2_desc" class="text-gray-300 text-center text-sm leading-relaxed">
-                    Moving beyond the POC, Aviator AI is now integrated into the production  workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.
+                    Moving beyond the POC, Aviator AI is now integrated into the production workflow. Test Managers
+                    leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the
+                    overall risk profile of municipal software releases.
                 </p>
             </div>
         </div>
         <div class="max-w-5xl mx-auto mt-16" data-aos="fade-up">
-            <h4 data-i18n="s4_usecases_title" class="text-sm font-bold text-center text-gray-400 uppercase tracking-widest mb-8">Everyday Impact for Test Managers and Test Analysts</h4>
-            
+            <h4 data-i18n="s4_usecases_title"
+                class="text-sm font-bold text-center text-gray-400 uppercase tracking-widest mb-8">Everyday Impact for
+                Test Managers and Test Analysts</h4>
+
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    <div class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">TIME SAVED: 45 MINS</div>
-                    <h5 data-i18n="s4_uc1_title" class="font-bold text-brand-dark mb-2 mt-2">1. Test Case Generation</h5>
+                <div
+                    class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div
+                        class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">
+                        TIME SAVED: 45 MINS</div>
+                    <h5 data-i18n="s4_uc1_title" class="font-bold text-brand-dark mb-2 mt-2">1. Test Case Generation
+                    </h5>
                     <p data-i18n="s4_uc1_desc" class="text-sm text-gray-600 mb-6 min-h-[60px]">
-                        Instead of manually writing 15 test steps from a raw Jira User Story, Aviator analyzes the acceptance criteria and generates a complete, ready-to-execute manual test script.
+                        Instead of manually writing 15 test steps from a raw Jira User Story, Aviator analyzes the
+                        acceptance criteria and generates a complete, ready-to-execute manual test script.
                     </p>
                     <div class="flex items-center gap-4 text-xs font-mono bg-white p-3 rounded border border-gray-200">
                         <span class="text-gray-400 line-through">Before: 45 Minutes</span>
                         <span class="text-green-600 font-bold flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
                             Aviator: 30 Seconds
                         </span>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    <div class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">TIME SAVED: 2 HOURS</div>
-                    <h5 data-i18n="s4_uc2_title" class="font-bold text-brand-dark mb-2 mt-2">2. Defect Log Summarization</h5>
+                <div
+                    class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div
+                        class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">
+                        TIME SAVED: 2 HOURS</div>
+                    <h5 data-i18n="s4_uc2_title" class="font-bold text-brand-dark mb-2 mt-2">2. Defect Log Summarization
+                    </h5>
                     <p data-i18n="s4_uc2_desc" class="text-sm text-gray-600 mb-6 min-h-[60px]">
-                        Instead of digging through hundreds of lines of failed automated test logs to find the root cause, Aviator instantly reads the failure logs and outputs a human-readable summary.
+                        Instead of digging through hundreds of lines of failed automated test logs to find the root
+                        cause, Aviator instantly reads the failure logs and outputs a human-readable summary.
                     </p>
                     <div class="flex items-center gap-4 text-xs font-mono bg-white p-3 rounded border border-gray-200">
                         <span class="text-gray-400 line-through">Before: 2 Hours</span>
                         <span class="text-green-600 font-bold flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
                             Aviator: 1 Minute
                         </span>
                     </div>
                 </div>
-                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up" data-aos-delay="100">
-                    <div class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">TIME SAVED: 1 HOUR</div>
-                    <h5 data-i18n="s4_uc3_title" class="font-bold text-brand-dark mb-2 mt-2">3. Requirement & Image Analysis</h5>
+                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">
+                        TIME SAVED: 1 HOUR</div>
+                    <h5 data-i18n="s4_uc3_title" class="font-bold text-brand-dark mb-2 mt-2">3. Requirement & Image
+                        Analysis</h5>
                     <p data-i18n="s4_uc3_desc" class="text-sm text-gray-600 mb-6 min-h-[60px]">
-                        Aviator ingests UI mockups (PNG/JPG) or raw text requirements to automatically draft comprehensive User Stories with full functional context.
+                        Aviator ingests UI mockups (PNG/JPG) or raw text requirements to automatically draft
+                        comprehensive User Stories with full functional context.
                     </p>
                     <div class="flex items-center gap-4 text-xs font-mono bg-white p-3 rounded border border-gray-200">
                         <span class="text-gray-400 line-through">Before: 60 Minutes</span>
                         <span class="text-green-600 font-bold flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
                             Aviator: 45 Seconds
                         </span>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up" data-aos-delay="200">
-                    <div class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">TIME SAVED: 90% FASTER</div>
+                <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="absolute top-0 right-0 bg-[#E3000F] text-white text-[10px] font-black px-3 py-1.5 rounded-bl-lg tracking-wider">
+                        TIME SAVED: 90% FASTER</div>
                     <h5 data-i18n="s4_uc4_title" class="font-bold text-brand-dark mb-2 mt-2">4. BDD Gherkin Specs</h5>
                     <p data-i18n="s4_uc4_desc" class="text-sm text-gray-600 mb-6 min-h-[60px]">
-                        Automatically convert business requirements into "Given-When-Then" Gherkin syntax, bridging the gap between Business Analysts and Automated Testing.
+                        Automatically convert business requirements into "Given-When-Then" Gherkin syntax, bridging the
+                        gap between Business Analysts and Automated Testing.
                     </p>
                     <div class="flex items-center gap-4 text-xs font-mono bg-white p-3 rounded border border-gray-200">
                         <span class="text-gray-400 line-through">Before: 90 Minutes</span>
                         <span class="text-green-600 font-bold flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
                             Aviator: 15 Seconds
                         </span>
                     </div>
                 </div>
             </div>
             <div class="max-w-5xl mx-auto mt-20" data-aos="fade-up">
-                
-                <h4 data-i18n="s4_vid_title" class="text-sm font-bold text-center text-gray-400 uppercase tracking-widest mb-8">
-                Aviator in action creating seamless work items
-            </h4>
-                
-                <div class="relative aspect-video rounded-xl overflow-hidden shadow-2xl bg-black border border-gray-100 group mb-12">
+
+                <h4 data-i18n="s4_vid_title"
+                    class="text-sm font-bold text-center text-gray-400 uppercase tracking-widest mb-8">
+                    Aviator in action creating seamless work items
+                </h4>
+
+                <div
+                    class="relative aspect-video rounded-xl overflow-hidden shadow-2xl bg-black border border-gray-100 group mb-12">
                     <video controls playsinline class="aviator-video-fluid w-full h-full object-cover">
-    <source src="VideoProjectDemo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-                    
-                    <div data-i18n="s4_vid_badge" class="absolute top-4 right-4 px-3 py-1.5 bg-[#E3000F] text-white text-[10px] font-black rounded shadow-lg tracking-wider">
-                RECORDED AVIATOR DEMO
-            </div>
+                        <source src="VideoProjectDemo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <div data-i18n="s4_vid_badge"
+                        class="absolute top-4 right-4 px-3 py-1.5 bg-[#E3000F] text-white text-[10px] font-black rounded shadow-lg tracking-wider">
+                        RECORDED AVIATOR DEMO
+                    </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
-                    
-                    <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-all">
+
+                    <div
+                        class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-all">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="w-1 h-5 bg-[#E3000F]"></div>
-                           <h5 data-i18n="s4_vid_c1_title" class="font-bold text-brand-dark">ValueEdge Aviator</h5>
+                            <h5 data-i18n="s4_vid_c1_title" class="font-bold text-brand-dark">ValueEdge Aviator</h5>
                         </div>
                         <p data-i18n="s4_vid_c1_desc" class="text-gray-500 text-sm leading-relaxed">
-                Visualizing the real-time processing layer of the Aviator architecture, showing how it interprets image and text requirements into ready to use user stories from the Feature.
-            </p>
+                            Visualizing the real-time processing layer of the Aviator architecture, showing how it
+                            interprets image and text requirements into ready to use user stories from the Feature.
+                        </p>
                     </div>
 
-                    <div class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-all">
+                    <div
+                        class="bg-gray-50 border border-gray-100 p-6 rounded-xl relative overflow-hidden shadow-sm hover:shadow-md transition-all">
                         <div class="flex items-center gap-3 mb-3">
                             <div class="w-1 h-5 bg-[#E3000F]"></div>
                             <h5 data-i18n="s4_vid_c2_title" class="font-bold text-brand-dark">System Integration</h5>
                         </div>
                         <p data-i18n="s4_vid_c2_desc" class="text-gray-500 text-sm leading-relaxed">
-                Observe the seamless integration between business logic and automated creation of work items, ensuring mission success for the TaaS framework.
-            </p>
+                            Observe the seamless integration between business logic and automated creation of work
+                            items, ensuring mission success for the TaaS framework.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    
+
 
     <footer class="bg-brand-dark text-white py-16 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-start gap-8">
-            
+
             <div class="text-left">
                 <div class="flex items-center gap-4 mb-5">
-                    <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none" style="font-family: Arial, sans-serif;">
-    <span class="flex-shrink-0">KOMB</span>
-    
-    <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] mt-[2px] flex-shrink-0 justify-between">
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-        <div class="w-full h-[4px] bg-[#E3000F]"></div>
-    </div>
-    
-    <span class="flex-shrink-0">T</span>
-</div>
+                    <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none"
+                        style="font-family: Arial, sans-serif;">
+                        <span class="flex-shrink-0">KOMB</span>
+
+                        <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] mt-[2px] flex-shrink-0 justify-between">
+                            <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                            <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                            <div class="w-full h-[4px] bg-[#E3000F]"></div>
+                        </div>
+
+                        <span class="flex-shrink-0">T</span>
+                    </div>
 
                     <div class="w-[1px] h-6 bg-white/20"></div>
 
-                    <span data-i18n="ft_success" class="text-white/70 text-[11px] font-bold uppercase tracking-[0.25em] mt-[2px]">
+                    <span data-i18n="ft_success"
+                        class="text-white/70 text-[11px] font-bold uppercase tracking-[0.25em] mt-[2px]">
                         Success Story
                     </span>
                 </div>
-                
+
                 <h4 data-i18n="ft_title" class="text-lg font-semibold text-white">The ValueEdge Journey</h4>
                 <p data-i18n="ft_desc" class="text-gray-400 text-sm max-w-sm mt-2">
-                    Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.
+                    Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality
+                    governance.
                 </p>
             </div>
-            
+
             <div class="relative flex items-center justify-center h-16 w-full max-w-[300px] mx-auto">
-    <div class="absolute inset-0 bg-blue-500/10 blur-2xl rounded-full"></div>
-    
-    <div class="relative flex flex-col items-center">
-        <svg class="w-8 h-8 text-[#E3000F] mb-2 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-             <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
-        </svg>
-        
-        <span class="text-[9px] font-black tracking-[0.25em] text-white/60 uppercase whitespace-nowrap">
-            Kommunal Digital Bevægelse
-        </span>
-    </div>
-</div>
-            <div class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
+                <div class="absolute inset-0 bg-blue-500/10 blur-2xl rounded-full"></div>
+
+                <div class="relative flex flex-col items-center">
+                    <svg class="w-8 h-8 text-[#E3000F] mb-2 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
+                    </svg>
+
+                    <span class="text-[9px] font-black tracking-[0.25em] text-white/60 uppercase whitespace-nowrap">
+                        Kommunal Digital Bevægelse
+                    </span>
+                </div>
+            </div>
+            <div
+                class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
                 <div class="flex flex-col md:flex-row items-center gap-6">
                     <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent transition">qxmbg@kombit.dk</a>
                     <span class="hidden md:block opacity-20">|</span>
@@ -926,28 +1166,30 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-10 mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
+        <div
+            class="max-w-7xl mx-auto px-10 mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
             <div class="flex space-x-6 mb-4 md:mb-0">
-                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="hover:text-white transition">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank"
+                    class="hover:text-white transition">LinkedIn</a>
                 <a href="https://www.kombit.dk/" target="_blank" class="hover:text-white transition">Kombit Denmark</a>
-                <a data-i18n="ft_cph" href="https://www.kl.dk/english/" target="_blank" class="hover:text-white transition">KL, Copenhagen</a>
+                <a data-i18n="ft_cph" href="https://www.kl.dk/english/" target="_blank"
+                    class="hover:text-white transition">KL, Copenhagen</a>
             </div>
             <div class="flex flex-col items-center text-center">
-            <div class="flex gap-1 mb-2">
-                <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.2s]"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.4s]"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.6s]"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.8s]"></div>
+                <div class="flex gap-1 mb-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.2s]"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.4s]"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.6s]"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.8s]"></div>
+                </div>
+                <span class="text-[9px] font-black tracking-[0.3em] text-white/40 uppercase">Municipal Ecosystem
+                    Connected</span>
             </div>
-            <span class="text-[9px] font-black tracking-[0.3em] text-white/40 uppercase">Municipal Ecosystem Connected</span>
-        </div>
             <div class="text-center md:text-right">
-                &copy; 2026 
-                <a href="https://events.opentext.com/nordics-summit-2026" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="hover:text-white transition-colors duration-300 ml-1">
+                &copy; 2026
+                <a href="https://events.opentext.com/nordics-summit-2026" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-white transition-colors duration-300 ml-1">
                     OpenText Nordic Summit, Stockholm
                 </a>
             </div>
@@ -956,510 +1198,515 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    // --- TRANSLATION DATA ---
-    const i18n = {
-        en: {
-            flag: 'https://flagcdn.com/w20/gb.png',
-            code: 'EN',
-            nav_who: "Who is KOMBIT", nav_why: "Why ValueEdge", nav_work: "Everyday Work", nav_ai: "Aviator AI",nav_calc: "Financial Impact",
-            hero_badge: "ENTERPRISE QUALITY ENGINEERING",
-            hero_title: "Modernising testing at ",
-            hero_desc: "Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to drive efficiency across Danish municipal IT solutions.",
-            hero_btn: "Explore the Journey",
-            s1_intro: "Introduction", s1_title: "Who is KOMBIT?",
-            s1_p1: "KOMBIT is the IT project organization of the Danish municipalities. Founded to create cohesion and efficiency, KOMBIT purchases, manages, and develops IT solutions on behalf of the 98 municipalities in Denmark.",
-            s1_p2: "By centralizing IT procurement and management, KOMBIT ensures that critical infrastructure—serving millions of citizens—is secure, compliant, and cost-effective.",
-            s1_li1: "Serving 98 Danish Municipalities", s1_li2: "Managing complex supplier ecosystems", s1_li3: "High standards for data security and stability",
-            s1_stat1: "Municipalities", s1_stat2: "Citizens Served",
-            s2_intro: "Core Infrastructure", s2_title: "Why ValueEdge (CSDP)?",
-            s2_desc: "To manage complex municipal IT projects, KOMBIT requires a robust testing foundation. Testing as a Service (TaaS) combined with OpenText ValueEdge delivers exactly that.",
-            s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the Core Software Devilery Platform) acts as the engine, providing a unified methodology across all of KOMBIT's testing initiatives.",
-            s2_c2_title: "Supplier Tech-Stack Integration", s2_c2_desc: "KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality metrics are captured.",
-            s2_c3_title: "Combined Data in One Place", s2_c3_desc: "A single source of truth. By pulling data from automation scripts, manual test runs, and pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release readiness and risk.",
-            s3_box_title: "The ValueEdge Workspace", s3_i1_t: "Cross-Project Visibility", s3_i1_d: "Test Managers navigate multiple municipal projects from a single dashboard.", s3_i2_t: "Defect Triage", s3_i2_d: "Seamless communication between TaaS teams and external developers.", s3_i3_t: "Traceability", s3_i3_d: "Linking business requirements directly to automated test executions.",
-            s3_intro: "Operations", s3_title: "Working with ValueEdge",
-            s3_p1: "For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead.",
-            s3_p2: "ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance. TaaS professionals use these workspaces to execute cycles, report bugs, and validate fixes efficiently.",
-            s4_intro: "The Future", s4_title: "Using OpenText Aviator AI",
-            s4_desc: "Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.",
-            s4_c1_title: "Phase 1: Successful POC", s4_c1_desc: "The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases, BDD, User Stories from raw description, images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.",
-            s4_c2_title: "Phase 2: Now in Production", s4_c2_desc: "Moving beyond the POC, Aviator AI is now integrated into the production workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.",
-            ft_success: "Success Story", ft_title: "The ValueEdge Journey", ft_desc: "Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.", ft_cph: "KL, Copenhagen",
-            eco_title: "Bridging the Gap Between <br><span class='text-red-600'>Vendors & Governance</span>",
-        eco_desc: "ValueEdge creates a seamless 'Single Source of Truth' by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.",
-        eco_sync: "Source Ingestion",
-        eco_sync_sub: "DevOps & Project Management Sync",
-        eco_quality: "Quality Streams",
-        eco_quality_sub: "Automated Test Results & Pipelines",
-        eco_status_label: "Integration Status",
-        eco_status_1: "Vendor Backlog Sync",
-        eco_status_2: "Automation Pipe (98 Munis)",
-        eco_status_3: "TaaS Framework Validation",
-        eco_uptime: "ECOSYSTEM UPTIME",
-        calc_title: "Value Realization Calculator",
-        calc_subtitle: "Business Impact",
-        calc_muni: "Total Municipalities",
-        calc_hours: "Manual Hours / Release",
-        calc_releases: "Releases / Year",
-        calc_eff: "Automation Efficiency",
-        calc_rate: "Hourly Rate (€)",
-        calc_res_hours: "Engineering Hours Recovered",
-        calc_res_cost: "Financial Efficiency Gain",
-        calc_annually: "Annually across selected Munis",
-        calc_budget: "Reinvestable Budget",
-        calc_cycle: "Delivery cycle reduced by",
-        s4_usecases_title: "Everyday Impact for Test Managers",
-s4_uc1_title: "1. Test Case Generation",
-s4_uc1_desc: "Instead of manually writing 15 test steps from a raw Jira User Story, Aviator analyzes the acceptance criteria and generates a complete, ready-to-execute manual test script.",
-s4_uc2_title: "2. Defect Log Summarization",
-s4_uc2_desc: "Instead of digging through hundreds of lines of failed automated test logs to find the root cause, Aviator instantly reads the failure logs and outputs a human-readable summary.",
-s4_uc3_title: "3. Requirement & Image Analysis",
-s4_uc3_desc: "Aviator can ingest UI mockups (PNG/JPG) or raw text requirements to automatically draft comprehensive User Stories with full functional context.",
-s4_uc4_title: "4. BDD Gherkin Specs",
-s4_uc4_desc: "Automatically convert business requirements into 'Given-When-Then' Gherkin syntax, bridging the gap between Business Analysts and Automated Testing.",
-s4_vid_title: "Aviator in action creating seamless work items",
-s4_vid_badge: "RECORDED AVIATOR DEMO",
-s4_vid_c1_title: "ValueEdge Aviator",
-s4_vid_c1_desc: "Visualizing the real-time processing layer of the Aviator architecture, showing how it interprets image and text requirements into ready to use user stories from the Feature.",
-s4_vid_c2_title: "System Integration",
-s4_vid_c2_desc: "Observe the seamless integration between business logic and automated creation of work items, ensuring mission success for the TaaS framework."
-            
-        },
-        da: {
-            flag: 'https://flagcdn.com/w20/dk.png',
-            code: 'DA',
-            nav_who: "Hvem er KOMBIT", nav_why: "Hvorfor ValueEdge", nav_work: "Dagligt arbejde", nav_ai: "Aviator AI",nav_calc: "Økonomisk effekt",
-            hero_badge: "ENTERPRISE KVALITETSUDVIKLING",
-            hero_title: "Testmodernisering hos ",
-            hero_desc: "Udforskning af implementeringen af Testing as a Service (TaaS) ved brug af OpenTexts ValueEdge (CSDP) for at skabe effektivitet på tværs af danske kommunale it-løsninger.",
-            hero_btn: "Udforsk rejsen",
-            s1_intro: "Introduktion", s1_title: "Hvem er KOMBIT?",
-            s1_p1: "KOMBIT er de danske kommuners it-fællesskab. Grundlagt for at skabe sammenhæng og effektivitet, indkøber, forvalter og udvikler KOMBIT it-løsninger på vegne af de 98 kommuner i Danmark.",
-            s1_p2: "Ved at centralisere it-indkøb og -forvaltning sikrer KOMBIT, at kritisk infrastruktur — der betjener millioner af borgere — er sikker, compliant og omkostningseffektiv.",
-            s1_li1: "Betjener 98 danske kommuner", s1_li2: "Håndtering af komplekse leverandørøkosystemer", s1_li3: "Høje standarder for datasikkerhed og stabilitet",
-            s1_stat1: "Kommuner", s1_stat2: "Borgere betjent",
-            s2_intro: "Kerneinfrastruktur", s2_title: "Hvorfor ValueEdge (CSDP)?",
-            s2_desc: "For at styre komplekse kommunale it-projekter kræver KOMBIT et robust testfundament. Testing as a Service (TaaS) kombineret med OpenText ValueEdge leverer præcis dette.",
-            s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service giver on-demand testekspertise og skalerbare ressourcer. ValueEdge (CSDP) fungerer som motoren og sikrer en ensartet metode på tværs af alle KOMBITs testinitiativer.",
-            s2_c2_title: "Leverandør Tech-Stack Integration", s2_c2_desc: "KOMBIT samarbejder med flere eksterne leverandører. ValueEdge integrerer problemfrit på tværs af diverse tech-stacks (Jira, Git, CI/CD-værktøjer), hvilket sikrer at kvalitetsmålinger fanges, uanset hvad leverandøren bruger.",
-            s2_c3_title: "Samlet data ét sted", s2_c3_desc: "Én sandhedskilde. Ved at trække data fra automatiseringsscripts, manuelle tests og pipeline-målinger giver ValueEdge KOMBITs ledelse realtidsindsigt i udgivelsesparathed og risici.",
-            s3_box_title: "ValueEdge Arbejdsområdet", s3_i1_t: "Tværgående projektsynlighed", s3_i1_d: "Test Managers navigerer i flere kommunale projekter fra ét dashboard.", s3_i2_t: "Defekthåndtering", s3_i2_d: "Sømløs kommunikation mellem TaaS-teams og eksterne udviklere.", s3_i3_t: "Sporbarhed", s3_i3_d: "Forbinder forretningskrav direkte med automatiserede testkørsler.",
-            s3_intro: "Drift", s3_title: "Arbejdet med ValueEdge",
-            s3_p1: "For Test Managers hos KOMBIT kræver det praktiske daglige arbejde orkestrering af komplekse workflows uden at fare vild i administrativt arbejde.",
-            s3_p2: "ValueEdge tilbyder isolerede <strong>Arbejdsområder (Workspaces)</strong> til forskellige kommunale domæner, hvilket sikrer databeskyttelse, mens det tillader teststyring på højt niveau. TaaS-fagfolk bruger disse arbejdsområder til at udføre cyklusser, rapportere fejl og validere rettelser effektivt.",
-            s4_intro: "Fremtiden", s4_title: "Brug af OpenText Aviator AI",
-            s4_desc: "Generativ AI transformerer vores tilgang til softwaretest. Hos KOMBIT repræsenterer brugen af Aviator AI skiftet fra manuel testskrivning til intelligent, automatiseret generering.",
-            s4_c1_title: "Fase 1: Vellykket POC", s4_c1_desc: "Rejsen begyndte med et Proof of Concept for at validere Aviators evner. Vi testede dens evne til automatisk at generere manuelle testcases, BDD, User Stories fra rå beskrivelser, billeder og tekst og optimerede eksisterende arbejdsenheder. Resultaterne viste en drastisk reduktion i testforberedelse og udførelsestid.",
-            s4_c2_title: "Fase 2: Nu i produktion", s4_c2_desc: "Vi er gået videre fra POC, og Aviator AI er nu integreret i produktionsworkflowet. Test Managers udnytter det til at fremskynde testdesign, opsummere fejl-tendenser og få AI-drevne indsigter i den overordnede risikoprofil for kommunale softwareudgivelser.",
-            ft_success: "Succeshistorie", ft_title: "ValueEdge Rejsen", ft_desc: "Styrkelse af de danske kommuner gennem Testing as a Service (TaaS) og centraliseret kvalitetsstyring.", ft_cph: "KL, København",
-            eco_title: "Brobygning mellem <br><span class='text-red-600'>Leverandører & Governance</span>",
-        eco_desc: "ValueEdge skaber en problemfri 'Single Source of Truth' ved at integrere direkte med de udviklingsværktøjer, som jeres leverandører allerede bruger. Dette gør det muligt for KOMBIT at opretholde governance på højt niveau uden at forstyrre eksterne arbejdsgange.",
-        eco_sync: "Kilde-indtagelse",
-        eco_sync_sub: "DevOps & Projektstyrings-synk",
-        eco_quality: "Kvalitets-strømme",
-        eco_quality_sub: "Automatiserede testresultater & pipelines",
-        eco_status_label: "Integrationsstatus",
-        eco_status_1: "Synkronisering af Leverandør-backlog",
-        eco_status_2: "Automations-pipeline (98 kommuner)",
-        eco_status_3: "TaaS Framework Validering",
-        eco_uptime: "SYSTEM OPPETID",
-        calc_title: "Værdi-beregner",
-        calc_subtitle: "Forretningsmæssig effekt",
-        calc_muni: "Antal Kommuner",
-        calc_hours: "Manuelle timer / Release",
-        calc_releases: "Releases / år",
-        calc_eff: "Automations-effektivitet",
-        calc_rate: "Timesats (€)",
-        calc_res_hours: "Timer sparet",
-        calc_res_cost: "Økonomisk gevinst",
-        calc_annually: "Årligt på tværs af kommuner",
-        calc_budget: "Geninvesterbart budget",
-        calc_cycle: "Leveringstiden reduceret med",
-        s4_usecases_title: "Daglig effekt for Test Managers",
-s4_uc1_title: "1. Generering af testcases",
-s4_uc1_desc: "I stedet for manuelt at skrive 15 testtrin fra en rå Jira User Story, analyserer Aviator acceptkriterierne og genererer et komplet, køreklar manuelt testscript.",
-s4_uc2_title: "2. Opsummering af fejllogs",
-s4_uc2_desc: "I stedet for at grave gennem hundredvis af linjer med fejlslagne automatiserede testlogs for at finde årsagen, læser Aviator øjeblikkeligt fejlloggene og udsender en læsevenlig opsummering.",
-s4_uc3_title: "3. Kravs- og billedanalyse",
-s4_uc3_desc: "Aviator kan indlæse UI-mockups (PNG/JPG) eller rå tekstkrav for automatisk at udarbejde omfattende User Stories med fuld funktionel kontekst.",
-s4_uc4_title: "4. BDD Gherkin-specifikationer",
-s4_uc4_desc: "Konverter automatisk forretningskrav til 'Given-When-Then' Gherkin-syntaks, hvilket bygger bro mellem forretningsanalytikere og automatiseret test.",
-s4_vid_title: "Aviator i aktion skaber gnidningsløse arbejdsopgaver",
-s4_vid_badge: "OPTAGET AVIATOR DEMO",
-s4_vid_c1_title: "ValueEdge Aviator",
-s4_vid_c1_desc: "Visualisering af realtidsbehandlingslaget i Aviator-arkitekturen, der viser, hvordan den tolker billed- og tekstkrav til brugsklare user stories fra funktionen.",
-s4_vid_c2_title: "Systemintegration",
-s4_vid_c2_desc: "Se den problemfrie integration mellem forretningslogik og automatiseret oprettelse af arbejdsopgaver, som sikrer missionssucces for TaaS-frameworket."
-        },
-        sv: {
-            flag: 'https://flagcdn.com/w20/se.png',
-            code: 'SV',
-            nav_who: "Vem är KOMBIT", nav_why: "Varför ValueEdge", nav_work: "Dagligt arbete", nav_ai: "Aviator AI",nav_calc: "Finansiell påverkan",
-            hero_badge: "ENTERPRISE KVALITETSTEKNIK",
-            hero_title: "Testmodernisering på ",
-            hero_desc: "Utforska implementeringen av Testing as a Service (TaaS) med hjälp av OpenTexts ValueEdge (CSDP) för att driva effektivitet över danska kommunala IT-lösningar.",
-            hero_btn: "Utforska resan",
-            s1_intro: "Introduktion", s1_title: "Vem är KOMBIT?",
-            s1_p1: "KOMBIT är de danska kommunernas IT-projektorganisation. Grundat för att skapa sammanhållning och effektivitet, köper, hanterar och utvecklar KOMBIT IT-lösningar för de 98 kommunerna i Danmark.",
-            s1_p2: "Genom att centralisera IT-inköp och hantering säkerställer KOMBIT att kritisk infrastruktur — som betjänar miljontals medborgare — är säker, kompatibel och kostnadseffektiv.",
-            s1_li1: "Betjänar 98 danska kommuner", s1_li2: "Hantering av komplexa leverantörsekosystem", s1_li3: "Höga standarder för datasäkerhet och stabilitet",
-            s1_stat1: "Kommuner", s1_stat2: "Medborgare betjänade",
-            s2_intro: "Kärninfrastruktur", s2_title: "Varför ValueEdge (CSDP)?",
-            s2_desc: "För att hantera komplexa kommunala IT-projekt kräver KOMBIT en robust testgrund. Testing as a Service (TaaS) kombinerat med OpenText ValueEdge levererar exakt detta.",
-            s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service tillhandahåller testexpertis och skalbara resurser på begäran. ValueEdge (CSDP) fungerar som motorn och ger en enhetlig metodik över alla KOMBITs testinitiativ.",
-            s2_c2_title: "Leverantör Tech-Stack Integration", s2_c2_desc: "KOMBIT arbetar med flera externa leverantörer. ValueEdge integreras sömlöst över olika tech-stacks (Jira, Git, CI/CD-verktyg), vilket säkerställer att kvalitetsmått fångas, oavsett vad leverantören använder.",
-            s2_c3_title: "Kombinerad data på en plats", s2_c3_desc: "En enda sanningskälla. Genom att hämta data från automatiseringsskript, manuella testkörningar och pipeline-mätvärden ger ValueEdge KOMBITs ledning realtidsinsikt i releaseberedskap och risker.",
-            s3_box_title: "ValueEdge Arbetsyta", s3_i1_t: "Översyn över flera projekt", s3_i1_d: "Test Managers navigerar i flera kommunala projekt från en enda instrumentpanel.", s3_i2_t: "Defekthantering", s3_i2_d: "Sömlös kommunikation mellan TaaS-team och externa utvecklare.", s3_i3_t: "Spårbarhet", s3_i3_d: "Kopplar affärskrav direkt till automatiserade testkörningar.",
-            s3_intro: "Drift", s3_title: "Arbete med ValueEdge",
-            s3_p1: "För Test Managers på KOMBIT kräver praktiskt dagligt arbete orkestrering av komplexa arbetsflöden utan att gå vilse i administrativt arbete.",
-            s3_p2: "ValueEdge erbjuder isolerade <strong>Arbetsytor (Workspaces)</strong> för olika kommunala domäner, vilket säkerställer datasekretess samtidigt som det möjliggör teststyrning på hög nivå. TaaS-proffs använder dessa arbetsytor för att effektivt utföra cykler, rapportera buggar och validera fixar.",
-            s4_intro: "Framtiden", s4_title: "Användning av OpenText Aviator AI",
-            s4_desc: "Generativ AI förändrar hur vi närmar oss mjukvarutestning. På KOMBIT representerar antagandet av Aviator AI övergången från manuell testförfattning till intelligent, automatiserad generering.",
-            s4_c1_title: "Fas 1: Framgångsrik POC", s4_c1_desc: "Resan började med ett Proof of Concept för att validera Aviators funktioner. Vi testade dess förmåga att automatiskt generera manuella testfall, BDD, User Stories från rå beskrivning, bilder och text och optimerade befintliga arbetsenheter. Resultaten visade en drastisk minskning av testförberedelser och exekveringstid.",
-            s4_c2_title: "Fas 2: Nu i produktion", s4_c2_desc: "Vi går bortom POC, och Aviator AI är nu integrerad i produktionsarbetsflödet. Test Managers utnyttjar det för att påskynda testdesign, sammanfatta defekttrender och få AI-drivna insikter i den övergripande riskprofilen för kommunala programvarureleaser.",
-            ft_success: "Framgångssaga", ft_title: "ValueEdge Resan", ft_desc: "Bemyndigande av danska kommuner genom Testing as a Service (TaaS) och centraliserad kvalitetsstyrning.", ft_cph: "KL, Köpenhamn",
-            eco_title: "Överbrygga klyftan mellan <br><span class='text-red-600'>Leverantörer & Governance</span>",
-        eco_desc: "ValueEdge skapar en sömlös 'Single Source of Truth' genom att integrera direkt med de utvecklingsverktyg som era leverantörer redan använder. Detta gör det möjligt för KOMBIT att upprätthålla styrning på hög nivå utan att störa externa arbetsflöden.",
-        eco_sync: "Käll-intag",
-        eco_sync_sub: "DevOps & Projekthanterings-synk",
-        eco_quality: "Kvalitets-strömmar",
-        eco_quality_sub: "Automatiserade testresultat & pipelines",
-        eco_status_label: "Integrationsstatus",
-        eco_status_1: "Synkning av Leverantörs-backlog",
-        eco_status_2: "Automations-pipeline (98 kommuner)",
-        eco_status_3: "TaaS Framework Validering",
-        eco_uptime: "SYSTEMETS DRIFTTID",
-        calc_title: "Värdeberäknare",
-        calc_subtitle: "Affärspåverkan",
-        calc_muni: "Kommuner",
-        calc_hours: "Manuella timmar / Release",
-        calc_releases: "Releases / år",
-        calc_eff: "Automationsvinst",
-        calc_rate: "Timpris (€)",
-        calc_res_hours: "Timmar återställda",
-        calc_res_cost: "Finansiell vinst",
-        calc_annually: "Årligen",
-        calc_budget: "Återinvesterbar budget",
-        calc_cycle: "Leveranscykel minskad med",
-        s4_usecases_title: "Daglig påverkan för Test Managers",
-s4_uc1_title: "1. Generering av testfall",
-s4_uc1_desc: "Istället för att manuellt skriva 15 teststeg från en rå Jira User Story, analyserar Aviator acceptanskriterierna och genererar ett komplett, körklart manuellt testskript.",
-s4_uc2_title: "2. Sammanfattning av defektloggar",
-s4_uc2_desc: "Istället för att gräva igenom hundratals rader av misslyckade automatiserade testloggar för att hitta grundorsaken, läser Aviator omedelbart felloggarna och matar ut en läsbar sammanfattning.",
-s4_uc3_title: "3. Krav- och bildanalys",
-s4_uc3_desc: "Aviator kan läsa in UI-mockups (PNG/JPG) eller råa textkrav för att automatiskt skapa omfattande User Stories med fullt funktionellt sammanhang.",
-s4_uc4_title: "4. BDD Gherkin-specifikationer",
-s4_uc4_desc: "Konvertera automatiskt affärskrav till 'Given-When-Then' Gherkin-syntax, vilket överbryggar klyftan mellan affärsanalytiker och automatiserad testning.",
-s4_vid_title: "Aviator i aktion skapar sömlösa arbetsuppgifter",
-s4_vid_badge: "INSPELAD AVIATOR DEMO",
-s4_vid_c1_title: "ValueEdge Aviator",
-s4_vid_c1_desc: "Visualisering av realtidsbehandlingsskiktet i Aviator-arkitekturen, som visar hur den tolkar bild- och textkrav till färdiga user stories från funktionen.",
-s4_vid_c2_title: "Systemintegration",
-s4_vid_c2_desc: "Observera den sömlösa integrationen mellan affärslogik och automatiserat skapande av arbetsuppgifter, vilket säkerställer uppdragets framgång för TaaS-ramverket."
-        },
-        lv: {
-            flag: 'https://flagcdn.com/w20/lv.png', code: 'LV',
-            nav_who: "Kas ir KOMBIT", nav_why: "Kāpēc ValueEdge", nav_work: "Ikdienas darbs", nav_ai: "Aviator AI",nav_calc: "Finansiālā ietekme",
-            hero_badge: "UZŅĒMUMA KVALITĀTES INŽENIERIJA",
-            hero_title: "Testu modernizācija ",
-            hero_desc: "Izpētot testēšanas kā pakalpojuma (TaaS) ieviešanu, izmantojot OpenText ValueEdge (CSDP), lai veicinātu Dānijas pašvaldību IT risinājumu efektivitāti.",
-            hero_btn: "Izpētīt ceļojumu",
-            s1_intro: "Ievads", s1_title: "Kas ir KOMBIT?",
-            s1_p1: "KOMBIT ir Dānijas pašvaldību IT projektu organizācija. Dibināta, lai radītu saliedētību un efektivitāti, KOMBIT iegādājas, pārvalda un izstrādā IT risinājumus 98 Dānijas pašvaldību vārdā.",
-            s1_p2: "Centralizējot IT iepirkumus un pārvaldību, KOMBIT nodrošina, ka kritiskā infrastruktūra — kas kalpo miljoniem iedzīvotāju — ir droša, atbilstoša un rentabla.",
-            s1_li1: "Apkalpo 98 Dānijas pašvaldības", s1_li2: "Sarežģītu piegādātāju ekosistēmu pārvaldība", s1_li3: "Augsti standarti datu drošībai un stabilitātei",
-            s1_stat1: "Pašvaldības", s1_stat2: "Apkalpotie iedzīvotāji",
-            s2_intro: "Pamata infrastruktūra", s2_title: "Kāpēc ValueEdge (CSDP)?",
-            s2_desc: "Lai pārvaldītu sarežģītus pašvaldību IT projektus, KOMBIT ir nepieciešams spēcīgs testēšanas pamats. Testēšana kā pakalpojums (TaaS) apvienojumā ar OpenText ValueEdge nodrošina tieši to.",
-            s2_c1_title: "TaaS un CSDP integrācija", s2_c1_desc: "Testēšana kā pakalpojums nodrošina testēšanas ekspertīzi un mērogojamus resursus pēc pieprasījuma. ValueEdge (CSDP) darbojas kā dzinējs, nodrošinot vienotu metodoloģiju visās KOMBIT testēšanas iniciatīvās.",
-            s2_c2_title: "Piegādātāju tehnoloģiju steka integrācija", s2_c2_desc: "KOMBIT sadarbojas ar vairākiem ārējiem piegādātājiem. ValueEdge nemanāmi integrējas dažādos tehnoloģiju stekos (Jira, Git, CI/CD rīki), nodrošinot, ka kvalitātes rādītāji tiek fiksēti neatkarīgi no tā, ko izmanto piegādātājs.",
-            s2_c3_title: "Apvienoti dati vienuviet", s2_c3_desc: "Viens patiesības avots. Iegūstot datus no automatizācijas skriptiem, manuāliem testiem un konveijera rādītājiem, ValueEdge sniedz KOMBIT vadībai reāllaika ieskatu par laidienu gatavību un riskiem.",
-            s3_box_title: "ValueEdge darbvieta", s3_i1_t: "Pārredzamība starp projektiem", s3_i1_d: "Testēšanas vadītāji pārvalda vairākus pašvaldību projektus no viena paneļa.", s3_i2_t: "Defektu šķirošana", s3_i2_d: "Nevainojama saziņa starp TaaS komandām un ārējiem izstrādātājiem.", s3_i3_t: "Izsekojamība", s3_i3_d: "Biznesa prasību sasaiste tieši ar automatizētu testu izpildi.",
-            s3_intro: "Operācijas", s3_title: "Darbs ar ValueEdge",
-            s3_p1: "Testēšanas vadītājiem uzņēmumā KOMBIT praktisks ikdienas darbs prasa sarežģītu darbplūsmu vadīšanu, nepazūdot administratīvajos slogos.",
-            s3_p2: "ValueEdge nodrošina izolētas <strong>Darbvietas (Workspaces)</strong> dažādiem pašvaldību domēniem, nodrošinot datu privātumu, vienlaikus ļaujot veikt augsta līmeņa testēšanas pārvaldību. TaaS speciālisti izmanto šīs darbvietas, lai efektīvi izpildītu ciklus, ziņotu par kļūdām un apstiprinātu labojumus.",
-            s4_intro: "Nākotne", s4_title: "OpenText Aviator AI izmantošana",
-            s4_desc: "Ģeneratīvais AI pārveido mūsu pieeju programmatūras testēšanai. Uzņēmumā KOMBIT Aviator AI ieviešana atspoguļo pāreju no manuālas testu rakstīšanas uz inteliģentu, automatizētu ģenerēšanu.",
-            s4_c1_title: "1. fāze: Veiksmīgs POC", s4_c1_desc: "Ceļojums sākās ar koncepcijas pierādījumu (POC), lai apstiprinātu Aviator iespējas. Mēs pārbaudījām tā spēju automātiski ģenerēt manuālus testa gadījumus, BDD un lietotāju stāstus no neapstrādāta apraksta, attēliem un teksta, kā arī optimizējām esošās darba vienības. Rezultāti uzrādīja krasu testu sagatavošanas un izpildes laika samazināšanos.",
-            s4_c2_title: "2. fāze: Tagad ražošanā", s4_c2_desc: "Pārsniedzot POC, Aviator AI tagad ir integrēts ražošanas darbplūsmā. Testēšanas vadītāji to izmanto, lai paātrinātu testu plānošanu, apkopotu defektu tendences un iegūtu AI virzītus ieskatus par pašvaldību programmatūras laidienu kopējo riska profilu.",
-            ft_success: "Veiksmes stāsts", ft_title: "ValueEdge ceļojums", ft_desc: "Dānijas pašvaldību iespējināšana, izmantojot testēšanu kā pakalpojumu (TaaS) un centralizētu kvalitātes pārvaldību.", ft_cph: "KL, Kopenhāgena",
-            eco_title: "Tiltu veidošana starp <br><span class='text-red-600'>Piegādātājiem un Pārvaldību</span>",
-        eco_desc: "ValueEdge izveido nevainojamu 'vienoto patiesības avotu', tieši integrējoties ar izstrādes rīkiem, ko jūsu piegādātāji jau izmanto. Tas ļauj KOMBIT uzturēt augsta līmeņa pārvaldību, netraucējot ārējās izstrādes darba plūsmas.",
-        eco_sync: "Avotu Integrācija",
-        eco_sync_sub: "DevOps un projektu vadības sinhronizācija",
-        eco_quality: "Kvalitātes Plūsmas",
-        eco_quality_sub: "Automatizēti testa rezultāti un cauruļvadi",
-        eco_status_label: "Integrācijas Statuss",
-        eco_status_1: "Piegādātāju prioritāšu sinhronizācija",
-        eco_status_2: "Automatizācijas plūsma (98 pašvaldības)",
-        eco_status_3: "TaaS ietvara validācija",
-        eco_uptime: "SISTĒMAS DARBĪBAS LAIKS",
-        calc_title: "Vērtības kalkulators",
-        calc_subtitle: "Ietekme uz biznesu",
-        calc_muni: "Pašvaldības",
-        calc_hours: "Manuālās stundas / Laidiens",
-        calc_releases: "Laidieni / gadā",
-        calc_eff: "Automatizācijas ieguvums",
-        calc_rate: "Stundas likme (€)",
-        calc_res_hours: "Atgūtās darba stundas",
-        calc_res_cost: "Finansiālais ieguvums",
-        calc_annually: "Gadā visās pašvaldībās",
-        calc_budget: "Reinvestējams budžets",
-        calc_cycle: "Piegādes cikls samazināts par",
-        s4_usecases_title: "Ikdienas ietekme uz testēšanas vadītājiem",
-s4_uc1_title: "1. Testa gadījumu ģenerēšana",
-s4_uc1_desc: "Tā vietā, lai manuāli rakstītu 15 testēšanas soļus no neapstrādāta Jira lietotāja stāsta, Aviator analizē pieņemšanas kritērijus un ģenerē pilnīgu, izpildei gatavu manuālā testa skriptu.",
-s4_uc2_title: "2. Defektu žurnālu kopsavilkums",
-s4_uc2_desc: "Tā vietā, lai raktos cauri simtiem neizdevušos automatizēto testu žurnālu rindiņu, lai atrastu galveno cēloni, Aviator uzreiz nolasa kļūdu žurnālus un izvada cilvēkam lasāmu kopsavilkumu.",
-s4_uc3_title: "3. Prasību un attēlu analīze",
-s4_uc3_desc: "Aviator var apstrādāt saskarnes maketus (PNG/JPG) vai neapstrādātas teksta prasības, lai automātiski izstrādātu visaptverošus lietotāju stāstus ar pilnu funkcionālo kontekstu.",
-s4_uc4_title: "4. BDD Gherkin specifikācijas",
-s4_uc4_desc: "Automātiski konvertējiet biznesa prasības uz 'Given-When-Then' Gherkin sintaksi, mazinot plaisu starp biznesa analītiķiem un automatizēto testēšanu.",
-s4_vid_title: "Aviator darbībā veido nevainojamus darba uzdevumus",
-s4_vid_badge: "IERAKSTĪTS AVIATOR DEMO",
-s4_vid_c1_title: "ValueEdge Aviator",
-s4_vid_c1_desc: "Aviator arhitektūras reāllaika apstrādes slāņa vizualizēšana, parādot, kā tas interpretē attēlu un teksta prasības lietošanai gatavos lietotāju stāstos no funkcijas.",
-s4_vid_c2_title: "Sistēmu integrācija",
-s4_vid_c2_desc: "Novērojiet nevainojamu integrāciju starp biznesa loģiku un automatizētu darba vienību izveidi, nodrošinot TaaS ietvara misijas panākumus."
-        }
-    };
+        // --- TRANSLATION DATA ---
+        const i18n = {
+            en: {
+                flag: 'https://flagcdn.com/w20/gb.png',
+                code: 'EN',
+                nav_who: "Who is KOMBIT", nav_why: "Why ValueEdge", nav_work: "Everyday Work", nav_ai: "Aviator AI", nav_calc: "Financial Impact",
+                hero_badge: "ENTERPRISE QUALITY ENGINEERING",
+                hero_title: "Modernising testing at ",
+                hero_desc: "Exploring the implementation of Testing as a Service (TaaS) utilizing OpenText's ValueEdge (CSDP) to drive efficiency across Danish municipal IT solutions.",
+                hero_btn: "Explore the Journey",
+                s1_intro: "Introduction", s1_title: "Who is KOMBIT?",
+                s1_p1: "KOMBIT is the IT project organization of the Danish municipalities. Founded to create cohesion and efficiency, KOMBIT purchases, manages, and develops IT solutions on behalf of the 98 municipalities in Denmark.",
+                s1_p2: "By centralizing IT procurement and management, KOMBIT ensures that critical infrastructure—serving millions of citizens—is secure, compliant, and cost-effective.",
+                s1_li1: "Serving 98 Danish Municipalities", s1_li2: "Managing complex supplier ecosystems", s1_li3: "High standards for data security and stability",
+                s1_stat1: "Municipalities", s1_stat2: "Citizens Served",
+                s2_intro: "Core Infrastructure", s2_title: "Why ValueEdge (CSDP)?",
+                s2_desc: "To manage complex municipal IT projects, KOMBIT requires a robust testing foundation. Testing as a Service (TaaS) combined with OpenText ValueEdge delivers exactly that.",
+                s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service provides on-demand testing expertise and scalable resources. ValueEdge (the Core Software Devilery Platform) acts as the engine, providing a unified methodology across all of KOMBIT's testing initiatives.",
+                s2_c2_title: "Supplier Tech-Stack Integration", s2_c2_desc: "KOMBIT works with multiple external vendors. ValueEdge seamlessly integrates across diverse tech-stacks (Jira, Git, CI/CD tools), ensuring that no matter what the supplier uses, quality metrics are captured.",
+                s2_c3_title: "Combined Data in One Place", s2_c3_desc: "A single source of truth. By pulling data from automation scripts, manual test runs, and pipeline metrics, ValueEdge gives KOMBIT's leadership real-time visibility into release readiness and risk.",
+                s3_box_title: "The ValueEdge Workspace", s3_i1_t: "Cross-Project Visibility", s3_i1_d: "Test Managers navigate multiple municipal projects from a single dashboard.", s3_i2_t: "Defect Triage", s3_i2_d: "Seamless communication between TaaS teams and external developers.", s3_i3_t: "Traceability", s3_i3_d: "Linking business requirements directly to automated test executions.",
+                s3_intro: "Operations", s3_title: "Working with ValueEdge",
+                s3_p1: "For Test Managers at KOMBIT, practical everyday work requires orchestrating complex workflows without getting lost in administrative overhead.",
+                s3_p2: "ValueEdge provides isolated <strong>Workspaces</strong> for different municipal domains, ensuring data privacy while allowing high-level test governance. TaaS professionals use these workspaces to execute cycles, report bugs, and validate fixes efficiently.",
+                s4_intro: "The Future", s4_title: "Using OpenText Aviator AI",
+                s4_desc: "Generative AI is transforming how we approach software testing. At KOMBIT, the adoption of Aviator AI represents the shift from manual test authoring to intelligent, automated generation.",
+                s4_c1_title: "Phase 1: Successful POC", s4_c1_desc: "The journey began with a Proof of Concept to validate Aviator's capabilities. We tested its ability to automatically generate manual test cases, BDD, User Stories from raw description, images and text and optimized existing work entities. The results showed a drastic reduction in test preparation and execution time.",
+                s4_c2_title: "Phase 2: Now in Production", s4_c2_desc: "Moving beyond the POC, Aviator AI is now integrated into the production workflow. Test Managers leverage it to accelerate test design, summarize defect trends, and gain AI-driven insights into the overall risk profile of municipal software releases.",
+                ft_success: "Success Story", ft_title: "The ValueEdge Journey", ft_desc: "Empowering Danish municipalities through Testing as a Service (TaaS) and centralised quality governance.", ft_cph: "KL, Copenhagen",
+                eco_title: "Bridging the Gap Between <br><span class='text-red-600'>Vendors & Governance</span>",
+                eco_desc: "ValueEdge creates a seamless 'Single Source of Truth' by integrating directly with the development tools your vendors already use. This allows KOMBIT to maintain high-level governance without disrupting external development workflows.",
+                eco_sync: "Source Ingestion",
+                eco_sync_sub: "DevOps & Project Management Sync",
+                eco_quality: "Quality Streams",
+                eco_quality_sub: "Automated Test Results & Pipelines",
+                eco_status_label: "Integration Status",
+                eco_status_1: "Vendor Backlog Sync",
+                eco_status_2: "Automation Pipe (98 Munis)",
+                eco_status_3: "TaaS Framework Validation",
+                eco_uptime: "ECOSYSTEM UPTIME",
+                calc_title: "Value Realization Calculator",
+                calc_subtitle: "Business Impact",
+                calc_muni: "Total Municipalities",
+                calc_hours: "Manual Hours / Release",
+                calc_releases: "Releases / Year",
+                calc_eff: "Automation Efficiency",
+                calc_rate: "Hourly Rate (€)",
+                calc_res_hours: "Engineering Hours Recovered",
+                calc_res_cost: "Financial Efficiency Gain",
+                calc_annually: "Annually across selected Munis",
+                calc_budget: "Reinvestable Budget",
+                calc_cycle: "Delivery cycle reduced by",
+                s4_usecases_title: "Everyday Impact for Test Managers",
+                s4_uc1_title: "1. Test Case Generation",
+                s4_uc1_desc: "Instead of manually writing 15 test steps from a raw Jira User Story, Aviator analyzes the acceptance criteria and generates a complete, ready-to-execute manual test script.",
+                s4_uc2_title: "2. Defect Log Summarization",
+                s4_uc2_desc: "Instead of digging through hundreds of lines of failed automated test logs to find the root cause, Aviator instantly reads the failure logs and outputs a human-readable summary.",
+                s4_uc3_title: "3. Requirement & Image Analysis",
+                s4_uc3_desc: "Aviator can ingest UI mockups (PNG/JPG) or raw text requirements to automatically draft comprehensive User Stories with full functional context.",
+                s4_uc4_title: "4. BDD Gherkin Specs",
+                s4_uc4_desc: "Automatically convert business requirements into 'Given-When-Then' Gherkin syntax, bridging the gap between Business Analysts and Automated Testing.",
+                s4_vid_title: "Aviator in action creating seamless work items",
+                s4_vid_badge: "RECORDED AVIATOR DEMO",
+                s4_vid_c1_title: "ValueEdge Aviator",
+                s4_vid_c1_desc: "Visualizing the real-time processing layer of the Aviator architecture, showing how it interprets image and text requirements into ready to use user stories from the Feature.",
+                s4_vid_c2_title: "System Integration",
+                s4_vid_c2_desc: "Observe the seamless integration between business logic and automated creation of work items, ensuring mission success for the TaaS framework."
 
-    // --- LANGUAGE LOGIC ---
-    function setLanguage(lang) {
-        localStorage.setItem('preferred-lang', lang);
-        const data = i18n[lang];
-        
-        // Update Flag & Code
-        document.getElementById('current-lang-flag').src = data.flag;
-        document.getElementById('current-lang-code').innerText = data.code;
-
-        // Update all elements with data-i18n
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (data[key]) {
-                el.innerHTML = data[key];
+            },
+            da: {
+                flag: 'https://flagcdn.com/w20/dk.png',
+                code: 'DA',
+                nav_who: "Hvem er KOMBIT", nav_why: "Hvorfor ValueEdge", nav_work: "Dagligt arbejde", nav_ai: "Aviator AI", nav_calc: "Økonomisk effekt",
+                hero_badge: "ENTERPRISE KVALITETSUDVIKLING",
+                hero_title: "Testmodernisering hos ",
+                hero_desc: "Udforskning af implementeringen af Testing as a Service (TaaS) ved brug af OpenTexts ValueEdge (CSDP) for at skabe effektivitet på tværs af danske kommunale it-løsninger.",
+                hero_btn: "Udforsk rejsen",
+                s1_intro: "Introduktion", s1_title: "Hvem er KOMBIT?",
+                s1_p1: "KOMBIT er de danske kommuners it-fællesskab. Grundlagt for at skabe sammenhæng og effektivitet, indkøber, forvalter og udvikler KOMBIT it-løsninger på vegne af de 98 kommuner i Danmark.",
+                s1_p2: "Ved at centralisere it-indkøb og -forvaltning sikrer KOMBIT, at kritisk infrastruktur — der betjener millioner af borgere — er sikker, compliant og omkostningseffektiv.",
+                s1_li1: "Betjener 98 danske kommuner", s1_li2: "Håndtering af komplekse leverandørøkosystemer", s1_li3: "Høje standarder for datasikkerhed og stabilitet",
+                s1_stat1: "Kommuner", s1_stat2: "Borgere betjent",
+                s2_intro: "Kerneinfrastruktur", s2_title: "Hvorfor ValueEdge (CSDP)?",
+                s2_desc: "For at styre komplekse kommunale it-projekter kræver KOMBIT et robust testfundament. Testing as a Service (TaaS) kombineret med OpenText ValueEdge leverer præcis dette.",
+                s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service giver on-demand testekspertise og skalerbare ressourcer. ValueEdge (CSDP) fungerer som motoren og sikrer en ensartet metode på tværs af alle KOMBITs testinitiativer.",
+                s2_c2_title: "Leverandør Tech-Stack Integration", s2_c2_desc: "KOMBIT samarbejder med flere eksterne leverandører. ValueEdge integrerer problemfrit på tværs af diverse tech-stacks (Jira, Git, CI/CD-værktøjer), hvilket sikrer at kvalitetsmålinger fanges, uanset hvad leverandøren bruger.",
+                s2_c3_title: "Samlet data ét sted", s2_c3_desc: "Én sandhedskilde. Ved at trække data fra automatiseringsscripts, manuelle tests og pipeline-målinger giver ValueEdge KOMBITs ledelse realtidsindsigt i udgivelsesparathed og risici.",
+                s3_box_title: "ValueEdge Arbejdsområdet", s3_i1_t: "Tværgående projektsynlighed", s3_i1_d: "Test Managers navigerer i flere kommunale projekter fra ét dashboard.", s3_i2_t: "Defekthåndtering", s3_i2_d: "Sømløs kommunikation mellem TaaS-teams og eksterne udviklere.", s3_i3_t: "Sporbarhed", s3_i3_d: "Forbinder forretningskrav direkte med automatiserede testkørsler.",
+                s3_intro: "Drift", s3_title: "Arbejdet med ValueEdge",
+                s3_p1: "For Test Managers hos KOMBIT kræver det praktiske daglige arbejde orkestrering af komplekse workflows uden at fare vild i administrativt arbejde.",
+                s3_p2: "ValueEdge tilbyder isolerede <strong>Arbejdsområder (Workspaces)</strong> til forskellige kommunale domæner, hvilket sikrer databeskyttelse, mens det tillader teststyring på højt niveau. TaaS-fagfolk bruger disse arbejdsområder til at udføre cyklusser, rapportere fejl og validere rettelser effektivt.",
+                s4_intro: "Fremtiden", s4_title: "Brug af OpenText Aviator AI",
+                s4_desc: "Generativ AI transformerer vores tilgang til softwaretest. Hos KOMBIT repræsenterer brugen af Aviator AI skiftet fra manuel testskrivning til intelligent, automatiseret generering.",
+                s4_c1_title: "Fase 1: Vellykket POC", s4_c1_desc: "Rejsen begyndte med et Proof of Concept for at validere Aviators evner. Vi testede dens evne til automatisk at generere manuelle testcases, BDD, User Stories fra rå beskrivelser, billeder og tekst og optimerede eksisterende arbejdsenheder. Resultaterne viste en drastisk reduktion i testforberedelse og udførelsestid.",
+                s4_c2_title: "Fase 2: Nu i produktion", s4_c2_desc: "Vi er gået videre fra POC, og Aviator AI er nu integreret i produktionsworkflowet. Test Managers udnytter det til at fremskynde testdesign, opsummere fejl-tendenser og få AI-drevne indsigter i den overordnede risikoprofil for kommunale softwareudgivelser.",
+                ft_success: "Succeshistorie", ft_title: "ValueEdge Rejsen", ft_desc: "Styrkelse af de danske kommuner gennem Testing as a Service (TaaS) og centraliseret kvalitetsstyring.", ft_cph: "KL, København",
+                eco_title: "Brobygning mellem <br><span class='text-red-600'>Leverandører & Governance</span>",
+                eco_desc: "ValueEdge skaber en problemfri 'Single Source of Truth' ved at integrere direkte med de udviklingsværktøjer, som jeres leverandører allerede bruger. Dette gør det muligt for KOMBIT at opretholde governance på højt niveau uden at forstyrre eksterne arbejdsgange.",
+                eco_sync: "Kilde-indtagelse",
+                eco_sync_sub: "DevOps & Projektstyrings-synk",
+                eco_quality: "Kvalitets-strømme",
+                eco_quality_sub: "Automatiserede testresultater & pipelines",
+                eco_status_label: "Integrationsstatus",
+                eco_status_1: "Synkronisering af Leverandør-backlog",
+                eco_status_2: "Automations-pipeline (98 kommuner)",
+                eco_status_3: "TaaS Framework Validering",
+                eco_uptime: "SYSTEM OPPETID",
+                calc_title: "Værdi-beregner",
+                calc_subtitle: "Forretningsmæssig effekt",
+                calc_muni: "Antal Kommuner",
+                calc_hours: "Manuelle timer / Release",
+                calc_releases: "Releases / år",
+                calc_eff: "Automations-effektivitet",
+                calc_rate: "Timesats (€)",
+                calc_res_hours: "Timer sparet",
+                calc_res_cost: "Økonomisk gevinst",
+                calc_annually: "Årligt på tværs af kommuner",
+                calc_budget: "Geninvesterbart budget",
+                calc_cycle: "Leveringstiden reduceret med",
+                s4_usecases_title: "Daglig effekt for Test Managers",
+                s4_uc1_title: "1. Generering af testcases",
+                s4_uc1_desc: "I stedet for manuelt at skrive 15 testtrin fra en rå Jira User Story, analyserer Aviator acceptkriterierne og genererer et komplet, køreklar manuelt testscript.",
+                s4_uc2_title: "2. Opsummering af fejllogs",
+                s4_uc2_desc: "I stedet for at grave gennem hundredvis af linjer med fejlslagne automatiserede testlogs for at finde årsagen, læser Aviator øjeblikkeligt fejlloggene og udsender en læsevenlig opsummering.",
+                s4_uc3_title: "3. Kravs- og billedanalyse",
+                s4_uc3_desc: "Aviator kan indlæse UI-mockups (PNG/JPG) eller rå tekstkrav for automatisk at udarbejde omfattende User Stories med fuld funktionel kontekst.",
+                s4_uc4_title: "4. BDD Gherkin-specifikationer",
+                s4_uc4_desc: "Konverter automatisk forretningskrav til 'Given-When-Then' Gherkin-syntaks, hvilket bygger bro mellem forretningsanalytikere og automatiseret test.",
+                s4_vid_title: "Aviator i aktion skaber gnidningsløse arbejdsopgaver",
+                s4_vid_badge: "OPTAGET AVIATOR DEMO",
+                s4_vid_c1_title: "ValueEdge Aviator",
+                s4_vid_c1_desc: "Visualisering af realtidsbehandlingslaget i Aviator-arkitekturen, der viser, hvordan den tolker billed- og tekstkrav til brugsklare user stories fra funktionen.",
+                s4_vid_c2_title: "Systemintegration",
+                s4_vid_c2_desc: "Se den problemfrie integration mellem forretningslogik og automatiseret oprettelse af arbejdsopgaver, som sikrer missionssucces for TaaS-frameworket."
+            },
+            sv: {
+                flag: 'https://flagcdn.com/w20/se.png',
+                code: 'SV',
+                nav_who: "Vem är KOMBIT", nav_why: "Varför ValueEdge", nav_work: "Dagligt arbete", nav_ai: "Aviator AI", nav_calc: "Finansiell påverkan",
+                hero_badge: "ENTERPRISE KVALITETSTEKNIK",
+                hero_title: "Testmodernisering på ",
+                hero_desc: "Utforska implementeringen av Testing as a Service (TaaS) med hjälp av OpenTexts ValueEdge (CSDP) för att driva effektivitet över danska kommunala IT-lösningar.",
+                hero_btn: "Utforska resan",
+                s1_intro: "Introduktion", s1_title: "Vem är KOMBIT?",
+                s1_p1: "KOMBIT är de danska kommunernas IT-projektorganisation. Grundat för att skapa sammanhållning och effektivitet, köper, hanterar och utvecklar KOMBIT IT-lösningar för de 98 kommunerna i Danmark.",
+                s1_p2: "Genom att centralisera IT-inköp och hantering säkerställer KOMBIT att kritisk infrastruktur — som betjänar miljontals medborgare — är säker, kompatibel och kostnadseffektiv.",
+                s1_li1: "Betjänar 98 danska kommuner", s1_li2: "Hantering av komplexa leverantörsekosystem", s1_li3: "Höga standarder för datasäkerhet och stabilitet",
+                s1_stat1: "Kommuner", s1_stat2: "Medborgare betjänade",
+                s2_intro: "Kärninfrastruktur", s2_title: "Varför ValueEdge (CSDP)?",
+                s2_desc: "För att hantera komplexa kommunala IT-projekt kräver KOMBIT en robust testgrund. Testing as a Service (TaaS) kombinerat med OpenText ValueEdge levererar exakt detta.",
+                s2_c1_title: "TaaS & CSDP Integration", s2_c1_desc: "Testing as a Service tillhandahåller testexpertis och skalbara resurser på begäran. ValueEdge (CSDP) fungerar som motorn och ger en enhetlig metodik över alla KOMBITs testinitiativ.",
+                s2_c2_title: "Leverantör Tech-Stack Integration", s2_c2_desc: "KOMBIT arbetar med flera externa leverantörer. ValueEdge integreras sömlöst över olika tech-stacks (Jira, Git, CI/CD-verktyg), vilket säkerställer att kvalitetsmått fångas, oavsett vad leverantören använder.",
+                s2_c3_title: "Kombinerad data på en plats", s2_c3_desc: "En enda sanningskälla. Genom att hämta data från automatiseringsskript, manuella testkörningar och pipeline-mätvärden ger ValueEdge KOMBITs ledning realtidsinsikt i releaseberedskap och risker.",
+                s3_box_title: "ValueEdge Arbetsyta", s3_i1_t: "Översyn över flera projekt", s3_i1_d: "Test Managers navigerar i flera kommunala projekt från en enda instrumentpanel.", s3_i2_t: "Defekthantering", s3_i2_d: "Sömlös kommunikation mellan TaaS-team och externa utvecklare.", s3_i3_t: "Spårbarhet", s3_i3_d: "Kopplar affärskrav direkt till automatiserade testkörningar.",
+                s3_intro: "Drift", s3_title: "Arbete med ValueEdge",
+                s3_p1: "För Test Managers på KOMBIT kräver praktiskt dagligt arbete orkestrering av komplexa arbetsflöden utan att gå vilse i administrativt arbete.",
+                s3_p2: "ValueEdge erbjuder isolerade <strong>Arbetsytor (Workspaces)</strong> för olika kommunala domäner, vilket säkerställer datasekretess samtidigt som det möjliggör teststyrning på hög nivå. TaaS-proffs använder dessa arbetsytor för att effektivt utföra cykler, rapportera buggar och validera fixar.",
+                s4_intro: "Framtiden", s4_title: "Användning av OpenText Aviator AI",
+                s4_desc: "Generativ AI förändrar hur vi närmar oss mjukvarutestning. På KOMBIT representerar antagandet av Aviator AI övergången från manuell testförfattning till intelligent, automatiserad generering.",
+                s4_c1_title: "Fas 1: Framgångsrik POC", s4_c1_desc: "Resan började med ett Proof of Concept för att validera Aviators funktioner. Vi testade dess förmåga att automatiskt generera manuella testfall, BDD, User Stories från rå beskrivning, bilder och text och optimerade befintliga arbetsenheter. Resultaten visade en drastisk minskning av testförberedelser och exekveringstid.",
+                s4_c2_title: "Fas 2: Nu i produktion", s4_c2_desc: "Vi går bortom POC, och Aviator AI är nu integrerad i produktionsarbetsflödet. Test Managers utnyttjar det för att påskynda testdesign, sammanfatta defekttrender och få AI-drivna insikter i den övergripande riskprofilen för kommunala programvarureleaser.",
+                ft_success: "Framgångssaga", ft_title: "ValueEdge Resan", ft_desc: "Bemyndigande av danska kommuner genom Testing as a Service (TaaS) och centraliserad kvalitetsstyrning.", ft_cph: "KL, Köpenhamn",
+                eco_title: "Överbrygga klyftan mellan <br><span class='text-red-600'>Leverantörer & Governance</span>",
+                eco_desc: "ValueEdge skapar en sömlös 'Single Source of Truth' genom att integrera direkt med de utvecklingsverktyg som era leverantörer redan använder. Detta gör det möjligt för KOMBIT att upprätthålla styrning på hög nivå utan att störa externa arbetsflöden.",
+                eco_sync: "Käll-intag",
+                eco_sync_sub: "DevOps & Projekthanterings-synk",
+                eco_quality: "Kvalitets-strömmar",
+                eco_quality_sub: "Automatiserade testresultat & pipelines",
+                eco_status_label: "Integrationsstatus",
+                eco_status_1: "Synkning av Leverantörs-backlog",
+                eco_status_2: "Automations-pipeline (98 kommuner)",
+                eco_status_3: "TaaS Framework Validering",
+                eco_uptime: "SYSTEMETS DRIFTTID",
+                calc_title: "Värdeberäknare",
+                calc_subtitle: "Affärspåverkan",
+                calc_muni: "Kommuner",
+                calc_hours: "Manuella timmar / Release",
+                calc_releases: "Releases / år",
+                calc_eff: "Automationsvinst",
+                calc_rate: "Timpris (€)",
+                calc_res_hours: "Timmar återställda",
+                calc_res_cost: "Finansiell vinst",
+                calc_annually: "Årligen",
+                calc_budget: "Återinvesterbar budget",
+                calc_cycle: "Leveranscykel minskad med",
+                s4_usecases_title: "Daglig påverkan för Test Managers",
+                s4_uc1_title: "1. Generering av testfall",
+                s4_uc1_desc: "Istället för att manuellt skriva 15 teststeg från en rå Jira User Story, analyserar Aviator acceptanskriterierna och genererar ett komplett, körklart manuellt testskript.",
+                s4_uc2_title: "2. Sammanfattning av defektloggar",
+                s4_uc2_desc: "Istället för att gräva igenom hundratals rader av misslyckade automatiserade testloggar för att hitta grundorsaken, läser Aviator omedelbart felloggarna och matar ut en läsbar sammanfattning.",
+                s4_uc3_title: "3. Krav- och bildanalys",
+                s4_uc3_desc: "Aviator kan läsa in UI-mockups (PNG/JPG) eller råa textkrav för att automatiskt skapa omfattande User Stories med fullt funktionellt sammanhang.",
+                s4_uc4_title: "4. BDD Gherkin-specifikationer",
+                s4_uc4_desc: "Konvertera automatiskt affärskrav till 'Given-When-Then' Gherkin-syntax, vilket överbryggar klyftan mellan affärsanalytiker och automatiserad testning.",
+                s4_vid_title: "Aviator i aktion skapar sömlösa arbetsuppgifter",
+                s4_vid_badge: "INSPELAD AVIATOR DEMO",
+                s4_vid_c1_title: "ValueEdge Aviator",
+                s4_vid_c1_desc: "Visualisering av realtidsbehandlingsskiktet i Aviator-arkitekturen, som visar hur den tolkar bild- och textkrav till färdiga user stories från funktionen.",
+                s4_vid_c2_title: "Systemintegration",
+                s4_vid_c2_desc: "Observera den sömlösa integrationen mellan affärslogik och automatiserat skapande av arbetsuppgifter, vilket säkerställer uppdragets framgång för TaaS-ramverket."
+            },
+            lv: {
+                flag: 'https://flagcdn.com/w20/lv.png', code: 'LV',
+                nav_who: "Kas ir KOMBIT", nav_why: "Kāpēc ValueEdge", nav_work: "Ikdienas darbs", nav_ai: "Aviator AI", nav_calc: "Finansiālā ietekme",
+                hero_badge: "UZŅĒMUMA KVALITĀTES INŽENIERIJA",
+                hero_title: "Testu modernizācija ",
+                hero_desc: "Izpētot testēšanas kā pakalpojuma (TaaS) ieviešanu, izmantojot OpenText ValueEdge (CSDP), lai veicinātu Dānijas pašvaldību IT risinājumu efektivitāti.",
+                hero_btn: "Izpētīt ceļojumu",
+                s1_intro: "Ievads", s1_title: "Kas ir KOMBIT?",
+                s1_p1: "KOMBIT ir Dānijas pašvaldību IT projektu organizācija. Dibināta, lai radītu saliedētību un efektivitāti, KOMBIT iegādājas, pārvalda un izstrādā IT risinājumus 98 Dānijas pašvaldību vārdā.",
+                s1_p2: "Centralizējot IT iepirkumus un pārvaldību, KOMBIT nodrošina, ka kritiskā infrastruktūra — kas kalpo miljoniem iedzīvotāju — ir droša, atbilstoša un rentabla.",
+                s1_li1: "Apkalpo 98 Dānijas pašvaldības", s1_li2: "Sarežģītu piegādātāju ekosistēmu pārvaldība", s1_li3: "Augsti standarti datu drošībai un stabilitātei",
+                s1_stat1: "Pašvaldības", s1_stat2: "Apkalpotie iedzīvotāji",
+                s2_intro: "Pamata infrastruktūra", s2_title: "Kāpēc ValueEdge (CSDP)?",
+                s2_desc: "Lai pārvaldītu sarežģītus pašvaldību IT projektus, KOMBIT ir nepieciešams spēcīgs testēšanas pamats. Testēšana kā pakalpojums (TaaS) apvienojumā ar OpenText ValueEdge nodrošina tieši to.",
+                s2_c1_title: "TaaS un CSDP integrācija", s2_c1_desc: "Testēšana kā pakalpojums nodrošina testēšanas ekspertīzi un mērogojamus resursus pēc pieprasījuma. ValueEdge (CSDP) darbojas kā dzinējs, nodrošinot vienotu metodoloģiju visās KOMBIT testēšanas iniciatīvās.",
+                s2_c2_title: "Piegādātāju tehnoloģiju steka integrācija", s2_c2_desc: "KOMBIT sadarbojas ar vairākiem ārējiem piegādātājiem. ValueEdge nemanāmi integrējas dažādos tehnoloģiju stekos (Jira, Git, CI/CD rīki), nodrošinot, ka kvalitātes rādītāji tiek fiksēti neatkarīgi no tā, ko izmanto piegādātājs.",
+                s2_c3_title: "Apvienoti dati vienuviet", s2_c3_desc: "Viens patiesības avots. Iegūstot datus no automatizācijas skriptiem, manuāliem testiem un konveijera rādītājiem, ValueEdge sniedz KOMBIT vadībai reāllaika ieskatu par laidienu gatavību un riskiem.",
+                s3_box_title: "ValueEdge darbvieta", s3_i1_t: "Pārredzamība starp projektiem", s3_i1_d: "Testēšanas vadītāji pārvalda vairākus pašvaldību projektus no viena paneļa.", s3_i2_t: "Defektu šķirošana", s3_i2_d: "Nevainojama saziņa starp TaaS komandām un ārējiem izstrādātājiem.", s3_i3_t: "Izsekojamība", s3_i3_d: "Biznesa prasību sasaiste tieši ar automatizētu testu izpildi.",
+                s3_intro: "Operācijas", s3_title: "Darbs ar ValueEdge",
+                s3_p1: "Testēšanas vadītājiem uzņēmumā KOMBIT praktisks ikdienas darbs prasa sarežģītu darbplūsmu vadīšanu, nepazūdot administratīvajos slogos.",
+                s3_p2: "ValueEdge nodrošina izolētas <strong>Darbvietas (Workspaces)</strong> dažādiem pašvaldību domēniem, nodrošinot datu privātumu, vienlaikus ļaujot veikt augsta līmeņa testēšanas pārvaldību. TaaS speciālisti izmanto šīs darbvietas, lai efektīvi izpildītu ciklus, ziņotu par kļūdām un apstiprinātu labojumus.",
+                s4_intro: "Nākotne", s4_title: "OpenText Aviator AI izmantošana",
+                s4_desc: "Ģeneratīvais AI pārveido mūsu pieeju programmatūras testēšanai. Uzņēmumā KOMBIT Aviator AI ieviešana atspoguļo pāreju no manuālas testu rakstīšanas uz inteliģentu, automatizētu ģenerēšanu.",
+                s4_c1_title: "1. fāze: Veiksmīgs POC", s4_c1_desc: "Ceļojums sākās ar koncepcijas pierādījumu (POC), lai apstiprinātu Aviator iespējas. Mēs pārbaudījām tā spēju automātiski ģenerēt manuālus testa gadījumus, BDD un lietotāju stāstus no neapstrādāta apraksta, attēliem un teksta, kā arī optimizējām esošās darba vienības. Rezultāti uzrādīja krasu testu sagatavošanas un izpildes laika samazināšanos.",
+                s4_c2_title: "2. fāze: Tagad ražošanā", s4_c2_desc: "Pārsniedzot POC, Aviator AI tagad ir integrēts ražošanas darbplūsmā. Testēšanas vadītāji to izmanto, lai paātrinātu testu plānošanu, apkopotu defektu tendences un iegūtu AI virzītus ieskatus par pašvaldību programmatūras laidienu kopējo riska profilu.",
+                ft_success: "Veiksmes stāsts", ft_title: "ValueEdge ceļojums", ft_desc: "Dānijas pašvaldību iespējināšana, izmantojot testēšanu kā pakalpojumu (TaaS) un centralizētu kvalitātes pārvaldību.", ft_cph: "KL, Kopenhāgena",
+                eco_title: "Tiltu veidošana starp <br><span class='text-red-600'>Piegādātājiem un Pārvaldību</span>",
+                eco_desc: "ValueEdge izveido nevainojamu 'vienoto patiesības avotu', tieši integrējoties ar izstrādes rīkiem, ko jūsu piegādātāji jau izmanto. Tas ļauj KOMBIT uzturēt augsta līmeņa pārvaldību, netraucējot ārējās izstrādes darba plūsmas.",
+                eco_sync: "Avotu Integrācija",
+                eco_sync_sub: "DevOps un projektu vadības sinhronizācija",
+                eco_quality: "Kvalitātes Plūsmas",
+                eco_quality_sub: "Automatizēti testa rezultāti un cauruļvadi",
+                eco_status_label: "Integrācijas Statuss",
+                eco_status_1: "Piegādātāju prioritāšu sinhronizācija",
+                eco_status_2: "Automatizācijas plūsma (98 pašvaldības)",
+                eco_status_3: "TaaS ietvara validācija",
+                eco_uptime: "SISTĒMAS DARBĪBAS LAIKS",
+                calc_title: "Vērtības kalkulators",
+                calc_subtitle: "Ietekme uz biznesu",
+                calc_muni: "Pašvaldības",
+                calc_hours: "Manuālās stundas / Laidiens",
+                calc_releases: "Laidieni / gadā",
+                calc_eff: "Automatizācijas ieguvums",
+                calc_rate: "Stundas likme (€)",
+                calc_res_hours: "Atgūtās darba stundas",
+                calc_res_cost: "Finansiālais ieguvums",
+                calc_annually: "Gadā visās pašvaldībās",
+                calc_budget: "Reinvestējams budžets",
+                calc_cycle: "Piegādes cikls samazināts par",
+                s4_usecases_title: "Ikdienas ietekme uz testēšanas vadītājiem",
+                s4_uc1_title: "1. Testa gadījumu ģenerēšana",
+                s4_uc1_desc: "Tā vietā, lai manuāli rakstītu 15 testēšanas soļus no neapstrādāta Jira lietotāja stāsta, Aviator analizē pieņemšanas kritērijus un ģenerē pilnīgu, izpildei gatavu manuālā testa skriptu.",
+                s4_uc2_title: "2. Defektu žurnālu kopsavilkums",
+                s4_uc2_desc: "Tā vietā, lai raktos cauri simtiem neizdevušos automatizēto testu žurnālu rindiņu, lai atrastu galveno cēloni, Aviator uzreiz nolasa kļūdu žurnālus un izvada cilvēkam lasāmu kopsavilkumu.",
+                s4_uc3_title: "3. Prasību un attēlu analīze",
+                s4_uc3_desc: "Aviator var apstrādāt saskarnes maketus (PNG/JPG) vai neapstrādātas teksta prasības, lai automātiski izstrādātu visaptverošus lietotāju stāstus ar pilnu funkcionālo kontekstu.",
+                s4_uc4_title: "4. BDD Gherkin specifikācijas",
+                s4_uc4_desc: "Automātiski konvertējiet biznesa prasības uz 'Given-When-Then' Gherkin sintaksi, mazinot plaisu starp biznesa analītiķiem un automatizēto testēšanu.",
+                s4_vid_title: "Aviator darbībā veido nevainojamus darba uzdevumus",
+                s4_vid_badge: "IERAKSTĪTS AVIATOR DEMO",
+                s4_vid_c1_title: "ValueEdge Aviator",
+                s4_vid_c1_desc: "Aviator arhitektūras reāllaika apstrādes slāņa vizualizēšana, parādot, kā tas interpretē attēlu un teksta prasības lietošanai gatavos lietotāju stāstos no funkcijas.",
+                s4_vid_c2_title: "Sistēmu integrācija",
+                s4_vid_c2_desc: "Novērojiet nevainojamu integrāciju starp biznesa loģiku un automatizētu darba vienību izveidi, nodrošinot TaaS ietvara misijas panākumus."
             }
+        };
+
+        // --- LANGUAGE LOGIC ---
+        function setLanguage(lang) {
+            localStorage.setItem('preferred-lang', lang);
+            const data = i18n[lang];
+
+            // Update Flag & Code
+            document.getElementById('current-lang-flag').src = data.flag;
+            document.getElementById('current-lang-code').innerText = data.code;
+
+            // Update all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (data[key]) {
+                    el.innerHTML = data[key];
+                }
+            });
+
+            // Hide Dropdown
+            document.getElementById('lang-dropdown').classList.add('hidden');
+        }
+
+        function toggleLangMenu(e) {
+            e.stopPropagation();
+            document.getElementById('lang-dropdown').classList.toggle('hidden');
+        }
+
+        // Close dropdown on outside click
+        window.addEventListener('click', () => {
+            document.getElementById('lang-dropdown').classList.add('hidden');
         });
 
-        // Hide Dropdown
-        document.getElementById('lang-dropdown').classList.add('hidden');
-    }
-
-    function toggleLangMenu(e) {
-        e.stopPropagation();
-        document.getElementById('lang-dropdown').classList.toggle('hidden');
-    }
-
-    // Close dropdown on outside click
-    window.addEventListener('click', () => {
-        document.getElementById('lang-dropdown').classList.add('hidden');
-    });
-
-    // 1. Initialize Animations
-    AOS.init({
-        once: true,
-        offset: 50,
-        duration: 800,
-    });
-
-    // 2. UPDATED COUNTER LOGIC
-    const animateValue = (id, target, duration) => {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        
-        let startTimestamp = null;
-        const step = (timestamp) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            const current = progress * target;
-            if (target % 1 === 0) {
-                obj.innerHTML = Math.floor(current);
-            } else {
-                obj.innerHTML = current.toFixed(1);
-            }
-
-            if (progress < 1) {
-                window.requestAnimationFrame(step);
-            } else {
-                obj.innerHTML = target;
-            }
-        };
-        window.requestAnimationFrame(step);
-    };
-
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateValue("muni-counter", 98, 2000);
-                animateValue("citizen-counter", 6.02, 2500);
-                counterObserver.unobserve(entry.target);
-            }
+        // 1. Initialize Animations
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
         });
-    }, { threshold: 0.5 });
 
-    // 3. Scroll Logic for Progress Bar & Navbar
-    window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        document.getElementById("scroll-progress").style.width = scrolled + "%";
+        // 2. UPDATED COUNTER LOGIC
+        const animateValue = (id, target, duration) => {
+            const obj = document.getElementById(id);
+            if (!obj) return;
 
-        const nav = document.getElementById('navbar');
-        const otWord = document.getElementById('opentext-word');
-        const divider = document.getElementById('nav-divider');
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
 
-        if (winScroll > 50) {
-            nav.classList.add('nav-scrolled');
-            nav.classList.remove('bg-transparent');
-            if (otWord) otWord.style.color = 'black';
-            if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
-        } else {
-            nav.classList.remove('nav-scrolled');
-            nav.classList.add('bg-transparent');
-            if (otWord) otWord.style.color = 'white';
-            if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
-        }
-    });
+                const current = progress * target;
+                if (target % 1 === 0) {
+                    obj.innerHTML = Math.floor(current);
+                } else {
+                    obj.innerHTML = current.toFixed(1);
+                }
 
-    // 4. Initialize State on Load
-   // --- MAINTENANCE CONTROL PANEL ---
-    const maintenanceConfig = {
-        enabled: false,           // Set to false to hide the notification
-        message: "SYSTEM UPDATE: This website is still being developed by QXMBG (Monty Bagati).", 
-        bgColor: "#E3000F",      // Background color (KOMBIT Red)
-        textColor: "#ffffff",    // Text color
-        icon: "🛠️",              // Custom icon or emoji
-        showPulse: true          // Adds a subtle glow effect
-    };
-
-    function initMaintenance() {
-        const banner = document.getElementById('maintenance-banner');
-        if (maintenanceConfig.enabled) {
-            banner.style.display = 'flex';
-            banner.style.backgroundColor = maintenanceConfig.bgColor;
-            banner.style.color = maintenanceConfig.textColor;
-            banner.innerHTML = `<span>${maintenanceConfig.icon}</span> ${maintenanceConfig.message}`;
-            document.body.classList.add('maintenance-active');
-            
-            if (maintenanceConfig.showPulse) {
-                banner.style.animation = "pulse-bg 2s infinite";
-            }
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- Value Realization Calculator Logic ---
-        const calcInputs = {
-            muni: document.getElementById('input-muni'),
-            hours: document.getElementById('input-hours'),
-            releases: document.getElementById('input-releases'),
-            eff: document.getElementById('input-eff'),
-            rate: document.getElementById('input-rate')
-        };
-        const calcDisplays = {
-            muni: document.getElementById('disp-muni'),
-            hours: document.getElementById('disp-hours'),
-            releases: document.getElementById('disp-releases'),
-            eff: document.getElementById('disp-eff'),
-            rate: document.getElementById('disp-rate'),
-            resHours: document.getElementById('res-hours'),
-            resCost: document.getElementById('res-cost'),
-            bigEff: document.getElementById('res-big-eff')
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.innerHTML = target;
+                }
+            };
+            window.requestAnimationFrame(step);
         };
 
-        function updateCalculator() { 
-    if(!calcInputs.muni) return; 
-    
-    const m = parseInt(calcInputs.muni.value); 
-    const h = parseInt(calcInputs.hours.value); 
-    const r = parseInt(calcInputs.releases.value); 
-    const e = parseInt(calcInputs.eff.value) / 100; 
-    const rt = parseInt(calcInputs.rate.value);
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateValue("muni-counter", 98, 2000);
+                    animateValue("citizen-counter", 6.02, 2500);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
 
-    const recovered = m * h * r * e; 
-    const savings = recovered * rt; 
-
-    // Update Displays
-    calcDisplays.muni.innerText = m;
-    calcDisplays.hours.innerText = h; 
-    calcDisplays.releases.innerText = r; 
-    
-    // FIX: Math.round removes the 55.000000000001 glitch
-    calcDisplays.eff.innerText = Math.round(e * 100) + "%"; 
-    calcDisplays.rate.innerText = rt;
-    calcDisplays.bigEff.innerText = Math.round(e * 100) + "%"; 
-
-    calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US'); 
-    calcDisplays.resCost.innerText = savings >= 1000000 ?
-        (savings/1000000).toFixed(2) + "M" : 
-        (savings/1000).toFixed(0) + "K"; 
-}
-
-        Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
-        updateCalculator();
-        initMaintenance(); // Run maintenance check
-        // Load Language
-        const savedLang = localStorage.getItem('preferred-lang') || 'en';
-        setLanguage(savedLang);
-
-        const triggerElement = document.getElementById('muni-counter');
-        if (triggerElement) counterObserver.observe(triggerElement);
-
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0);
-
-        // BACK TO TOP LOGIC
-        const bttBtn = document.getElementById("backToTop");
-
+        // 3. Scroll Logic for Progress Bar & Navbar
         window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 400) {
-                bttBtn.classList.add("show");
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+
+            const nav = document.getElementById('navbar');
+            const otWord = document.getElementById('opentext-word');
+            const divider = document.getElementById('nav-divider');
+
+            if (winScroll > 50) {
+                nav.classList.add('nav-scrolled');
+                nav.classList.remove('bg-transparent');
+                if (otWord) otWord.style.color = 'black';
+                if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
             } else {
-                bttBtn.classList.remove("show");
+                nav.classList.remove('nav-scrolled');
+                nav.classList.add('bg-transparent');
+                if (otWord) otWord.style.color = 'white';
+                if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
             }
         });
 
-        bttBtn.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+        // 4. Initialize State on Load
+        // --- MAINTENANCE CONTROL PANEL ---
+        const maintenanceConfig = {
+            enabled: false,           // Set to false to hide the notification
+            message: "SYSTEM UPDATE: This website is still being developed by QXMBG (Monty Bagati).",
+            bgColor: "#E3000F",      // Background color (KOMBIT Red)
+            textColor: "#ffffff",    // Text color
+            icon: "🛠️",              // Custom icon or emoji
+            showPulse: true          // Adds a subtle glow effect
+        };
+
+        function initMaintenance() {
+            const banner = document.getElementById('maintenance-banner');
+            if (maintenanceConfig.enabled) {
+                banner.style.display = 'flex';
+                banner.style.backgroundColor = maintenanceConfig.bgColor;
+                banner.style.color = maintenanceConfig.textColor;
+                banner.innerHTML = `<span>${maintenanceConfig.icon}</span> ${maintenanceConfig.message}`;
+                document.body.classList.add('maintenance-active');
+
+                if (maintenanceConfig.showPulse) {
+                    banner.style.animation = "pulse-bg 2s infinite";
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Value Realization Calculator Logic ---
+            const calcInputs = {
+                muni: document.getElementById('input-muni'),
+                hours: document.getElementById('input-hours'),
+                releases: document.getElementById('input-releases'),
+                eff: document.getElementById('input-eff'),
+                rate: document.getElementById('input-rate')
+            };
+            const calcDisplays = {
+                muni: document.getElementById('disp-muni'),
+                hours: document.getElementById('disp-hours'),
+                releases: document.getElementById('disp-releases'),
+                eff: document.getElementById('disp-eff'),
+                rate: document.getElementById('disp-rate'),
+                resHours: document.getElementById('res-hours'),
+                resCost: document.getElementById('res-cost'),
+                bigEff: document.getElementById('res-big-eff')
+            };
+
+            function updateCalculator() {
+                if (!calcInputs.muni) return;
+
+                const m = parseInt(calcInputs.muni.value);
+                const h = parseInt(calcInputs.hours.value);
+                const r = parseInt(calcInputs.releases.value);
+                const e = parseInt(calcInputs.eff.value) / 100;
+                const rt = parseInt(calcInputs.rate.value);
+
+                const recovered = m * h * r * e;
+                const savings = recovered * rt;
+
+                // Update Displays
+                calcDisplays.muni.innerText = m;
+                calcDisplays.hours.innerText = h;
+                calcDisplays.releases.innerText = r;
+
+                // FIX: Math.round removes the 55.000000000001 glitch
+                calcDisplays.eff.innerText = Math.round(e * 100) + "%";
+                calcDisplays.rate.innerText = rt;
+                calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
+
+                calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
+                calcDisplays.resCost.innerText = savings >= 1000000 ?
+                    (savings / 1000000).toFixed(2) + "M" :
+                    (savings / 1000).toFixed(0) + "K";
+            }
+
+            Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
+            updateCalculator();
+            initMaintenance(); // Run maintenance check
+            // Load Language
+            const savedLang = localStorage.getItem('preferred-lang') || 'en';
+            setLanguage(savedLang);
+
+            const triggerElement = document.getElementById('muni-counter');
+            if (triggerElement) counterObserver.observe(triggerElement);
+
+            if (history.scrollRestoration) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+
+            // BACK TO TOP LOGIC
+            const bttBtn = document.getElementById("backToTop");
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 400) {
+                    bttBtn.classList.add("show");
+                } else {
+                    bttBtn.classList.remove("show");
+                }
+            });
+
+            bttBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
             });
         });
-    });
-    /* --- TICKER CONTROL --- */
-function updateTickerMessage(message) {
-    const target = document.getElementById('ticker-target');
-    if (target) {
-        target.innerHTML = `
+        /* --- TICKER CONTROL --- */
+        function updateTickerMessage(message) {
+            const target = document.getElementById('ticker-target');
+            if (target) {
+                target.innerHTML = `
             <div class="ticker-text-item">${message}</div>
             <div class="ticker-text-item">${message}</div>
         `;
-    }
-}
+            }
+        }
     </script>
-    
+
     <button id="backToTop" title="Go to top">
         <div class="btn-circle">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path>
             </svg>
         </div>
     </button>
     <div class="custom-bottom-ticker" id="global-ticker">
-    <div class="ticker-content-wrapper" id="ticker-target">
-        <div class="ticker-text-item">
-            DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT • KOMBIT • DENMARK
-        </div>
-        <div class="ticker-text-item">
-            DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT • KOMBIT • DENMARK
-        </div>
-        <div class="ticker-text-item">
-            DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT • KOMBIT • DENMARK
+        <div class="ticker-content-wrapper" id="ticker-target">
+            <div class="ticker-text-item">
+                DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT •
+                KOMBIT • DENMARK
+            </div>
+            <div class="ticker-text-item">
+                DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT •
+                KOMBIT • DENMARK
+            </div>
+            <div class="ticker-text-item">
+                DESIGNED , DEVELOPED and MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> • TEST ARCHITECT •
+                KOMBIT • DENMARK
+            </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>
