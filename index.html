@@ -907,54 +907,70 @@
                 </div>
 
                 <div class="lg:col-span-3 grid grid-cols-1 gap-5">
-    
-    <div class="p-8 rounded-xl relative overflow-hidden shadow-lg border border-white/10 bg-gradient-to-br from-[#1a2b4d] to-[#0b1b3d]">
-        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/5 blur-3xl rounded-full"></div>
-        <div class="relative z-10 flex flex-col justify-center h-full">
-            <span data-i18n="calc_res_cost" class="text-[10px] font-black text-blue-200/50 uppercase tracking-[0.2em] mb-3 block">Financial Gain</span>
-            
-            <div class="flex flex-col gap-3">
-                <span class="text-6xl md:text-7xl font-black text-white tracking-tighter">€<span id="res-cost">0</span></span>
-                
-                <div class="w-fit">
-                    <span data-i18n="calc_annually_long" class="inline-block text-[10px] text-green-400 font-bold whitespace-nowrap uppercase tracking-wider bg-green-400/10 px-3 py-1.5 rounded-md">
-                        Annually across selected Municipalities
-                    </span>
-                </div>
-                
-                <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                    <div id="bar-financial" class="bg-green-400 h-full transition-all duration-700 ease-out" style="width: 0%"></div>
-                </div>
-            </div>
-            
-            <span data-i18n="calc_budget" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-6 border-t border-white/10 pt-4">
-                Reinvestable Budget
-            </span>
-        </div>
-    </div>
 
-    <div class="grid sm:grid-cols-2 gap-5">
-        <div class="bg-[#1a2b4d] p-8 rounded-xl border border-white/10 shadow-sm flex flex-col justify-between min-h-[160px]">
-            <div>
-                <span data-i18n="calc_res_hours" class="text-[10px] font-black text-blue-200/40 uppercase tracking-widest mb-2 block">Engineering Hours Recovered</span>
-                <span id="res-hours" class="text-4xl font-black text-white leading-none">0</span>
-            </div>
-            <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                <div id="bar-hours" class="bg-blue-500 h-full transition-all duration-700 ease-out" style="width: 0%"></div>
-            </div>
-        </div>
+                    <div
+                        class="p-8 rounded-xl relative overflow-hidden shadow-lg border border-white/10 bg-gradient-to-br from-[#1a2b4d] to-[#0b1b3d]">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/5 blur-3xl rounded-full"></div>
+                        <div class="relative z-10 flex flex-col justify-center h-full">
+                            <span data-i18n="calc_res_cost"
+                                class="text-[10px] font-black text-blue-200/50 uppercase tracking-[0.2em] mb-3 block">Financial
+                                Gain</span>
 
-        <div class="bg-[#1a2b4d] p-8 rounded-xl border border-white/10 shadow-sm flex flex-col justify-between min-h-[160px]">
-            <div>
-                <span data-i18n="calc_cycle" class="text-[10px] font-black text-blue-200/40 uppercase tracking-widest mb-2 block">Automation Efficiency</span>
-                <span id="res-big-eff" class="text-4xl font-black text-[#E3000F] leading-none">0%</span>
-            </div>
-            <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                <div id="bar-cycle" class="bg-[#E3000F] h-full transition-all duration-700 ease-out" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-</div>
+                            <div class="flex flex-col gap-3">
+                                <span class="text-6xl md:text-7xl font-black text-white tracking-tighter">€<span
+                                        id="res-cost">0</span></span>
+
+                                <div class="w-fit">
+                                    <span data-i18n="calc_annually_long"
+                                        class="inline-block text-[10px] text-green-400 font-bold whitespace-nowrap uppercase tracking-wider bg-green-400/10 px-3 py-1.5 rounded-md">
+                                        Annually across selected Municipalities
+                                    </span>
+                                </div>
+
+                                <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-financial"
+                                        class="bg-green-400 h-full transition-all duration-700 ease-out"
+                                        style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <span data-i18n="calc_budget"
+                                class="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-6">
+                                Reinvestable Budget
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div
+                            class="bg-[#1a2b4d] p-8 rounded-xl border border-white/10 shadow-sm flex flex-col justify-between min-h-[160px]">
+                            <div>
+                                <span data-i18n="calc_res_hours"
+                                    class="text-[10px] font-black text-blue-200/40 uppercase tracking-widest mb-2 block">Engineering
+                                    Hours Recovered</span>
+                                <span id="res-hours" class="text-4xl font-black text-white leading-none">0</span>
+                            </div>
+                            <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div id="bar-hours" class="bg-blue-500 h-full transition-all duration-700 ease-out"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-[#1a2b4d] p-8 rounded-xl border border-white/10 shadow-sm flex flex-col justify-between min-h-[160px]">
+                            <div>
+                                <span data-i18n="calc_cycle"
+                                    class="text-[10px] font-black text-blue-200/40 uppercase tracking-widest mb-2 block">Automation
+                                    Efficiency</span>
+                                <span id="res-big-eff" class="text-4xl font-black text-[#E3000F] leading-none">0%</span>
+                            </div>
+                            <div class="mt-4 w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div id="bar-cycle" class="bg-[#E3000F] h-full transition-all duration-700 ease-out"
+                                    style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </section>
     <section id="ai" class="section-padding bg-white border-t border-gray-200">
         <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
@@ -1664,53 +1680,53 @@
             };
 
             function updateCalculator() {
-    if (!calcInputs.muni) return;
+                if (!calcInputs.muni) return;
 
-    // 1. Get values
-    const m = parseInt(calcInputs.muni.value);
-    const h = parseInt(calcInputs.hours.value);
-    const r = parseInt(calcInputs.releases.value);
-    const e = parseInt(calcInputs.eff.value) / 100;
-    const rt = parseInt(calcInputs.rate.value);
+                // 1. Get values
+                const m = parseInt(calcInputs.muni.value);
+                const h = parseInt(calcInputs.hours.value);
+                const r = parseInt(calcInputs.releases.value);
+                const e = parseInt(calcInputs.eff.value) / 100;
+                const rt = parseInt(calcInputs.rate.value);
 
-    // 2. Calculations
-    const recovered = m * h * r * e;
-    const savings = recovered * rt;
+                // 2. Calculations
+                const recovered = m * h * r * e;
+                const savings = recovered * rt;
 
-    // 3. Update Sliders Display
-    calcDisplays.muni.innerText = m;
-    calcDisplays.hours.innerText = h;
-    calcDisplays.releases.innerText = r;
-    calcDisplays.eff.innerText = Math.round(e * 100) + "%";
-    calcDisplays.rate.innerText = rt;
+                // 3. Update Sliders Display
+                calcDisplays.muni.innerText = m;
+                calcDisplays.hours.innerText = h;
+                calcDisplays.releases.innerText = r;
+                calcDisplays.eff.innerText = Math.round(e * 100) + "%";
+                calcDisplays.rate.innerText = rt;
 
-    // 4. Update Main Result Figures
-    calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
-    calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
-    
-    // Financial Gain formatting with decimal fix for K
-    calcDisplays.resCost.innerText = savings >= 1000000 ?
-        (savings / 1000000).toFixed(2) + "M" :
-        (savings / 1000).toFixed(1) + "K";
+                // 4. Update Main Result Figures
+                calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
+                calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
 
-    // 5. Update Progress Bars
-    
-    // Scale for Hours (Max 250,000)
-    const hoursMaxScale = 250000;
-    const hoursPercent = Math.min((recovered / hoursMaxScale) * 100, 100);
-    const barHours = document.getElementById('bar-hours');
-    if (barHours) barHours.style.width = hoursPercent + '%';
+                // Financial Gain formatting with decimal fix for K
+                calcDisplays.resCost.innerText = savings >= 1000000 ?
+                    (savings / 1000000).toFixed(2) + "M" :
+                    (savings / 1000).toFixed(1) + "K";
 
-    // Scale for Efficiency (Direct %)
-    const barCycle = document.getElementById('bar-cycle');
-    if (barCycle) barCycle.style.width = (e * 100) + '%';
+                // 5. Update Progress Bars
 
-    // Scale for Financial Gain (Max 67,032,000)
-    const financialMaxScale = 67032000; 
-    const financialPercent = Math.min((savings / financialMaxScale) * 100, 100);
-    const barFinancial = document.getElementById('bar-financial');
-    if (barFinancial) barFinancial.style.width = financialPercent + '%';
-}
+                // Scale for Hours (Max 250,000)
+                const hoursMaxScale = 250000;
+                const hoursPercent = Math.min((recovered / hoursMaxScale) * 100, 100);
+                const barHours = document.getElementById('bar-hours');
+                if (barHours) barHours.style.width = hoursPercent + '%';
+
+                // Scale for Efficiency (Direct %)
+                const barCycle = document.getElementById('bar-cycle');
+                if (barCycle) barCycle.style.width = (e * 100) + '%';
+
+                // Scale for Financial Gain (Max 67,032,000)
+                const financialMaxScale = 67032000;
+                const financialPercent = Math.min((savings / financialMaxScale) * 100, 100);
+                const barFinancial = document.getElementById('bar-financial');
+                if (barFinancial) barFinancial.style.width = financialPercent + '%';
+            }
             Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
             updateCalculator();
             initMaintenance(); // Run maintenance check
