@@ -1667,53 +1667,55 @@
             };
 
             function updateCalculator() {
-                if (!calcInputs.muni) return;
+    if (!calcInputs.muni) return;
 
-                // 1. Get values
-                const m = parseInt(calcInputs.muni.value);
-                const h = parseInt(calcInputs.hours.value);
-                const r = parseInt(calcInputs.releases.value);
-                const e = parseInt(calcInputs.eff.value) / 100;
-                const rt = parseInt(calcInputs.rate.value);
+    // 1. Capture Input Values
+    const m = parseInt(calcInputs.muni.value);
+    const h = parseInt(calcInputs.hours.value);
+    const r = parseInt(calcInputs.releases.value);
+    const e = parseInt(calcInputs.eff.value) / 100;
+    const rt = parseInt(calcInputs.rate.value);
 
-                // 2. Calculations
-                const recovered = m * h * r * e;
-                const savings = recovered * rt;
+    // 2. Perform Calculations
+    const recovered = m * h * r * e;
+    const savings = recovered * rt;
 
-                // 3. Update Sliders Display
-                calcDisplays.muni.innerText = m;
-                calcDisplays.hours.innerText = h;
-                calcDisplays.releases.innerText = r;
-                calcDisplays.eff.innerText = Math.round(e * 100) + "%";
-                calcDisplays.rate.innerText = rt;
+    // 3. Update Text Labels (Rounding & Formatting)
+    calcDisplays.muni.innerText = m;
+    calcDisplays.hours.innerText = h;
+    calcDisplays.releases.innerText = r;
+    calcDisplays.eff.innerText = Math.round(e * 100) + "%";
+    calcDisplays.rate.innerText = rt;
+    calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
+    calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
+    
+    // Financial formatting (0.5K fix)
+    calcDisplays.resCost.innerText = savings >= 1000000 ?
+        (savings / 1000000).toFixed(2) + "M" :
+        (savings / 1000).toFixed(1) + "K";
 
-                // 4. Update Main Result Figures
-                calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
-                calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
+    // 4. Drive the Progress Bars (Visual Feedback)
+    
+    // Financial Bar (Green) - Max 67.03M
+    const barFinancial = document.getElementById('bar-financial');
+    if (barFinancial) {
+        const financialPercent = Math.min((savings / 67032000) * 100, 100);
+        barFinancial.style.width = financialPercent + '%';
+    }
 
-                // Financial Gain formatting with decimal fix for K
-                calcDisplays.resCost.innerText = savings >= 1000000 ?
-                    (savings / 1000000).toFixed(2) + "M" :
-                    (savings / 1000).toFixed(1) + "K";
+    // Hours Bar (Blue) - Max 250,000
+    const barHours = document.getElementById('bar-hours');
+    if (barHours) {
+        const hoursPercent = Math.min((recovered / 250000) * 100, 100);
+        barHours.style.width = hoursPercent + '%';
+    }
 
-                // 5. Update Progress Bars
-
-                // Scale for Hours (Max 250,000)
-                const hoursMaxScale = 250000;
-                const hoursPercent = Math.min((recovered / hoursMaxScale) * 100, 100);
-                const barHours = document.getElementById('bar-hours');
-                if (barHours) barHours.style.width = hoursPercent + '%';
-
-                // Scale for Efficiency (Direct %)
-                const barCycle = document.getElementById('bar-cycle');
-                if (barCycle) barCycle.style.width = (e * 100) + '%';
-
-                // Scale for Financial Gain (Max 67,032,000)
-                const financialMaxScale = 67032000;
-                const financialPercent = Math.min((savings / financialMaxScale) * 100, 100);
-                const barFinancial = document.getElementById('bar-financial');
-                if (barFinancial) barFinancial.style.width = financialPercent + '%';
-            }
+    // Efficiency Bar (Red) - Direct %
+    const barCycle = document.getElementById('bar-cycle');
+    if (barCycle) {
+        barCycle.style.width = (e * 100) + '%';
+    }
+}
             Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
             updateCalculator();
             initMaintenance(); // Run maintenance check
