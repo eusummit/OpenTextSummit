@@ -55,18 +55,24 @@
             display: inline-block;
             overflow: hidden;
             border-right: 3px solid #E3000F;
-            /* Cursor color */
             white-space: nowrap;
             width: 0;
             padding-bottom: 0.15em;
-            /* Fix for 'g' tail */
             padding-right: 0.15em;
-            /* Fix for 'T' visibility */
             line-height: 1.2;
             vertical-align: bottom;
-            animation:
-                typing 3.5s steps(30, end) forwards,
-                blink-caret 0.75s step-end infinite;
+            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        /* Fix for Mobile: Allow header to wrap and adjust size so it doesn't disappear */
+        @media (max-width: 768px) {
+            .typing-effect {
+                white-space: normal; /* Allow wrapping */
+                width: 100% !important; /* Full width */
+                border-right: none; /* Hide cursor as typing effect doesn't work well with wrapping */
+                animation: none; /* Disable animation for better mobile readability */
+            }
+            h1 { font-size: 2.5rem !important; line-height: 1.1; } /* Shrink the large header */
         }
 
         @keyframes typing {
@@ -442,15 +448,12 @@
                     </path>
                 </svg>
             </a>
-            <div class="hidden lg:flex space-x-8 text-sm font-bold text-white">
-                <a href="#kombit" data-i18n="nav_who" class="hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
-                <a href="#valueedge" data-i18n="nav_why" class="hover:text-[#E3000F] transition-colors">Why
-                    ValueEdge</a>
-                <a href="#workflow" data-i18n="nav_work" class="hover:text-[#E3000F] transition-colors">Everyday
-                    Work</a>
-                <a href="#calculator" data-i18n="nav_calc" class="hover:text-[#E3000F] transition-colors">Financial
-                    Impact</a>
-                <a href="#ai" data-i18n="nav_ai" class="hover:text-[#E3000F] transition-colors">Aviator AI</a>
+            <div class="flex overflow-x-auto lg:overflow-visible space-x-6 md:space-x-8 text-[10px] md:text-sm font-bold text-white no-scrollbar py-2">
+                <a href="#kombit" data-i18n="nav_who" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Who is KOMBIT</a>
+                <a href="#valueedge" data-i18n="nav_why" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Why ValueEdge</a>
+                <a href="#workflow" data-i18n="nav_work" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Everyday Work</a>
+                <a href="#calculator" data-i18n="nav_calc" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Financial Impact</a>
+                <a href="#ai" data-i18n="nav_ai" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Aviator AI</a>
             </div>
 
             <div class="relative inline-block text-left">
