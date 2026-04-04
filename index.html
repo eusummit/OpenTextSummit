@@ -3,6 +3,32 @@
 <script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
 
 <head>
+    /* Supabase start/
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 🎛️ MASTER SWITCH: Set to true to require login, false to disable login
+        const REQUIRE_LOGIN = true; 
+
+        // ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE URL AND KEY
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        (async function() {
+            // If switch is false, let everyone in
+            if (!REQUIRE_LOGIN) return; 
+
+            // Ask Supabase if the user has a valid session
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            // If no session is found, kick them to the login page immediately
+            if (!session) { 
+                window.location.href = 'login.html'; 
+            }
+        })();
+    </script>
+    /* Supabase end*/
 
     <style>
         /* Subtle Back to Top Button */
@@ -489,6 +515,13 @@
                     </div>
                 </div>
             </div>
+            // supabase sign out start
+            <button id="auth-signout-btn" style="display: none;" 
+            onclick="supabase.auth.signOut().then(() => window.location.reload())" 
+            class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
+            Sign Out
+        </button>
+            // supabase signout end
     </nav>
 
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
