@@ -3,7 +3,7 @@
 <script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
 
 <head>
-    /* sp start */
+   
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // 🎛️ MASTER SWITCH: Set to true to require login, false to disable login
@@ -28,7 +28,7 @@
             }
         })();
     </script>
-   /* sp end */
+  
 
     <style>
         /* Subtle Back to Top Button */
@@ -515,13 +515,14 @@
                     </div>
                 </div>
             </div>
-            // supabase sign out start
+            
+           
             <button id="auth-signout-btn" style="display: none;" 
             onclick="supabase.auth.signOut().then(() => window.location.reload())" 
             class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
             Sign Out
         </button>
-            // supabase signout end
+            
     </nav>
 
     <section class="hero-bg flex flex-col justify-center pt-24 px-10 md:px-24 text-white">
@@ -1849,11 +1850,13 @@
         style="position:absolute; bottom:0; left:0; width:1px; height:1px; opacity:0;" alt="" />
 
 </body>
-// supabase signout button visibility start
+
+                
                 <script>
         if (typeof REQUIRE_LOGIN !== 'undefined' && REQUIRE_LOGIN) {
             document.getElementById('auth-signout-btn').style.display = 'inline-block';
         }
     </script>
-// supabase signout button visibility end
+
+                
 </html>
