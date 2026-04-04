@@ -1,7 +1,7 @@
 name: Inject Secrets and Deploy
 on:
   push:
-    branches: ["main"] # This matches your branch name
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -15,18 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Inject Secrets into HTML files
-        # This command finds 'process.env.SUPABASE_URL' and replaces it with your secret
+      - name: Inject Secrets
         run: |
-          sed -i "s|process.env.SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" index.html
-          sed -i "s|process.env.SUPABASE_KEY|${{ secrets.SUPABASE_KEY }}|g" index.html
-          sed -i "s|process.env.SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" login.html
-          sed -i "s|process.env.SUPABASE_KEY|${{ secrets.SUPABASE_KEY }}|g" login.html
+          # We use '@' as a separator in case your URL has '/' characters
+          sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" index.html
+          sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" index.html
+          sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" login.html
+          sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" login.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "." # Uploads the entire folder
+          path: "."
 
   deploy:
     needs: build
