@@ -25,52 +25,48 @@
         </div>
     </div>
 
-    <script>
-        // PASTE YOUR SUPABASE KEYS HERE
-       const SB_URL = 'process.env.SUPABASE_URL';
-        const SB_KEY = 'process.env.SUPABASE_KEY';
-        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+ <script>
+    // 1. Declare the keys (GitHub Actions will fill these)
+    const SUPABASE_URL = 'process.env.SUPABASE_URL';
+    const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
 
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) alert(error.message);
-            else window.location.href = 'index.html';
+    // 2. Initialize ONLY ONCE
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 3. Define the Login function
+    async function handleLogin() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        if (!email || !password) {
+            alert("Please enter email and password");
+            return;
         }
 
-       async function handleSignUp() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    // 1. Check if fields are empty
-    if (!email || !password) {
-        alert("⚠️ Please enter both an email and a password!");
-        return;
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) alert("Login Error: " + error.message);
+        else window.location.href = 'index.html';
     }
 
-    try {
-        // 2. Tell the user we are trying...
-        console.log("Attempting to create account for:", email);
+    // 4. Define the Sign Up function
+    async function handleSignUp() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-        const { data, error } = await supabase.auth.signUp({ 
-            email: email, 
-            password: password 
-        });
+        if (!email || !password) {
+            alert("Please enter email and password");
+            return;
+        }
 
-        // 3. Catch Supabase Errors (like "Password is too short")
+        console.log("Attempting signup...");
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        
         if (error) {
-            alert("❌ Supabase Error: " + error.message);
-            console.error(error);
+            alert("Signup Error: " + error.message);
         } else {
-            // 4. Success!
-            alert("✅ Account created successfully! You can now click 'Sign In'.");
+            alert("Signup successful! You can now Sign In.");
         }
-    } catch (err) {
-        // 5. Catch System Errors (like the database being offline)
-        alert("🛑 System Error: " + err.message);
     }
-} 
-    </script>
+</script>
 </body>
 </html>
