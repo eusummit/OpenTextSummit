@@ -6,25 +6,28 @@
    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // 🎛️ MASTER SWITCH: Set to true to require login, false to disable login
         const REQUIRE_LOGIN = true; 
 
-        // ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE URL AND KEY
-        const SUPABASE_URL = 'process.env.SUPABASE_URL';
-        const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // DO NOT change these strings; GitHub Actions will replace them
+        const SB_URL = 'process.env.SUPABASE_URL';
+        const SB_KEY = 'process.env.SUPABASE_KEY';
 
         (async function() {
-            // If switch is false, let everyone in
             if (!REQUIRE_LOGIN) return; 
 
-            // Ask Supabase if the user has a valid session
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            // If no session is found, kick them to the login page immediately
-            if (!session) { 
-                window.location.href = 'login.html'; 
+            try {
+                // Initialize the client
+                const supabase = window.supabase.createClient(SB_URL, SB_KEY);
+                
+                // Get the session
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    // Force redirect if not logged in
+                    window.location.replace('login.html');
+                }
+            } catch (err) {
+                console.error("Auth Bouncer Error:", err);
             }
         })();
     </script>
