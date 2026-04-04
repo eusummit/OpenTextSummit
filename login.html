@@ -43,30 +43,34 @@
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
+    // 1. Check if fields are empty
     if (!email || !password) {
-        alert("Please fill in both fields!");
+        alert("⚠️ Please enter both an email and a password!");
         return;
     }
 
-    console.log("Attempting signup for:", email);
-
     try {
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
+        // 2. Tell the user we are trying...
+        console.log("Attempting to create account for:", email);
+
+        const { data, error } = await supabase.auth.signUp({ 
+            email: email, 
+            password: password 
         });
 
+        // 3. Catch Supabase Errors (like "Password is too short")
         if (error) {
-            alert("Supabase Error: " + error.message);
+            alert("❌ Supabase Error: " + error.message);
             console.error(error);
         } else {
-            console.log("Signup successful:", data);
-            alert("Signup successful! Try to Sign In now.");
+            // 4. Success!
+            alert("✅ Account created successfully! You can now click 'Sign In'.");
         }
     } catch (err) {
-        alert("System Error: " + err.message);
+        // 5. Catch System Errors (like the database being offline)
+        alert("🛑 System Error: " + err.message);
     }
-}    
+} 
     </script>
 </body>
 </html>
