@@ -1849,5 +1849,11 @@
         style="position:absolute; bottom:0; left:0; width:1px; height:1px; opacity:0;" alt="" />
 
 </body>
-
+// supabase signout button visibility start
+                <script>
+        if (typeof REQUIRE_LOGIN !== 'undefined' && REQUIRE_LOGIN) {
+            document.getElementById('auth-signout-btn').style.display = 'inline-block';
+        }
+    </script>
+// supabase signout button visibility end
 </html>
