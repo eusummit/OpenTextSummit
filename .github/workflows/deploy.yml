@@ -1,0 +1,40 @@
+name: Inject Secrets and Deploy
+on:
+  push:
+    branches: ["main"] # This matches your branch name
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject Secrets into HTML files
+        # This command finds 'process.env.SUPABASE_URL' and replaces it with your secret
+        run: |
+          sed -i "s|process.env.SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" index.html
+          sed -i "s|process.env.SUPABASE_KEY|${{ secrets.SUPABASE_KEY }}|g" index.html
+          sed -i "s|process.env.SUPABASE_URL|${{ secrets.SUPABASE_URL }}|g" login.html
+          sed -i "s|process.env.SUPABASE_KEY|${{ secrets.SUPABASE_KEY }}|g" login.html
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "." # Uploads the entire folder
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
