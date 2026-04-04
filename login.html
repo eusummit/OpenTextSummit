@@ -39,31 +39,34 @@
             else window.location.href = 'index.html';
         }
 
-        async function handleSignUp() {
+       async function handleSignUp() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
     if (!email || !password) {
-        alert("Please enter both email and password.");
+        alert("Please fill in both fields!");
         return;
     }
 
-    const { data, error } = await supabase.auth.signUp({ 
-        email, 
-        password 
-    });
+    console.log("Attempting signup for:", email);
 
-    if (error) {
-        alert("Error: " + error.message);
-    } else {
-        // Check if user needs to confirm email
-        if (data.user && data.user.identities && data.user.identities.length === 0) {
-            alert("This email is already registered. Try signing in!");
+    try {
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            alert("Supabase Error: " + error.message);
+            console.error(error);
         } else {
-            alert("Success! Please check your email inbox to confirm your account before logging in.");
+            console.log("Signup successful:", data);
+            alert("Signup successful! Try to Sign In now.");
         }
+    } catch (err) {
+        alert("System Error: " + err.message);
     }
-}
+}    
     </script>
 </body>
 </html>
