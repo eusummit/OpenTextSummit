@@ -27,9 +27,9 @@
 
     <script>
         // PASTE YOUR SUPABASE KEYS HERE
-        const SUPABASE_URL = 'process.env.SUPABASE_URL';
-        const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+       const SB_URL = 'process.env.SUPABASE_URL';
+        const SB_KEY = 'process.env.SUPABASE_KEY';
+        const supabase = window.supabase.createClient(SB_URL, SB_KEY);
 
         async function handleLogin() {
             const email = document.getElementById('email').value;
