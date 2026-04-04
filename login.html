@@ -40,12 +40,30 @@
         }
 
         async function handleSignUp() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await supabase.auth.signUp({ email, password });
-            if (error) alert(error.message);
-            else alert('Account created! You can now Sign In.');
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({ 
+        email, 
+        password 
+    });
+
+    if (error) {
+        alert("Error: " + error.message);
+    } else {
+        // Check if user needs to confirm email
+        if (data.user && data.user.identities && data.user.identities.length === 0) {
+            alert("This email is already registered. Try signing in!");
+        } else {
+            alert("Success! Please check your email inbox to confirm your account before logging in.");
         }
+    }
+}
     </script>
 </body>
 </html>
