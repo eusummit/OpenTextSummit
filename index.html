@@ -21,10 +21,20 @@ function getSB() {
 
 // Auth check on page load
 (async function() {
-    if (!REQUIRE_LOGIN) return;
+    const signOutBtn = document.getElementById('auth-signout-btn');
+    if (!REQUIRE_LOGIN) {
+        // Hide sign out if login is not required
+        if (signOutBtn) signOutBtn.style.display = 'none';
+        return;
+    }
     try {
         const { data: { session } } = await getSB().auth.getSession();
-        if (!session) window.location.replace('login.html');
+        if (!session) {
+            window.location.replace('login.html');
+        } else {
+            // Show sign out only when logged in
+            if (signOutBtn) signOutBtn.style.display = 'inline-block';
+        }
     } catch (err) {
         console.error("Auth Bouncer Error:", err);
         window.location.replace('login.html');
