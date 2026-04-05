@@ -22,22 +22,19 @@ function getSB() {
 // Auth check on page load
 (async function() {
     const signOutBtn = document.getElementById('auth-signout-btn');
-    if (!REQUIRE_LOGIN) {
-        // Hide sign out if login is not required
-        if (signOutBtn) signOutBtn.style.display = 'none';
-        return;
-    }
     try {
         const { data: { session } } = await getSB().auth.getSession();
-        if (!session) {
-            window.location.replace('login.html');
-        } else {
-            // Show sign out only when logged in
+        if (session) {
+            // Logged in — show Sign Out
             if (signOutBtn) signOutBtn.style.display = 'inline-block';
+        } else {
+            // Not logged in — hide Sign Out, redirect if login required
+            if (signOutBtn) signOutBtn.style.display = 'none';
+            if (REQUIRE_LOGIN) window.location.replace('login.html');
         }
     } catch (err) {
         console.error("Auth Bouncer Error:", err);
-        window.location.replace('login.html');
+        if (REQUIRE_LOGIN) window.location.replace('login.html');
     }
 })();
 
@@ -540,7 +537,7 @@ async function handleSignOut() {
             </div>
             
            
-            <button id="auth-signout-btn" 
+            <button id="auth-signout-btn" style="display: none;"
     onclick="handleSignOut()" 
     class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
     Sign Out
