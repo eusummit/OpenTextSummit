@@ -100,14 +100,21 @@
             console.error("Supabase failed to initialise:", e);
         }
 
-        // ── Handle email confirmation redirect ──
-        (async function handleConfirmation() {
-            const hash = window.location.hash;
-            if (hash && hash.includes('access_token')) {
-                history.replaceState(null, '', window.location.pathname);
-                showToast('✅ Email confirmed! You can now sign in.');
-            }
-        })();
+       // ── Handle email confirmation redirect ──
+(async function handleConfirmation() {
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('verified') === 'true') {
+        // Came from email confirmation link
+        history.replaceState(null, '', window.location.pathname);
+        showToast('✅ Email confirmed! You can now sign in.');
+    } else if (hash && hash.includes('access_token')) {
+        // Fallback for token in hash
+        history.replaceState(null, '', window.location.pathname);
+        showToast('✅ Email confirmed! You can now sign in.');
+    }
+})();
 
         // ── Screen switchers ──
         function showSignIn() {
