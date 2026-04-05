@@ -23,12 +23,10 @@ function getSB() {
 (async function() {
     const signOutBtn = document.getElementById('auth-signout-btn');
     try {
-        const { data: { session } } = await getSB().auth.getSession();
-        if (session) {
-            // Logged in — show Sign Out
+        const { data: { user }, error } = await getSB().auth.getUser();
+        if (user && !error) {
             if (signOutBtn) signOutBtn.style.display = 'inline-block';
         } else {
-            // Not logged in — hide Sign Out, redirect if login required
             if (signOutBtn) signOutBtn.style.display = 'none';
             if (REQUIRE_LOGIN) window.location.replace('login.html');
         }
@@ -37,7 +35,7 @@ function getSB() {
         if (REQUIRE_LOGIN) window.location.replace('login.html');
     }
 })();
-
+       
 // Sign Out function
 async function handleSignOut() {
     try {
@@ -45,7 +43,7 @@ async function handleSignOut() {
     } catch(e) {
         console.error("Sign out error:", e);
     }
-    window.location.href = 'login.html';
+    window.location.replace('login.html');
 }
     </script>
   
