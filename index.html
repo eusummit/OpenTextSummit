@@ -530,11 +530,11 @@ async function handleSignOut() {
             </div>
             
            
-            <button id="auth-signout-btn" style="display: none;" 
-            onclick="supabase.auth.signOut().then(() => window.location.reload())" 
-            class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
-            Sign Out
-        </button>
+            <button id="auth-signout-btn" 
+    onclick="handleSignOut()" 
+    class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
+    Sign Out
+</button>
             
     </nav>
 
