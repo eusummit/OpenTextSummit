@@ -6,30 +6,40 @@
    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        const REQUIRE_LOGIN = true; 
+       const REQUIRE_LOGIN = true;
 
-        // DO NOT change these strings; GitHub Actions will replace them
-        const SB_URL = 'process.env.SUPABASE_URL';
-        const SB_KEY = 'process.env.SUPABASE_KEY';
+// DO NOT change these strings; GitHub Actions will replace them
+const SB_URL = 'process.env.SUPABASE_URL';
+const SB_KEY = 'process.env.SUPABASE_KEY';
 
-        (async function() {
-            if (!REQUIRE_LOGIN) return; 
+// Initialise Supabase client once for the whole page
+let _sbClient;
+function getSB() {
+    if (!_sbClient) _sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+    return _sbClient;
+}
 
-            try {
-                // Initialize the client
-                const supabase = window.supabase.createClient(SB_URL, SB_KEY);
-                
-                // Get the session
-                const { data: { session } } = await supabase.auth.getSession();
-                
-                if (!session) {
-                    // Force redirect if not logged in
-                    window.location.replace('login.html');
-                }
-            } catch (err) {
-                console.error("Auth Bouncer Error:", err);
-            }
-        })();
+// Auth check on page load
+(async function() {
+    if (!REQUIRE_LOGIN) return;
+    try {
+        const { data: { session } } = await getSB().auth.getSession();
+        if (!session) window.location.replace('login.html');
+    } catch (err) {
+        console.error("Auth Bouncer Error:", err);
+        window.location.replace('login.html');
+    }
+})();
+
+// Sign Out function
+async function handleSignOut() {
+    try {
+        await getSB().auth.signOut();
+    } catch(e) {
+        console.error("Sign out error:", e);
+    }
+    window.location.href = 'login.html';
+}
     </script>
   
 
