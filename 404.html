@@ -2,12 +2,11 @@
 <html>
 <head>
     <script>
-        // Grab the full URL including the hash and redirect to your login page
         const hash = window.location.hash;
         if (hash && hash.includes('access_token')) {
-            window.location.replace('https://eusummit.github.io/OpenTextSummit/login.html' + hash);
+            window.location.replace('https://eusummit.github.io/login.html' + hash);
         } else {
-            window.location.replace('https://eusummit.github.io/OpenTextSummit/');
+            window.location.replace('https://eusummit.github.io/');
         }
     </script>
 </head>
