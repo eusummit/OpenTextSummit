@@ -8,19 +8,44 @@
     <style>
         body { background-color: #0B1B3D; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .toast {
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+            background: #16a34a; color: white; padding: 12px 24px;
+            border-radius: 12px; font-weight: bold; font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 9999;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
+
+    <!-- Success Toast -->
+    <div id="toast" class="toast"></div>
+
     <div class="glass max-w-md w-full rounded-3xl p-10 shadow-2xl text-center">
-        <div class="text-white font-black text-3xl tracking-tighter mb-8">
+        <div class="text-white font-black text-3xl tracking-tighter mb-2">
             KOMB<span class="text-[#E3000F]">I</span>T
         </div>
+        <p class="text-gray-400 text-sm mb-8">Secure Access Portal</p>
+
         <div id="loginForm" class="space-y-4">
-            <input type="email" id="email" placeholder="Email address" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <input type="password" id="password" placeholder="Password" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <button onclick="handleLogin()" class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">Sign In</button>
-            <button onclick="handleSignUp()" class="w-full border border-white/20 text-white font-bold py-3 rounded-xl hover:bg-white/10 transition-all mt-2">Create Account</button>
+            <input type="email" id="email" placeholder="Email address"
+                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+            <input type="password" id="password" placeholder="Password"
+                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+
+            <button onclick="handleLogin()"
+                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
+                Sign In
+            </button>
+            <button onclick="handleSignUp()"
+                class="w-full border border-white/20 text-white font-bold py-3 rounded-xl hover:bg-white/10 transition-all mt-2">
+                Create Account
+            </button>
         </div>
+
+        <p id="statusMsg" class="text-gray-400 text-xs mt-6 hidden"></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -36,26 +61,59 @@
             console.error("Supabase failed to initialise:", e);
         }
 
-        async function handleLogin() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    if (!email || !password) return alert("Please enter your email and password.");
-    if (!supabaseClient) return alert("Auth not ready. Check your Supabase keys.");
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) alert(error.message);
-    else window.location.href = 'index.html';
-}
+        // ── Handle email confirmation redirect ──
+        // When Supabase confirms email it lands here with #access_token=... in the URL
+        (async function handleConfirmation() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('access_token')) {
+                // Clean up the ugly URL
+                history.replaceState(null, '', window.location.pathname);
+                showToast('✅ Email confirmed! You can now sign in.');
+            }
+        })();
 
+        // ── Toast helper ──
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#dc2626' : '#16a34a';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        // ── Sign In ──
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (!email || !password) return showToast('Please enter your email and password.', true);
+            if (!supabaseClient) return showToast('Auth not ready. Check your Supabase keys.', true);
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) showToast(error.message, true);
+            else window.location.href = 'index.html';
+        }
+
+        // ── Create Account ──
         async function handleSignUp() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    if (!email || !password) return alert("Please enter your email and password.");
-    if (password.length < 6) return alert("Password must be at least 6 characters.");
-    if (!supabaseClient) return alert("Auth not ready. Check your Supabase keys.");
-    const { error } = await supabaseClient.auth.signUp({ email, password });
-    if (error) alert(error.message);
-    else alert('Account created! Check your email for a confirmation link.');
-}
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            if (!email || !password) return showToast('Please enter your email and password.', true);
+            if (password.length < 6) return showToast('Password must be at least 6 characters.', true);
+            if (!supabaseClient) return showToast('Auth not ready. Check your Supabase keys.', true);
+
+            const { error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) showToast(error.message, true);
+            else {
+                showToast('✅ Account created! Check your email and click the confirmation link, then come back to sign in.');
+                document.getElementById('statusMsg').textContent = '📧 Confirmation email sent — please check your inbox.';
+                document.getElementById('statusMsg').classList.remove('hidden');
+            }
+        }
+
+        // ── Allow Enter key to trigger Sign In ──
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
     </script>
 </body>
 </html>
