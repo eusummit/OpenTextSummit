@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOMBIT | Email Confirmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0B1B3D; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+    <div class="glass max-w-md w-full rounded-3xl p-10 shadow-2xl text-center">
+        
+        <div class="text-white font-black text-3xl tracking-tighter mb-2">
+            KOMB<span class="text-[#E3000F]">I</span>T
+        </div>
+        <p class="text-gray-400 text-sm mb-8">Secure Access Portal</p>
+
+        <div class="text-6xl mb-6">✅</div>
+        
+        <h2 class="text-white font-bold text-2xl mb-3">Email Confirmed!</h2>
+        
+        <p class="text-gray-400 text-sm leading-relaxed mb-8">
+            Your email address has been successfully verified.<br>
+            You can now sign in to your KOMBIT account.
+        </p>
+
+        <a href="https://eusummit.github.io/OpenTextSummit/login.html"
+            class="block w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all text-center">
+            Go to Sign In
+        </a>
+
+    </div>
+
+    <script>
+        // Auto redirect to login after 5 seconds
+        setTimeout(() => {
+            window.location.href = 'https://eusummit.github.io/OpenTextSummit/login.html';
+        }, 5000);
+    </script>
+</body>
+</html>
