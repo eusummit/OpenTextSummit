@@ -226,15 +226,26 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
-            <div class="flex items-start gap-3 text-left mt-2">
-    <input type="checkbox" id="privacy-check"
-        class="mt-1 w-4 h-4 accent-[#E3000F] cursor-pointer flex-shrink-0">
-    <label for="privacy-check" class="text-gray-500 text-xs leading-relaxed cursor-pointer">
-        I have read and agree to the 
-        <a href="privacy.html" target="_blank" class="text-[#E3000F] hover:underline font-semibold">Privacy Policy</a> 
-        and 
-        <a href="terms.html" target="_blank" class="text-[#E3000F] hover:underline font-semibold">Terms of Service</a>
-    </label>
+            <div id="privacy-toggle" onclick="togglePrivacy()"
+    style="display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; cursor:pointer; transition: all 0.2s; margin-top:4px;"
+    onmouseover="this.style.borderColor='rgba(227,0,15,0.3)'"
+    onmouseout="this.style.borderColor=document.getElementById('privacy-check').checked ? 'rgba(227,0,15,0.5)' : 'rgba(255,255,255,0.08)'">
+    
+    <!-- Custom checkbox -->
+    <div id="privacy-box"
+        style="width:22px; height:22px; border-radius:7px; border:2px solid rgba(255,255,255,0.2); background:transparent; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
+    </div>
+    
+    <input type="checkbox" id="privacy-check" style="display:none;">
+    
+    <span style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.5; user-select:none;">
+        I agree to the 
+        <a href="privacy.html" target="_blank" onclick="event.stopPropagation()" 
+            style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Privacy Policy</a>
+        &amp;
+        <a href="terms.html" target="_blank" onclick="event.stopPropagation()"
+            style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Terms of Service</a>
+    </span>
 </div>
             <button onclick="handleSignUp()" class="btn-primary mt-2">Create Account →</button>
             <p class="text-center text-gray-500 text-sm">
@@ -492,6 +503,26 @@ if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Po
             if (!document.getElementById('formForgotEmail').classList.contains('hidden')) handleSendOTP();
             if (!document.getElementById('formForgotNewPassword').classList.contains('hidden')) handleSetNewPassword();
         });
+
+        function togglePrivacy() {
+    const check = document.getElementById('privacy-check');
+    const box = document.getElementById('privacy-box');
+    const toggle = document.getElementById('privacy-toggle');
+    check.checked = !check.checked;
+    if (check.checked) {
+        box.style.background = '#E3000F';
+        box.style.borderColor = '#E3000F';
+        box.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+        toggle.style.borderColor = 'rgba(227,0,15,0.5)';
+        toggle.style.background = 'rgba(227,0,15,0.06)';
+    } else {
+        box.style.background = 'transparent';
+        box.style.borderColor = 'rgba(255,255,255,0.2)';
+        box.innerHTML = '';
+        toggle.style.borderColor = 'rgba(255,255,255,0.08)';
+        toggle.style.background = 'rgba(255,255,255,0.04)';
+    }
+}
     </script>
 </body>
 </html>
