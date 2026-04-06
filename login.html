@@ -16,6 +16,13 @@
             opacity: 0; transition: opacity 0.4s ease; white-space: nowrap;
         }
         .toast.show { opacity: 1; }
+        .otp-input {
+            width: 45px; height: 55px; text-align: center; font-size: 1.5rem;
+            font-weight: bold; background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            color: white; outline: none; transition: all 0.2s;
+        }
+        .otp-input:focus { border-color: #E3000F; background: rgba(255,255,255,0.15); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
@@ -38,8 +45,11 @@
                 class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
                 Sign In
             </button>
+            <p class="text-gray-400 text-xs pt-1">
+                <span onclick="showForgotPassword()" class="text-[#E3000F] cursor-pointer hover:underline">Forgot your password?</span>
+            </p>
             <p class="text-gray-400 text-sm pt-2">
-                Don't have an account? 
+                Don't have an account?
                 <span onclick="showSignUp()" class="text-[#E3000F] font-bold cursor-pointer hover:underline">Create Account</span>
             </p>
         </div>
@@ -63,25 +73,87 @@
                 Create Account
             </button>
             <p class="text-gray-400 text-sm pt-2">
-                Already have an account? 
+                Already have an account?
                 <span onclick="showSignIn()" class="text-[#E3000F] font-bold cursor-pointer hover:underline">Sign In</span>
             </p>
         </div>
 
         <!-- ── SUCCESS MESSAGE (after signup) ── -->
         <div id="formSuccess" class="hidden text-center space-y-4">
-            <div class="text-5xl mb-4">📧</div>
+            <div class="text-6xl mb-4">🎉</div>
             <h2 class="text-white font-bold text-xl">Account Created!</h2>
             <p class="text-gray-400 text-sm leading-relaxed">
-                Your account has been successfully created with<br>
-                <span id="success-email" class="text-white font-bold"></span>
-            </p>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                Please click "Back to Sign in" below and enter your credentials to proceed.
+                Your account has been successfully created.<br>
+                You can now sign in with your email and password.
             </p>
             <button onclick="showSignIn()"
                 class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all mt-4">
-                Back to Sign In
+                Sign In Now →
+            </button>
+        </div>
+
+        <!-- ── FORGOT PASSWORD - STEP 1: Enter Email ── -->
+        <div id="formForgotEmail" class="hidden space-y-4">
+            <div class="text-4xl mb-2">🔑</div>
+            <h2 class="text-white font-bold text-xl">Reset Password</h2>
+            <p class="text-gray-400 text-sm leading-relaxed">
+                Enter your email and we'll send you a 6-digit code to reset your password.
+            </p>
+            <input type="email" id="fp-email" placeholder="Email address"
+                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+            <button onclick="handleSendOTP()"
+                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
+                Send Code
+            </button>
+            <p class="text-gray-400 text-sm pt-2">
+                <span onclick="showSignIn()" class="text-[#E3000F] cursor-pointer hover:underline">← Back to Sign In</span>
+            </p>
+        </div>
+
+        <!-- ── FORGOT PASSWORD - STEP 2: Enter OTP ── -->
+        <div id="formForgotOTP" class="hidden space-y-4">
+            <div class="text-4xl mb-2">📬</div>
+            <h2 class="text-white font-bold text-xl">Enter Your Code</h2>
+            <p class="text-gray-400 text-sm leading-relaxed">
+                We sent a 6-digit code to<br>
+                <span id="otp-sent-email" class="text-white font-bold"></span>
+            </p>
+            <!-- 6 OTP boxes -->
+            <div class="flex justify-center gap-2 my-4">
+                <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp6" maxlength="1" type="text" inputmode="numeric">
+            </div>
+            <button onclick="handleVerifyOTP()"
+                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
+                Verify Code
+            </button>
+            <p class="text-gray-400 text-xs pt-1">
+                Didn't receive it?
+                <span onclick="handleSendOTP(true)" class="text-[#E3000F] cursor-pointer hover:underline">Resend code</span>
+            </p>
+            <p class="text-gray-400 text-sm pt-1">
+                <span onclick="showForgotPassword()" class="text-[#E3000F] cursor-pointer hover:underline">← Back</span>
+            </p>
+        </div>
+
+        <!-- ── FORGOT PASSWORD - STEP 3: New Password ── -->
+        <div id="formForgotNewPassword" class="hidden space-y-4">
+            <div class="text-4xl mb-2">🔒</div>
+            <h2 class="text-white font-bold text-xl">Set New Password</h2>
+            <p class="text-gray-400 text-sm leading-relaxed">
+                Almost done! Enter your new password below.
+            </p>
+            <input type="password" id="fp-newpassword" placeholder="New password (min. 6 characters)"
+                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+            <input type="password" id="fp-confirmpassword" placeholder="Confirm new password"
+                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+            <button onclick="handleSetNewPassword()"
+                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
+                Set New Password
             </button>
         </div>
 
@@ -89,7 +161,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // DO NOT change these strings; GitHub Actions will replace them
         const SUPABASE_URL = 'process.env.SUPABASE_URL';
         const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
 
@@ -100,41 +171,29 @@
             console.error("Supabase failed to initialise:", e);
         }
 
-       // ── Handle email confirmation redirect ──
-(async function handleConfirmation() {
-    const hash = window.location.hash;
-    const params = new URLSearchParams(window.location.search);
+        // Store email for OTP flow
+        let otpEmail = '';
 
-    if (params.get('verified') === 'true') {
-        // Came from email confirmation link
-        history.replaceState(null, '', window.location.pathname);
-        showToast('✅ Email confirmed! You can now sign in.');
-    } else if (hash && hash.includes('access_token')) {
-        // Fallback for token in hash
-        history.replaceState(null, '', window.location.pathname);
-        showToast('✅ Email confirmed! You can now sign in.');
-    }
-})();
+        // ── Handle email confirmation redirect ──
+        (async function handleConfirmation() {
+            const hash = window.location.hash;
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('verified') === 'true') {
+                history.replaceState(null, '', window.location.pathname);
+                showToast('✅ Email confirmed! You can now sign in.');
+            } else if (hash && hash.includes('access_token')) {
+                history.replaceState(null, '', window.location.pathname);
+                showToast('✅ Email confirmed! You can now sign in.');
+            }
+        })();
 
-        // ── Screen switchers ──
-        function showSignIn() {
-            document.getElementById('formSignIn').classList.remove('hidden');
-            document.getElementById('formSignUp').classList.add('hidden');
-            document.getElementById('formSuccess').classList.add('hidden');
-        }
-
-        function showSignUp() {
-            document.getElementById('formSignIn').classList.add('hidden');
-            document.getElementById('formSignUp').classList.remove('hidden');
-            document.getElementById('formSuccess').classList.add('hidden');
-        }
-
-        function showSuccess(email) {
-            document.getElementById('formSignIn').classList.add('hidden');
-            document.getElementById('formSignUp').classList.add('hidden');
-            document.getElementById('formSuccess').classList.remove('hidden');
-            document.getElementById('success-email').textContent = email;
-        }
+        // ── If already logged in skip login page ──
+        (async function() {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) window.location.replace('index.html');
+            } catch(e) {}
+        })();
 
         // ── Toast helper ──
         function showToast(message, isError = false) {
@@ -145,13 +204,49 @@
             setTimeout(() => toast.classList.remove('show'), 5000);
         }
 
+        // ── Hide all forms ──
+        function hideAll() {
+            ['formSignIn','formSignUp','formSuccess',
+             'formForgotEmail','formForgotOTP','formForgotNewPassword']
+            .forEach(id => document.getElementById(id).classList.add('hidden'));
+        }
+
+        // ── Screen switchers ──
+        function showSignIn() { hideAll(); document.getElementById('formSignIn').classList.remove('hidden'); }
+        function showSignUp() { hideAll(); document.getElementById('formSignUp').classList.remove('hidden'); }
+        function showSuccess() { hideAll(); document.getElementById('formSuccess').classList.remove('hidden'); }
+        function showForgotPassword() { hideAll(); document.getElementById('formForgotEmail').classList.remove('hidden'); }
+        function showOTPScreen(email) {
+            hideAll();
+            document.getElementById('formForgotOTP').classList.remove('hidden');
+            document.getElementById('otp-sent-email').textContent = email;
+            document.getElementById('otp1').focus();
+        }
+        function showNewPasswordScreen() { hideAll(); document.getElementById('formForgotNewPassword').classList.remove('hidden'); }
+
+        // ── OTP box auto-advance ──
+        document.addEventListener('DOMContentLoaded', () => {
+            ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id, index, arr) => {
+                const input = document.getElementById(id);
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < arr.length - 1) {
+                        document.getElementById(arr[index + 1]).focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                        document.getElementById(arr[index - 1]).focus();
+                    }
+                });
+            });
+        });
+
         // ── Sign In ──
         async function handleLogin() {
             const email = document.getElementById('si-email').value.trim();
             const password = document.getElementById('si-password').value.trim();
             if (!email || !password) return showToast('Please enter your email and password.', true);
-            if (!supabaseClient) return showToast('Auth not ready. Check your Supabase keys.', true);
-
+            if (!supabaseClient) return showToast('Auth not ready.', true);
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) showToast(error.message, true);
             else window.location.href = 'index.html';
@@ -164,31 +259,81 @@
             const email     = document.getElementById('su-email').value.trim();
             const password  = document.getElementById('su-password').value.trim();
             const confirm   = document.getElementById('su-confirm').value.trim();
-
-            if (!firstName || !lastName)      return showToast('Please enter your first and last name.', true);
-            if (!email)                        return showToast('Please enter your email address.', true);
-            if (password.length < 6)           return showToast('Password must be at least 6 characters.', true);
-            if (password !== confirm)          return showToast('Passwords do not match.', true);
-            if (!supabaseClient)               return showToast('Auth not ready. Check your Supabase keys.', true);
-
+            if (!firstName || !lastName) return showToast('Please enter your first and last name.', true);
+            if (!email)                   return showToast('Please enter your email address.', true);
+            if (password.length < 6)      return showToast('Password must be at least 6 characters.', true);
+            if (password !== confirm)     return showToast('Passwords do not match.', true);
+            if (!supabaseClient)          return showToast('Auth not ready.', true);
             const { error } = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { first_name: firstName, last_name: lastName }
-                }
+                email, password,
+                options: { data: { first_name: firstName, last_name: lastName } }
             });
-
             if (error) showToast(error.message, true);
-            else showSuccess(email);
+            else showSuccess();
         }
 
-        // ── Enter key triggers Sign In ──
+        // ── FORGOT PASSWORD STEP 1: Send OTP ──
+        async function handleSendOTP(isResend = false) {
+            const email = document.getElementById('fp-email').value.trim();
+            if (!email) return showToast('Please enter your email address.', true);
+            if (!supabaseClient) return showToast('Auth not ready.', true);
+
+            const { error } = await supabaseClient.auth.signInWithOtp({
+                email,
+                options: { shouldCreateUser: false }
+            });
+
+            if (error) return showToast(error.message, true);
+
+            otpEmail = email;
+            showToast(isResend ? '✅ Code resent! Check your email.' : '✅ Code sent! Check your email.');
+            showOTPScreen(email);
+        }
+
+        // ── FORGOT PASSWORD STEP 2: Verify OTP ──
+        async function handleVerifyOTP() {
+            const code = ['otp1','otp2','otp3','otp4','otp5','otp6']
+                .map(id => document.getElementById(id).value)
+                .join('');
+
+            if (code.length !== 6) return showToast('Please enter the full 6-digit code.', true);
+            if (!supabaseClient) return showToast('Auth not ready.', true);
+
+            const { error } = await supabaseClient.auth.verifyOtp({
+                email: otpEmail,
+                token: code,
+                type: 'email'
+            });
+
+            if (error) return showToast('Invalid or expired code. Try again.', true);
+
+            showToast('✅ Code verified!');
+            showNewPasswordScreen();
+        }
+
+        // ── FORGOT PASSWORD STEP 3: Set New Password ──
+        async function handleSetNewPassword() {
+            const newPassword     = document.getElementById('fp-newpassword').value.trim();
+            const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
+
+            if (newPassword.length < 6)      return showToast('Password must be at least 6 characters.', true);
+            if (newPassword !== confirmPassword) return showToast('Passwords do not match.', true);
+            if (!supabaseClient)             return showToast('Auth not ready.', true);
+
+            const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+            if (error) return showToast(error.message, true);
+
+            showToast('✅ Password updated! Please sign in.');
+            setTimeout(() => showSignIn(), 2000);
+        }
+
+        // ── Enter key support ──
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                if (!document.getElementById('formSignIn').classList.contains('hidden')) handleLogin();
-                if (!document.getElementById('formSignUp').classList.contains('hidden')) handleSignUp();
-            }
+            if (e.key !== 'Enter') return;
+            if (!document.getElementById('formSignIn').classList.contains('hidden')) handleLogin();
+            if (!document.getElementById('formSignUp').classList.contains('hidden')) handleSignUp();
+            if (!document.getElementById('formForgotEmail').classList.contains('hidden')) handleSendOTP();
+            if (!document.getElementById('formForgotNewPassword').classList.contains('hidden')) handleSetNewPassword();
         });
     </script>
 </body>
