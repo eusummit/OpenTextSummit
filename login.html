@@ -97,7 +97,7 @@
             <div class="text-4xl mb-2">🔑</div>
             <h2 class="text-white font-bold text-xl">Reset Password</h2>
             <p class="text-gray-400 text-sm leading-relaxed">
-                Enter your email and we'll send you a 6-digit code to reset your password.
+               Enter your email and we'll send you an 8-digit code to reset your password.
             </p>
             <input type="email" id="fp-email" placeholder="Email address"
                 class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
@@ -115,18 +115,20 @@
             <div class="text-4xl mb-2">📬</div>
             <h2 class="text-white font-bold text-xl">Enter Your Code</h2>
             <p class="text-gray-400 text-sm leading-relaxed">
-                We sent a 6-digit code to<br>
+                We sent a 8-digit code to<br>
                 <span id="otp-sent-email" class="text-white font-bold"></span>
             </p>
             <!-- 6 OTP boxes -->
             <div class="flex justify-center gap-2 my-4">
-                <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
-                <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
-                <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
-                <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric">
-                <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric">
-                <input class="otp-input" id="otp6" maxlength="1" type="text" inputmode="numeric">
-            </div>
+    <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp6" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp7" maxlength="1" type="text" inputmode="numeric">
+    <input class="otp-input" id="otp8" maxlength="1" type="text" inputmode="numeric">
+</div>
             <button onclick="handleVerifyOTP()"
                 class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
                 Verify Code
@@ -226,7 +228,7 @@
 
         // ── OTP box auto-advance ──
         document.addEventListener('DOMContentLoaded', () => {
-            ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id, index, arr) => {
+            ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach((id, index, arr) => {
                 const input = document.getElementById(id);
                 input.addEventListener('input', () => {
                     if (input.value.length === 1 && index < arr.length - 1) {
@@ -292,11 +294,11 @@
 
         // ── FORGOT PASSWORD STEP 2: Verify OTP ──
         async function handleVerifyOTP() {
-            const code = ['otp1','otp2','otp3','otp4','otp5','otp6']
-                .map(id => document.getElementById(id).value)
-                .join('');
+            const code = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8']
+    .map(id => document.getElementById(id).value)
+    .join('');
 
-            if (code.length !== 6) return showToast('Please enter the full 6-digit code.', true);
+if (code.length !== 8) return showToast('Please enter the full 8-digit code.', true);
             if (!supabaseClient) return showToast('Auth not ready.', true);
 
             const { error } = await supabaseClient.auth.verifyOtp({
