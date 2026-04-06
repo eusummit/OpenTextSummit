@@ -226,6 +226,16 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
+            <div class="flex items-start gap-3 text-left mt-2">
+    <input type="checkbox" id="privacy-check"
+        class="mt-1 w-4 h-4 accent-[#E3000F] cursor-pointer flex-shrink-0">
+    <label for="privacy-check" class="text-gray-500 text-xs leading-relaxed cursor-pointer">
+        I have read and agree to the 
+        <a href="privacy.html" target="_blank" class="text-[#E3000F] hover:underline font-semibold">Privacy Policy</a> 
+        and 
+        <a href="terms.html" target="_blank" class="text-[#E3000F] hover:underline font-semibold">Terms of Service</a>
+    </label>
+</div>
             <button onclick="handleSignUp()" class="btn-primary mt-2">Create Account →</button>
             <p class="text-center text-gray-500 text-sm">
                 Already have an account? <span onclick="showSignIn()" class="link">Sign in</span>
@@ -416,6 +426,8 @@
 
         // ── Create Account ──
         async function handleSignUp() {
+            const privacyCheck = document.getElementById('privacy-check');
+if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
             const firstName = document.getElementById('su-firstname').value.trim();
             const lastName  = document.getElementById('su-lastname').value.trim();
             const email     = document.getElementById('su-email').value.trim();
