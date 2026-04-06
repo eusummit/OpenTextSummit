@@ -22,8 +22,7 @@ jobs:
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" index.html
           sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" login.html
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" login.html
-          sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" 404.html
-          sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" 404.html
+         
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
