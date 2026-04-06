@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">sc
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOMBIT | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -94,20 +94,20 @@
             background: rgba(255,255,255,0.08);
         }
 
-        .otp-input {
-            width: 48px; 
-            height: 56px; 
-            text-align: center; 
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            color: white;
-            outline: none;
-            transition: all 0.2s ease;
-            caret-color: #E3000F;
-        }
+       .otp-input {
+    width: 36px; 
+    height: 46px; 
+    text-align: center; 
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: white;
+    outline: none;
+    transition: all 0.2s ease;
+    caret-color: #E3000F;
+}
         .otp-input:focus { 
             border-color: #E3000F; 
             background: rgba(255,255,255,0.1);
@@ -271,7 +271,7 @@
                 <h2 class="text-white font-bold text-xl">Enter code</h2>
                 <p class="text-gray-500 text-sm mt-1">Sent to <span id="otp-sent-email" class="text-white font-semibold"></span></p>
             </div>
-            <div class="flex justify-center gap-2 my-2">
+            <div class="flex justify-center gap-1.5 my-2">
                 <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
                 <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
                 <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
@@ -371,10 +371,16 @@
         function showSuccess() { show('formSuccess'); }
         function showForgotPassword() { show('formForgotEmail'); }
         function showOTPScreen(email) {
-            show('formForgotOTP');
-            document.getElementById('otp-sent-email').textContent = email;
-            setTimeout(() => document.getElementById('otp1').focus(), 100);
-        }
+    show('formForgotOTP');
+    document.getElementById('otp-sent-email').textContent = email;
+    // Clear all OTP boxes
+    ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach(id => {
+        const input = document.getElementById(id);
+        input.value = '';
+        input.classList.remove('filled');
+    });
+    setTimeout(() => document.getElementById('otp1').focus(), 100);
+}
         function showNewPasswordScreen() { show('formForgotNewPassword'); }
 
         // ── OTP auto-advance ──
