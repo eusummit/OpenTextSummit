@@ -6,157 +6,304 @@
     <title>KOMBIT | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0B1B3D; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        
+        * { font-family: 'Inter', sans-serif; }
+        
+        body { 
+            background-color: #0B1B3D;
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(227,0,15,0.08) 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
+        }
+        
+        .glass { 
+            background: rgba(255, 255, 255, 0.04); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 14px 18px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-field::placeholder { color: rgba(255,255,255,0.25); }
+        .input-field:focus { 
+            border-color: #E3000F; 
+            background: rgba(255,255,255,0.09);
+            box-shadow: 0 0 0 3px rgba(227,0,15,0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: white;
+            color: #0B1B3D;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+        .btn-primary:hover { 
+            background: #E3000F; 
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(227,0,15,0.3);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background: transparent;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+            font-size: 13px;
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover { 
+            background: rgba(255,255,255,0.06); 
+            color: white;
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.2);
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .otp-input {
+            width: 48px; 
+            height: 56px; 
+            text-align: center; 
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            color: white;
+            outline: none;
+            transition: all 0.2s ease;
+            caret-color: #E3000F;
+        }
+        .otp-input:focus { 
+            border-color: #E3000F; 
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 0 3px rgba(227,0,15,0.15);
+            transform: scale(1.05);
+        }
+        .otp-input.filled {
+            border-color: rgba(227,0,15,0.5);
+            background: rgba(227,0,15,0.08);
+        }
+
         .toast {
             position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
-            background: #16a34a; color: white; padding: 12px 24px;
-            border-radius: 12px; font-weight: bold; font-size: 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 9999;
-            opacity: 0; transition: opacity 0.4s ease; white-space: nowrap;
+            color: white; padding: 12px 20px;
+            border-radius: 12px; font-weight: 600; font-size: 13px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3); z-index: 9999;
+            opacity: 0; transition: opacity 0.3s ease; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
         }
         .toast.show { opacity: 1; }
-        .otp-input {
-            width: 45px; height: 55px; text-align: center; font-size: 1.5rem;
-            font-weight: bold; background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            color: white; outline: none; transition: all 0.2s;
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .otp-input:focus { border-color: #E3000F; background: rgba(255,255,255,0.15); }
+        .step-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+        .step-dot.active { 
+            background: #E3000F; 
+            width: 20px;
+            border-radius: 3px;
+        }
+        .step-dot.done { background: rgba(227,0,15,0.4); }
+
+        .form-slide {
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(227,0,15,0.1);
+            border: 1px solid rgba(227,0,15,0.2);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ff4d4d;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .link { 
+            color: #ff4d4d; 
+            cursor: pointer; 
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .link:hover { opacity: 0.8; text-decoration: underline; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
 
     <div id="toast" class="toast"></div>
 
-    <div class="glass max-w-md w-full rounded-3xl p-10 shadow-2xl text-center">
-        <div class="text-white font-black text-3xl tracking-tighter mb-2">
-            KOMB<span class="text-[#E3000F]">I</span>T
-        </div>
-        <p class="text-gray-400 text-sm mb-8">Secure Access Portal</p>
-
-        <!-- ── SIGN IN FORM ── -->
-        <div id="formSignIn" class="space-y-4">
-            <input type="email" id="si-email" placeholder="Email address"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <input type="password" id="si-password" placeholder="Password"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <button onclick="handleLogin()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
-                Sign In
-            </button>
-            <p class="text-gray-400 text-xs pt-1">
-                <span onclick="showForgotPassword()" class="text-[#E3000F] cursor-pointer hover:underline">Forgot your password?</span>
-            </p>
-            <p class="text-gray-400 text-sm pt-2">
-                Don't have an account?
-                <span onclick="showSignUp()" class="text-[#E3000F] font-bold cursor-pointer hover:underline">Create Account</span>
-            </p>
-        </div>
-
-        <!-- ── CREATE ACCOUNT FORM ── -->
-        <div id="formSignUp" class="space-y-4 hidden">
-            <div class="flex gap-3">
-                <input type="text" id="su-firstname" placeholder="First name"
-                    class="w-1/2 bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-                <input type="text" id="su-lastname" placeholder="Last name"
-                    class="w-1/2 bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
+    <div class="glass max-w-sm w-full rounded-3xl p-8 shadow-2xl">
+        
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <div class="text-white font-black text-3xl tracking-tighter mb-1">
+                KOMB<span class="text-[#E3000F]">I</span>T
             </div>
-            <input type="email" id="su-email" placeholder="Email address"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <input type="password" id="su-password" placeholder="Password (min. 6 characters)"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <input type="password" id="su-confirm" placeholder="Confirm password"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <button onclick="handleSignUp()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
-                Create Account
-            </button>
-            <p class="text-gray-400 text-sm pt-2">
-                Already have an account?
-                <span onclick="showSignIn()" class="text-[#E3000F] font-bold cursor-pointer hover:underline">Sign In</span>
+            <div class="tag">
+                <span style="width:6px;height:6px;background:#E3000F;border-radius:50%;display:inline-block;animation:pulse 2s infinite"></span>
+                Secure Portal
+            </div>
+        </div>
+
+        <!-- ── SIGN IN ── -->
+        <div id="formSignIn" class="form-slide space-y-3">
+            <div class="mb-6">
+                <h2 class="text-white font-bold text-xl">Welcome back</h2>
+                <p class="text-gray-500 text-sm mt-1">Sign in to your account</p>
+            </div>
+            <input type="email" id="si-email" placeholder="Email address" class="input-field">
+            <input type="password" id="si-password" placeholder="Password" class="input-field">
+            <div class="text-right">
+                <span onclick="showForgotPassword()" class="link text-xs">Forgot password?</span>
+            </div>
+            <button onclick="handleLogin()" class="btn-primary mt-2">Sign In →</button>
+            <div class="divider mt-4">or</div>
+            <button onclick="showSignUp()" class="btn-secondary">Create new account</button>
+        </div>
+
+        <!-- ── CREATE ACCOUNT ── -->
+        <div id="formSignUp" class="form-slide space-y-3 hidden">
+            <div class="mb-6">
+                <h2 class="text-white font-bold text-xl">Create account</h2>
+                <p class="text-gray-500 text-sm mt-1">Join KOMBIT in seconds</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <input type="text" id="su-firstname" placeholder="First name" class="input-field">
+                <input type="text" id="su-lastname" placeholder="Last name" class="input-field">
+            </div>
+            <input type="email" id="su-email" placeholder="Email address" class="input-field">
+            <input type="password" id="su-password" placeholder="Password" class="input-field">
+            <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
+            <button onclick="handleSignUp()" class="btn-primary mt-2">Create Account →</button>
+            <p class="text-center text-gray-500 text-sm">
+                Already have an account? <span onclick="showSignIn()" class="link">Sign in</span>
             </p>
         </div>
 
-        <!-- ── SUCCESS MESSAGE (after signup) ── -->
-        <div id="formSuccess" class="hidden text-center space-y-4">
-            <div class="text-6xl mb-4">🎉</div>
-            <h2 class="text-white font-bold text-xl">Account Created!</h2>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                Your account has been successfully created.<br>
-                You can now sign in with your email and password.
+        <!-- ── SIGNUP SUCCESS ── -->
+        <div id="formSuccess" class="hidden text-center form-slide">
+            <div class="text-5xl mb-4">🎉</div>
+            <h2 class="text-white font-bold text-xl mb-2">You're all set!</h2>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                Your account has been created successfully. You can now sign in.
             </p>
-            <button onclick="showSignIn()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all mt-4">
-                Sign In Now →
-            </button>
+            <button onclick="showSignIn()" class="btn-primary">Sign In Now →</button>
         </div>
 
-        <!-- ── FORGOT PASSWORD - STEP 1: Enter Email ── -->
-        <div id="formForgotEmail" class="hidden space-y-4">
-            <div class="text-4xl mb-2">🔑</div>
-            <h2 class="text-white font-bold text-xl">Reset Password</h2>
-            <p class="text-gray-400 text-sm leading-relaxed">
-               Enter your email and we'll send you an 8-digit code to reset your password.
-            </p>
-            <input type="email" id="fp-email" placeholder="Email address"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <button onclick="handleSendOTP()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
-                Send Code
-            </button>
-            <p class="text-gray-400 text-sm pt-2">
-                <span onclick="showSignIn()" class="text-[#E3000F] cursor-pointer hover:underline">← Back to Sign In</span>
+        <!-- ── FORGOT PASSWORD STEP 1: Email ── -->
+        <div id="formForgotEmail" class="form-slide hidden space-y-3">
+            <div class="step-indicator">
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+                <div class="step-dot"></div>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-white font-bold text-xl">Reset password</h2>
+                <p class="text-gray-500 text-sm mt-1">We'll send an 8-digit code to your email</p>
+            </div>
+            <input type="email" id="fp-email" placeholder="Email address" class="input-field">
+            <button onclick="handleSendOTP()" class="btn-primary">Send Code →</button>
+            <p class="text-center text-gray-500 text-sm">
+                <span onclick="showSignIn()" class="link">← Back to Sign In</span>
             </p>
         </div>
 
-        <!-- ── FORGOT PASSWORD - STEP 2: Enter OTP ── -->
-        <div id="formForgotOTP" class="hidden space-y-4">
-            <div class="text-4xl mb-2">📬</div>
-            <h2 class="text-white font-bold text-xl">Enter Your Code</h2>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                We sent a 8-digit code to<br>
-                <span id="otp-sent-email" class="text-white font-bold"></span>
+        <!-- ── FORGOT PASSWORD STEP 2: OTP ── -->
+        <div id="formForgotOTP" class="form-slide hidden space-y-4">
+            <div class="step-indicator">
+                <div class="step-dot done"></div>
+                <div class="step-dot active"></div>
+                <div class="step-dot"></div>
+            </div>
+            <div class="mb-2">
+                <h2 class="text-white font-bold text-xl">Enter code</h2>
+                <p class="text-gray-500 text-sm mt-1">Sent to <span id="otp-sent-email" class="text-white font-semibold"></span></p>
+            </div>
+            <div class="flex justify-center gap-2 my-2">
+                <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp6" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp7" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="otp8" maxlength="1" type="text" inputmode="numeric">
+            </div>
+            <button onclick="handleVerifyOTP()" class="btn-primary">Verify Code →</button>
+            <p class="text-center text-gray-500 text-xs">
+                Didn't get it? <span onclick="handleSendOTP(true)" class="link">Resend code</span>
             </p>
-            <!-- 6 OTP boxes -->
-            <div class="flex justify-center gap-2 my-4">
-    <input class="otp-input" id="otp1" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp2" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp3" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp4" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp5" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp6" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp7" maxlength="1" type="text" inputmode="numeric">
-    <input class="otp-input" id="otp8" maxlength="1" type="text" inputmode="numeric">
-</div>
-            <button onclick="handleVerifyOTP()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
-                Verify Code
-            </button>
-            <p class="text-gray-400 text-xs pt-1">
-                Didn't receive it?
-                <span onclick="handleSendOTP(true)" class="text-[#E3000F] cursor-pointer hover:underline">Resend code</span>
-            </p>
-            <p class="text-gray-400 text-sm pt-1">
-                <span onclick="showForgotPassword()" class="text-[#E3000F] cursor-pointer hover:underline">← Back</span>
+            <p class="text-center text-gray-500 text-sm">
+                <span onclick="showForgotPassword()" class="link">← Back</span>
             </p>
         </div>
 
-        <!-- ── FORGOT PASSWORD - STEP 3: New Password ── -->
-        <div id="formForgotNewPassword" class="hidden space-y-4">
-            <div class="text-4xl mb-2">🔒</div>
-            <h2 class="text-white font-bold text-xl">Set New Password</h2>
-            <p class="text-gray-400 text-sm leading-relaxed">
-                Almost done! Enter your new password below.
-            </p>
-            <input type="password" id="fp-newpassword" placeholder="New password (min. 6 characters)"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <input type="password" id="fp-confirmpassword" placeholder="Confirm new password"
-                class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#E3000F] transition-all">
-            <button onclick="handleSetNewPassword()"
-                class="w-full bg-white text-[#0B1B3D] font-bold py-3 rounded-xl hover:bg-[#E3000F] hover:text-white transition-all">
-                Set New Password
-            </button>
+        <!-- ── FORGOT PASSWORD STEP 3: New Password ── -->
+        <div id="formForgotNewPassword" class="form-slide hidden space-y-3">
+            <div class="step-indicator">
+                <div class="step-dot done"></div>
+                <div class="step-dot done"></div>
+                <div class="step-dot active"></div>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-white font-bold text-xl">New password</h2>
+                <p class="text-gray-500 text-sm mt-1">Almost done! Choose a strong password</p>
+            </div>
+            <input type="password" id="fp-newpassword" placeholder="New password (min. 6 chars)" class="input-field">
+            <input type="password" id="fp-confirmpassword" placeholder="Confirm new password" class="input-field">
+            <button onclick="handleSetNewPassword()" class="btn-primary">Set New Password →</button>
         </div>
 
     </div>
@@ -169,17 +316,14 @@
         let supabaseClient;
         try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        } catch (e) {
-            console.error("Supabase failed to initialise:", e);
-        }
+        } catch (e) { console.error("Supabase failed to initialise:", e); }
 
-        // Store email for OTP flow
         let otpEmail = '';
 
-        // ── Handle email confirmation redirect ──
-        (async function handleConfirmation() {
-            const hash = window.location.hash;
+        // ── Handle confirmation redirect ──
+        (async function() {
             const params = new URLSearchParams(window.location.search);
+            const hash = window.location.hash;
             if (params.get('verified') === 'true') {
                 history.replaceState(null, '', window.location.pathname);
                 showToast('✅ Email confirmed! You can now sign in.');
@@ -189,7 +333,7 @@
             }
         })();
 
-        // ── If already logged in skip login page ──
+        // ── Skip login if already logged in ──
         (async function() {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
@@ -197,47 +341,58 @@
             } catch(e) {}
         })();
 
-        // ── Toast helper ──
+        // ── Toast ──
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.background = isError ? '#dc2626' : '#16a34a';
+            toast.innerHTML = message;
+            toast.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(22,163,74,0.95)';
+            toast.style.backdropFilter = 'blur(10px)';
+            toast.style.border = isError ? '1px solid rgba(255,100,100,0.3)' : '1px solid rgba(100,255,150,0.3)';
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 5000);
         }
 
-        // ── Hide all forms ──
+        // ── Hide all ──
         function hideAll() {
             ['formSignIn','formSignUp','formSuccess',
              'formForgotEmail','formForgotOTP','formForgotNewPassword']
             .forEach(id => document.getElementById(id).classList.add('hidden'));
         }
 
-        // ── Screen switchers ──
-        function showSignIn() { hideAll(); document.getElementById('formSignIn').classList.remove('hidden'); }
-        function showSignUp() { hideAll(); document.getElementById('formSignUp').classList.remove('hidden'); }
-        function showSuccess() { hideAll(); document.getElementById('formSuccess').classList.remove('hidden'); }
-        function showForgotPassword() { hideAll(); document.getElementById('formForgotEmail').classList.remove('hidden'); }
-        function showOTPScreen(email) {
+        function show(id) {
             hideAll();
-            document.getElementById('formForgotOTP').classList.remove('hidden');
-            document.getElementById('otp-sent-email').textContent = email;
-            document.getElementById('otp1').focus();
+            const el = document.getElementById(id);
+            el.classList.remove('hidden');
+            el.classList.add('form-slide');
         }
-        function showNewPasswordScreen() { hideAll(); document.getElementById('formForgotNewPassword').classList.remove('hidden'); }
 
-        // ── OTP box auto-advance ──
+        function showSignIn() { show('formSignIn'); }
+        function showSignUp() { show('formSignUp'); }
+        function showSuccess() { show('formSuccess'); }
+        function showForgotPassword() { show('formForgotEmail'); }
+        function showOTPScreen(email) {
+            show('formForgotOTP');
+            document.getElementById('otp-sent-email').textContent = email;
+            setTimeout(() => document.getElementById('otp1').focus(), 100);
+        }
+        function showNewPasswordScreen() { show('formForgotNewPassword'); }
+
+        // ── OTP auto-advance ──
         document.addEventListener('DOMContentLoaded', () => {
-            ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach((id, index, arr) => {
+            const ids = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'];
+            ids.forEach((id, i) => {
                 const input = document.getElementById(id);
                 input.addEventListener('input', () => {
-                    if (input.value.length === 1 && index < arr.length - 1) {
-                        document.getElementById(arr[index + 1]).focus();
+                    if (input.value) {
+                        input.classList.add('filled');
+                        if (i < ids.length - 1) document.getElementById(ids[i+1]).focus();
+                    } else {
+                        input.classList.remove('filled');
                     }
                 });
                 input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
-                        document.getElementById(arr[index - 1]).focus();
+                    if (e.key === 'Backspace' && !input.value && i > 0) {
+                        document.getElementById(ids[i-1]).focus();
                     }
                 });
             });
@@ -247,10 +402,9 @@
         async function handleLogin() {
             const email = document.getElementById('si-email').value.trim();
             const password = document.getElementById('si-password').value.trim();
-            if (!email || !password) return showToast('Please enter your email and password.', true);
-            if (!supabaseClient) return showToast('Auth not ready.', true);
+            if (!email || !password) return showToast('⚠️ Please enter your email and password.', true);
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) showToast(error.message, true);
+            if (error) showToast('⚠️ ' + error.message, true);
             else window.location.href = 'index.html';
         }
 
@@ -261,75 +415,58 @@
             const email     = document.getElementById('su-email').value.trim();
             const password  = document.getElementById('su-password').value.trim();
             const confirm   = document.getElementById('su-confirm').value.trim();
-            if (!firstName || !lastName) return showToast('Please enter your first and last name.', true);
-            if (!email)                   return showToast('Please enter your email address.', true);
-            if (password.length < 6)      return showToast('Password must be at least 6 characters.', true);
-            if (password !== confirm)     return showToast('Passwords do not match.', true);
-            if (!supabaseClient)          return showToast('Auth not ready.', true);
+            if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
+            if (!email)                   return showToast('⚠️ Please enter your email.', true);
+            if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
             const { error } = await supabaseClient.auth.signUp({
                 email, password,
                 options: { data: { first_name: firstName, last_name: lastName } }
             });
-            if (error) showToast(error.message, true);
+            if (error) showToast('⚠️ ' + error.message, true);
             else showSuccess();
         }
 
-        // ── FORGOT PASSWORD STEP 1: Send OTP ──
+        // ── Send OTP ──
         async function handleSendOTP(isResend = false) {
             const email = document.getElementById('fp-email').value.trim();
-            if (!email) return showToast('Please enter your email address.', true);
-            if (!supabaseClient) return showToast('Auth not ready.', true);
-
+            if (!email) return showToast('⚠️ Please enter your email address.', true);
             const { error } = await supabaseClient.auth.signInWithOtp({
                 email,
                 options: { shouldCreateUser: false }
             });
-
-            if (error) return showToast(error.message, true);
-
+            if (error) return showToast('⚠️ ' + error.message, true);
             otpEmail = email;
-            showToast(isResend ? '✅ Code resent! Check your email.' : '✅ Code sent! Check your email.');
+            showToast(isResend ? '✅ Code resent!' : '✅ Code sent! Check your email.');
             showOTPScreen(email);
         }
 
-        // ── FORGOT PASSWORD STEP 2: Verify OTP ──
+        // ── Verify OTP ──
         async function handleVerifyOTP() {
             const code = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8']
-    .map(id => document.getElementById(id).value)
-    .join('');
-
-if (code.length !== 8) return showToast('Please enter the full 8-digit code.', true);
-            if (!supabaseClient) return showToast('Auth not ready.', true);
-
+                .map(id => document.getElementById(id).value).join('');
+            if (code.length !== 8) return showToast('⚠️ Please enter the full 8-digit code.', true);
             const { error } = await supabaseClient.auth.verifyOtp({
-                email: otpEmail,
-                token: code,
-                type: 'email'
+                email: otpEmail, token: code, type: 'email'
             });
-
-            if (error) return showToast('Invalid or expired code. Try again.', true);
-
+            if (error) return showToast('⚠️ Invalid or expired code. Try again.', true);
             showToast('✅ Code verified!');
             showNewPasswordScreen();
         }
 
-        // ── FORGOT PASSWORD STEP 3: Set New Password ──
+        // ── Set New Password ──
         async function handleSetNewPassword() {
-            const newPassword     = document.getElementById('fp-newpassword').value.trim();
+            const newPassword = document.getElementById('fp-newpassword').value.trim();
             const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
-
-            if (newPassword.length < 6)      return showToast('Password must be at least 6 characters.', true);
-            if (newPassword !== confirmPassword) return showToast('Passwords do not match.', true);
-            if (!supabaseClient)             return showToast('Auth not ready.', true);
-
+            if (newPassword.length < 6) return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (newPassword !== confirmPassword) return showToast('⚠️ Passwords do not match.', true);
             const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
-            if (error) return showToast(error.message, true);
-
+            if (error) return showToast('⚠️ ' + error.message, true);
             showToast('✅ Password updated! Please sign in.');
             setTimeout(() => showSignIn(), 2000);
         }
 
-        // ── Enter key support ──
+        // ── Enter key ──
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Enter') return;
             if (!document.getElementById('formSignIn').classList.contains('hidden')) handleLogin();
