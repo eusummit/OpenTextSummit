@@ -94,20 +94,20 @@
             background: rgba(255,255,255,0.08);
         }
 
-       .otp-input {
-    width: 36px; 
-    height: 46px; 
-    text-align: center; 
-    font-size: 1.2rem;
-    font-weight: 700;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    color: white;
-    outline: none;
-    transition: all 0.2s ease;
-    caret-color: #E3000F;
-}
+        .otp-input {
+            width: 36px; 
+            height: 46px; 
+            text-align: center; 
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+            transition: all 0.2s ease;
+            caret-color: #E3000F;
+        }
         .otp-input:focus { 
             border-color: #E3000F; 
             background: rgba(255,255,255,0.1);
@@ -226,30 +226,58 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
+
+            <!-- Privacy toggle -->
             <div id="privacy-toggle" onclick="togglePrivacy()"
-    style="display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; cursor:pointer; transition: all 0.2s; margin-top:4px;"
-    onmouseover="this.style.borderColor='rgba(227,0,15,0.3)'"
-    onmouseout="this.style.borderColor=document.getElementById('privacy-check').checked ? 'rgba(227,0,15,0.5)' : 'rgba(255,255,255,0.08)'">
-    
-    <!-- Custom checkbox -->
-    <div id="privacy-box"
-        style="width:22px; height:22px; border-radius:7px; border:2px solid rgba(255,255,255,0.2); background:transparent; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
-    </div>
-    
-    <input type="checkbox" id="privacy-check" style="display:none;">
-    
-    <span style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.5; user-select:none;">
-        I agree to the 
-        <a href="privacy.html" target="_blank" onclick="event.stopPropagation()" 
-            style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Privacy Policy</a>
-        &amp;
-        <a href="terms.html" target="_blank" onclick="event.stopPropagation()"
-            style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Terms of Service</a>
-    </span>
-</div>
+                style="display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; cursor:pointer; transition:all 0.2s; margin-top:4px;"
+                onmouseover="this.style.borderColor='rgba(227,0,15,0.3)'"
+                onmouseout="this.style.borderColor=document.getElementById('privacy-check').checked ? 'rgba(227,0,15,0.5)' : 'rgba(255,255,255,0.08)'">
+                <div id="privacy-box"
+                    style="width:22px; height:22px; border-radius:7px; border:2px solid rgba(255,255,255,0.2); background:transparent; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;">
+                </div>
+                <input type="checkbox" id="privacy-check" style="display:none;">
+                <span style="font-size:13px; color:rgba(255,255,255,0.5); line-height:1.5; user-select:none;">
+                    I agree to the 
+                    <a href="privacy.html" target="_blank" onclick="event.stopPropagation()" 
+                        style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Privacy Policy</a>
+                    &amp;
+                    <a href="terms.html" target="_blank" onclick="event.stopPropagation()"
+                        style="color:#E3000F; font-weight:600; text-decoration:none; border-bottom:1px solid rgba(227,0,15,0.3);">Terms of Service</a>
+                </span>
+            </div>
+
             <button onclick="handleSignUp()" class="btn-primary mt-2">Create Account →</button>
             <p class="text-center text-gray-500 text-sm">
                 Already have an account? <span onclick="showSignIn()" class="link">Sign in</span>
+            </p>
+        </div>
+
+        <!-- ── SIGNUP OTP VERIFICATION ── -->
+        <div id="formSignUpOTP" class="form-slide hidden space-y-4">
+            <div class="step-indicator">
+                <div class="step-dot done"></div>
+                <div class="step-dot active"></div>
+            </div>
+            <div class="mb-2">
+                <h2 class="text-white font-bold text-xl">Verify your email</h2>
+                <p class="text-gray-500 text-sm mt-1">We sent an 8-digit code to <span id="signup-otp-email" class="text-white font-semibold"></span></p>
+            </div>
+            <div class="flex justify-center gap-1.5 my-2">
+                <input class="otp-input" id="sotp1" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp2" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp3" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp4" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp5" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp6" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp7" maxlength="1" type="text" inputmode="numeric">
+                <input class="otp-input" id="sotp8" maxlength="1" type="text" inputmode="numeric">
+            </div>
+            <button onclick="handleVerifySignUpOTP()" class="btn-primary">Verify & Activate →</button>
+            <p class="text-center text-gray-500 text-xs">
+                Didn't get it? <span onclick="resendSignUpOTP()" class="link">Resend code</span>
+            </p>
+            <p class="text-center text-gray-500 text-sm">
+                <span onclick="showSignUp()" class="link">← Back</span>
             </p>
         </div>
 
@@ -258,7 +286,7 @@
             <div class="text-5xl mb-4">🎉</div>
             <h2 class="text-white font-bold text-xl mb-2">You're all set!</h2>
             <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                Your account has been created successfully. You can now sign in.
+                Your account has been verified and created successfully.<br>You can now sign in.
             </p>
             <button onclick="showSignIn()" class="btn-primary">Sign In Now →</button>
         </div>
@@ -331,6 +359,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // DO NOT change these strings; GitHub Actions will replace them
         const SUPABASE_URL = 'process.env.SUPABASE_URL';
         const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
 
@@ -373,9 +402,9 @@
             setTimeout(() => toast.classList.remove('show'), 5000);
         }
 
-        // ── Hide all ──
+        // ── Hide all forms ──
         function hideAll() {
-            ['formSignIn','formSignUp','formSuccess',
+            ['formSignIn','formSignUp','formSuccess','formSignUpOTP',
              'formForgotEmail','formForgotOTP','formForgotNewPassword']
             .forEach(id => document.getElementById(id).classList.add('hidden'));
         }
@@ -387,25 +416,28 @@
             el.classList.add('form-slide');
         }
 
-        function showSignIn() { show('formSignIn'); }
-        function showSignUp() { show('formSignUp'); }
-        function showSuccess() { show('formSuccess'); }
-        function showForgotPassword() { show('formForgotEmail'); }
+        // ── Screen switchers ──
+        function showSignIn()        { show('formSignIn'); }
+        function showSignUp()        { show('formSignUp'); }
+        function showSuccess()       { show('formSuccess'); }
+        function showForgotPassword(){ show('formForgotEmail'); }
+
         function showOTPScreen(email) {
-    show('formForgotOTP');
-    document.getElementById('otp-sent-email').textContent = email;
-    // Clear all OTP boxes
-    ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach(id => {
-        const input = document.getElementById(id);
-        input.value = '';
-        input.classList.remove('filled');
-    });
-    setTimeout(() => document.getElementById('otp1').focus(), 100);
-}
+            show('formForgotOTP');
+            document.getElementById('otp-sent-email').textContent = email;
+            ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach(id => {
+                document.getElementById(id).value = '';
+                document.getElementById(id).classList.remove('filled');
+            });
+            setTimeout(() => document.getElementById('otp1').focus(), 100);
+        }
+
         function showNewPasswordScreen() { show('formForgotNewPassword'); }
 
-        // ── OTP auto-advance ──
+        // ── OTP auto-advance (both sets) ──
         document.addEventListener('DOMContentLoaded', () => {
+
+            // Forgot password OTP boxes
             const ids = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'];
             ids.forEach((id, i) => {
                 const input = document.getElementById(id);
@@ -418,16 +450,33 @@
                     }
                 });
                 input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && !input.value && i > 0) {
+                    if (e.key === 'Backspace' && !input.value && i > 0)
                         document.getElementById(ids[i-1]).focus();
+                });
+            });
+
+            // Signup OTP boxes
+            const sids = ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'];
+            sids.forEach((id, i) => {
+                const input = document.getElementById(id);
+                input.addEventListener('input', () => {
+                    if (input.value) {
+                        input.classList.add('filled');
+                        if (i < sids.length - 1) document.getElementById(sids[i+1]).focus();
+                    } else {
+                        input.classList.remove('filled');
                     }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && i > 0)
+                        document.getElementById(sids[i-1]).focus();
                 });
             });
         });
 
         // ── Sign In ──
         async function handleLogin() {
-            const email = document.getElementById('si-email').value.trim();
+            const email    = document.getElementById('si-email').value.trim();
             const password = document.getElementById('si-password').value.trim();
             if (!email || !password) return showToast('⚠️ Please enter your email and password.', true);
             const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -438,7 +487,7 @@
         // ── Create Account ──
         async function handleSignUp() {
             const privacyCheck = document.getElementById('privacy-check');
-if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
+            if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
             const firstName = document.getElementById('su-firstname').value.trim();
             const lastName  = document.getElementById('su-lastname').value.trim();
             const email     = document.getElementById('su-email').value.trim();
@@ -448,15 +497,66 @@ if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Po
             if (!email)                   return showToast('⚠️ Please enter your email.', true);
             if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
             if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
-            const { error } = await supabaseClient.auth.signUp({
-                email, password,
-                options: { data: { first_name: firstName, last_name: lastName } }
+
+            // Store for after OTP verification
+            window._signUpData = { firstName, lastName, email, password };
+
+            // Send OTP
+            const { error } = await supabaseClient.auth.signInWithOtp({
+                email,
+                options: { shouldCreateUser: true }
             });
-            if (error) showToast('⚠️ ' + error.message, true);
-            else showSuccess();
+            if (error) return showToast('⚠️ ' + error.message, true);
+
+            showToast('✅ Code sent! Check your email.');
+            show('formSignUpOTP');
+            document.getElementById('signup-otp-email').textContent = email;
+            ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'].forEach(id => {
+                document.getElementById(id).value = '';
+                document.getElementById(id).classList.remove('filled');
+            });
+            setTimeout(() => document.getElementById('sotp1').focus(), 100);
         }
 
-        // ── Send OTP ──
+        // ── Verify Signup OTP ──
+        async function handleVerifySignUpOTP() {
+            const code = ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8']
+                .map(id => document.getElementById(id).value).join('');
+            if (code.length !== 8) return showToast('⚠️ Please enter the full 8-digit code.', true);
+
+            const { error } = await supabaseClient.auth.verifyOtp({
+                email: window._signUpData.email,
+                token: code,
+                type: 'email'
+            });
+            if (error) return showToast('⚠️ Invalid or expired code. Try again.', true);
+
+            // Set password and name
+            await supabaseClient.auth.updateUser({
+                password: window._signUpData.password,
+                data: {
+                    first_name: window._signUpData.firstName,
+                    last_name: window._signUpData.lastName
+                }
+            });
+
+            window._signUpData = null;
+            showToast('✅ Email verified! Your account is ready.');
+            showSuccess();
+        }
+
+        // ── Resend Signup OTP ──
+        async function resendSignUpOTP() {
+            if (!window._signUpData?.email) return;
+            const { error } = await supabaseClient.auth.signInWithOtp({
+                email: window._signUpData.email,
+                options: { shouldCreateUser: true }
+            });
+            if (error) showToast('⚠️ ' + error.message, true);
+            else showToast('✅ Code resent!');
+        }
+
+        // ── Send Forgot Password OTP ──
         async function handleSendOTP(isResend = false) {
             const email = document.getElementById('fp-email').value.trim();
             if (!email) return showToast('⚠️ Please enter your email address.', true);
@@ -470,7 +570,7 @@ if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Po
             showOTPScreen(email);
         }
 
-        // ── Verify OTP ──
+        // ── Verify Forgot Password OTP ──
         async function handleVerifyOTP() {
             const code = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8']
                 .map(id => document.getElementById(id).value).join('');
@@ -485,44 +585,45 @@ if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Po
 
         // ── Set New Password ──
         async function handleSetNewPassword() {
-            const newPassword = document.getElementById('fp-newpassword').value.trim();
+            const newPassword     = document.getElementById('fp-newpassword').value.trim();
             const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
-            if (newPassword.length < 6) return showToast('⚠️ Password must be at least 6 characters.', true);
-            if (newPassword !== confirmPassword) return showToast('⚠️ Passwords do not match.', true);
+            if (newPassword.length < 6)          return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (newPassword !== confirmPassword)  return showToast('⚠️ Passwords do not match.', true);
             const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
             if (error) return showToast('⚠️ ' + error.message, true);
             showToast('✅ Password updated! Please sign in.');
             setTimeout(() => showSignIn(), 2000);
         }
 
-        // ── Enter key ──
+        // ── Privacy checkbox toggle ──
+        function togglePrivacy() {
+            const check  = document.getElementById('privacy-check');
+            const box    = document.getElementById('privacy-box');
+            const toggle = document.getElementById('privacy-toggle');
+            check.checked = !check.checked;
+            if (check.checked) {
+                box.style.background    = '#E3000F';
+                box.style.borderColor   = '#E3000F';
+                box.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                toggle.style.borderColor  = 'rgba(227,0,15,0.5)';
+                toggle.style.background   = 'rgba(227,0,15,0.06)';
+            } else {
+                box.style.background    = 'transparent';
+                box.style.borderColor   = 'rgba(255,255,255,0.2)';
+                box.innerHTML           = '';
+                toggle.style.borderColor  = 'rgba(255,255,255,0.08)';
+                toggle.style.background   = 'rgba(255,255,255,0.04)';
+            }
+        }
+
+        // ── Enter key support ──
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Enter') return;
-            if (!document.getElementById('formSignIn').classList.contains('hidden')) handleLogin();
-            if (!document.getElementById('formSignUp').classList.contains('hidden')) handleSignUp();
-            if (!document.getElementById('formForgotEmail').classList.contains('hidden')) handleSendOTP();
-            if (!document.getElementById('formForgotNewPassword').classList.contains('hidden')) handleSetNewPassword();
+            if (!document.getElementById('formSignIn').classList.contains('hidden'))           handleLogin();
+            if (!document.getElementById('formSignUp').classList.contains('hidden'))           handleSignUp();
+            if (!document.getElementById('formForgotEmail').classList.contains('hidden'))      handleSendOTP();
+            if (!document.getElementById('formForgotNewPassword').classList.contains('hidden'))handleSetNewPassword();
         });
-
-        function togglePrivacy() {
-    const check = document.getElementById('privacy-check');
-    const box = document.getElementById('privacy-box');
-    const toggle = document.getElementById('privacy-toggle');
-    check.checked = !check.checked;
-    if (check.checked) {
-        box.style.background = '#E3000F';
-        box.style.borderColor = '#E3000F';
-        box.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-        toggle.style.borderColor = 'rgba(227,0,15,0.5)';
-        toggle.style.background = 'rgba(227,0,15,0.06)';
-    } else {
-        box.style.background = 'transparent';
-        box.style.borderColor = 'rgba(255,255,255,0.2)';
-        box.innerHTML = '';
-        toggle.style.borderColor = 'rgba(255,255,255,0.08)';
-        toggle.style.background = 'rgba(255,255,255,0.04)';
-    }
-}
     </script>
 </body>
 </html>
