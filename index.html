@@ -94,42 +94,51 @@ async function handleSignOut() {
             transform: translateY(-3px);
         }
 
-        /* Fixed Typing Effect */
+        /* Fixed Typing Effect: Resolved 'T' cutoff and 'g' descender */
         .typing-effect {
             display: inline-block;
             overflow: hidden;
             border-right: 3px solid #E3000F;
             white-space: nowrap;
             width: 0;
-            max-width: 100%;
             padding-bottom: 0.15em;
             padding-right: 0.15em;
             line-height: 1.2;
             vertical-align: bottom;
-            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end 5;
+            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
         }
 
-        /* Fix for Mobile */
+        /* Fix for Mobile: Allow header to wrap and adjust size so it doesn't disappear */
         @media (max-width: 768px) {
             .typing-effect {
-                white-space: normal;
-                width: 100% !important;
-                max-width: 100%;
-                border-right: none;
-                animation: none;
-                overflow: visible;
+                white-space: normal; /* Allow wrapping */
+                width: 100% !important; /* Full width */
+                border-right: none; /* Hide cursor as typing effect doesn't work well with wrapping */
+                animation: none; /* Disable animation for better mobile readability */
             }
-            h1 { font-size: 2.5rem !important; line-height: 1.1; }
+            h1 { font-size: 2.5rem !important; line-height: 1.1; } /* Shrink the large header */
         }
 
         @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+            from {
+                width: 0
+            }
+
+            to {
+                width: 106%
+            }
         }
 
         @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #E3000F; }
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: #E3000F;
+            }
         }
 
         /* Modern Infinite Ticker */
@@ -184,10 +193,6 @@ async function handleSignOut() {
             /* Scroll half the track for seamless loop */
 
         }
-
-        /* Hide scrollbar on nav links for mobile */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Maintenance Notification Styles */
         #maintenance-banner {
@@ -331,15 +336,11 @@ async function handleSignOut() {
     </script>
 
     <style>
-        html {
-            overflow-x: hidden;
-        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F4F7F9;
             color: #1F2937;
             scroll-behavior: smooth;
-            overflow-x: hidden;
         }
 
         .hero-bg {
@@ -351,30 +352,8 @@ async function handleSignOut() {
             height: 100vh;
         }
 
-        @media (max-width: 768px) {
-            .hero-bg {
-                background-attachment: scroll;
-                padding-left: 1.25rem !important;
-                padding-right: 1.25rem !important;
-            }
-            /* Stats card: stop it bleeding off screen on mobile */
-            .stats-card-mobile {
-                position: relative !important;
-                bottom: auto !important;
-                left: auto !important;
-                margin-top: 2rem;
-                width: 100%;
-            }
-        }
-
         .section-padding {
             padding: 100px 10%;
-        }
-
-        @media (max-width: 768px) {
-            .section-padding {
-                padding: 60px 5%;
-            }
         }
 
         .corp-card {
@@ -647,7 +626,7 @@ async function handleSignOut() {
                 <img src="kombitimagehd.jpg" alt="Corporate Office" class="rounded-lg shadow-2xl">
 
                 <div
-                    class="stats-card-mobile absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
+                    class="absolute -bottom-10 -left-10 bg-brand-dark p-8 rounded-lg shadow-xl flex gap-8 items-center text-white border border-white/10">
                     <div>
                         <div id="muni-counter" class="text-4xl font-bold text-brand-accent mb-1">0</div>
                         <div data-i18n="s1_stat1" class="text-[10px] font-bold uppercase tracking-wider text-gray-400">
@@ -1324,7 +1303,7 @@ async function handleSignOut() {
             <div
                 class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
                 <div class="flex flex-col md:flex-row items-center gap-6">
-                    <a href="/cdn-cgi/l/email-protection#0a7b7267686d4a61656768637e246e61" class="hover:text-brand-accent transition"><span class="__cf_email__" data-cfemail="d0a1a8bdb2b790bbbfbdb2b9a4feb4bb">[email&#160;protected]</span></a>
+                    <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent transition">qxmbg@kombit.dk</a>
                     <span class="hidden md:block opacity-20">|</span>
                     <a href="tel:+37125657827" class="hover:text-brand-accent transition">+371 25657827</a>
                 </div>
@@ -1361,7 +1340,7 @@ async function handleSignOut() {
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         // --- TRANSLATION DATA ---
         const i18n = {
@@ -1911,3 +1890,13 @@ async function handleSignOut() {
         style="position:absolute; bottom:0; left:0; width:1px; height:1px; opacity:0;" alt="" />
 
 </body>
+
+                
+                <script>
+        if (typeof REQUIRE_LOGIN !== 'undefined' && REQUIRE_LOGIN) {
+            document.getElementById('auth-signout-btn').style.display = 'inline-block';
+        }
+    </script>
+
+                
+</html>
