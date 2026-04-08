@@ -901,11 +901,34 @@ async function handleSignOut() {
                     class="lg:col-span-2 flex flex-col justify-center pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
 
                     <div
-                        class="flex items-start gap-4 mb-8 bg-blue-50 p-5 rounded-xl border border-blue-100 shadow-sm transition-all hover:border-[#0052CC]/40">
-                        <div class="relative flex h-3 w-3 mt-1 flex-shrink-0">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0052CC] opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-[#0052CC]"></span>
+                        class="flex items-start gap-4 mb-8 bg-red-50 p-5 rounded-xl border border-red-100 shadow-sm transition-all hover:border-[#E3000F]/40">
+                        <!-- Red sliding arrow indicator -->
+                        <div class="flex-shrink-0 mt-0.5" style="width:36px;">
+                            <div style="position:relative; height:20px; width:36px; overflow:hidden; border-radius:4px; background:rgba(227,0,15,0.08);">
+                                <div style="
+                                    position:absolute;
+                                    top:50%;
+                                    transform:translateY(-50%);
+                                    width:18px;
+                                    height:18px;
+                                    display:flex;
+                                    align-items:center;
+                                    justify-content:center;
+                                    animation: slideHint 1.6s ease-in-out infinite;
+                                ">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E3000F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14M15 8l4 4-4 4"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <style>
+                                @keyframes slideHint {
+                                    0%   { left: -4px; opacity: 0; }
+                                    20%  { opacity: 1; }
+                                    80%  { opacity: 1; }
+                                    100% { left: 22px; opacity: 0; }
+                                }
+                            </style>
                         </div>
                         <div>
                             <span data-i18n="calc_sim_title"
@@ -916,7 +939,6 @@ async function handleSignOut() {
                                 the sliders below to calculate live business impact</span>
                         </div>
                     </div>
-
                     <div class="mb-6">
                         <div class="flex justify-between items-end mb-1">
                             <label data-i18n="calc_muni"
