@@ -2,12 +2,10 @@ name: Inject Secrets and Deploy
 on:
   push:
     branches: ["main"]
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,7 +20,24 @@ jobs:
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" index.html
           sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" login.html
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" login.html
-         
+
+      - name: Install Minifier
+        run: npm install -g html-minifier-terser
+
+      - name: Minify Files
+        run: |
+          html-minifier-terser index.html \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-js true \
+            --minify-css true \
+            -o index.html
+          html-minifier-terser login.html \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-js true \
+            --minify-css true \
+            -o login.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
