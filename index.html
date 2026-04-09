@@ -21,13 +21,20 @@ function getSB() {
 
 // Auth check on page load
 (async function() {
-    const signOutBtn = document.getElementById('auth-signout-btn');
     try {
         const { data: { user }, error } = await getSB().auth.getUser();
         if (user && !error) {
-            if (signOutBtn) signOutBtn.style.display = 'inline-block';
+            // Wait for DOM to be ready before finding the button
+            const showBtn = () => {
+                const signOutBtn = document.getElementById('auth-signout-btn');
+                if (signOutBtn) signOutBtn.style.display = 'inline-block';
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', showBtn);
+            } else {
+                showBtn();
+            }
         } else {
-            if (signOutBtn) signOutBtn.style.display = 'none';
             if (REQUIRE_LOGIN) window.location.replace('login.html');
         }
     } catch (err) {
@@ -175,7 +182,7 @@ async function handleSignOut() {
             padding-right: 0.15em;
             line-height: 1.2;
             vertical-align: bottom;
-            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end 5;
+            animation: typing 3.5s steps(30, end) forwards, blink-caret 0.75s step-end infinite;
         }
 
         /* Fix for Mobile */
@@ -648,9 +655,9 @@ async function handleSignOut() {
                 <span data-i18n="hero_badge" class="text-white/90 uppercase">Enterprise Quality Engineering</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-black mb-6">
-                <span class="typing-effect">
+                <span class="typing-effect" style="width:auto; white-space:nowrap;">
                     <span id="hero-typing-text" data-i18n="hero_title">Modernising testing at </span><span
-                        class="text-[#E3000F]">KOMBIT</span>
+                        class="text-[#E3000F]">KOMBIT</span>&nbsp;
                 </span>
             </h1>
             <p data-i18n="hero_desc" class="text-xl max-w-2xl mb-10 text-gray-200 font-light leading-relaxed">
