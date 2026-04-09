@@ -389,6 +389,13 @@
             const params = new URLSearchParams(window.location.search);
             const hash = window.location.hash;
 
+            // Inactivity timeout redirect
+            if (params.get('reason') === 'timeout') {
+                history.replaceState(null, '', window.location.pathname);
+                showToast('⚠️ You were logged out due to inactivity.', true);
+                return;
+            }
+
             if (params.get('verified') === 'true') {
                 history.replaceState(null, '', window.location.pathname);
                 showToast('✅ Email confirmed! You can now sign in.');
