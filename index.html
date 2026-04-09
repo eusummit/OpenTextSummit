@@ -634,7 +634,7 @@ async function handleSignOut() {
            
             <button id="auth-signout-btn" style="display: none;"
     onclick="handleSignOut()" 
-    class="ml-4 px-3 py-1.5 bg-red-600/10 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
+    class="auth-signout-btn ml-4 px-3 py-1.5 border rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm border-white/60 text-white hover:bg-white hover:text-[#E3000F]">
     Sign Out
 </button>
             
@@ -1805,16 +1805,30 @@ async function handleSignOut() {
             const divider = document.getElementById('nav-divider');
 
             if (winScroll > 50) {
-                nav.classList.add('nav-scrolled');
-                nav.classList.remove('bg-transparent');
-                if (otWord) otWord.style.color = 'black';
-                if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
-            } else {
-                nav.classList.remove('nav-scrolled');
-                nav.classList.add('bg-transparent');
-                if (otWord) otWord.style.color = 'white';
-                if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
-            }
+    nav.classList.add('nav-scrolled');
+    nav.classList.remove('bg-transparent');
+    if (otWord) otWord.style.color = 'black';
+    if (divider) divider.style.backgroundColor = 'rgba(0,0,0,0.1)';
+    // Sign out button — scrolled state (white bg)
+    const btn = document.getElementById('auth-signout-btn');
+    if (btn) {
+        btn.style.borderColor = '#E3000F';
+        btn.style.color = '#E3000F';
+        btn.style.background = 'rgba(227,0,15,0.05)';
+    }
+} else {
+    nav.classList.remove('nav-scrolled');
+    nav.classList.add('bg-transparent');
+    if (otWord) otWord.style.color = 'white';
+    if (divider) divider.style.backgroundColor = 'rgba(255,255,255,0.4)';
+    // Sign out button — hero state (dark bg)
+    const btn = document.getElementById('auth-signout-btn');
+    if (btn) {
+        btn.style.borderColor = 'rgba(255,255,255,0.6)';
+        btn.style.color = 'white';
+        btn.style.background = 'rgba(255,255,255,0.05)';
+    }
+}
         });
 
         // 4. Initialize State on Load
