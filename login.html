@@ -542,35 +542,52 @@
         }
 
         // ── Create Account ──
-        async function handleSignUp() {
-            const privacyCheck = document.getElementById('privacy-check');
-            if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
-            const firstName = document.getElementById('su-firstname').value.trim();
-            const lastName  = document.getElementById('su-lastname').value.trim();
-            const email     = document.getElementById('su-email').value.trim();
-            const password  = document.getElementById('su-password').value.trim();
-            const confirm   = document.getElementById('su-confirm').value.trim();
-            if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
-            if (!email)                   return showToast('⚠️ Please enter your email.', true);
-            if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
-            if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
+async function handleSignUp() {
+    const privacyCheck = document.getElementById('privacy-check');
+    if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
+    const firstName = document.getElementById('su-firstname').value.trim();
+    const lastName  = document.getElementById('su-lastname').value.trim();
+    const email     = document.getElementById('su-email').value.trim();
+    const password  = document.getElementById('su-password').value.trim();
+    const confirm   = document.getElementById('su-confirm').value.trim();
+    if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
+    if (!email)                   return showToast('⚠️ Please enter your email.', true);
+    if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
+    if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
 
-            window._signUpData = { firstName, lastName, email, password };
+    // Step 1 — Try to create the account first
+    const { data, error: signUpError } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: { data: { first_name: firstName, last_name: lastName } }
+    });
 
-            const { error } = await supabaseClient.auth.signInWithOtp({
-                email, options: { shouldCreateUser: true }
-            });
-            if (error) return showToast('⚠️ ' + error.message, true);
+    // Step 2 — Check if email already exists
+    // Supabase returns a user with identities:[] when email already registered
+    if (data?.user && data.user.identities && data.user.identities.length === 0) {
+        return showToast('⚠️ An account with this email already exists. Please sign in.', true);
+    }
 
-            showToast('✅ Code sent! Check your email.');
-            show('formSignUpOTP');
-            document.getElementById('signup-otp-email').textContent = email;
-            ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'].forEach(id => {
-                document.getElementById(id).value = '';
-                document.getElementById(id).classList.remove('filled');
-            });
-            setTimeout(() => document.getElementById('sotp1').focus(), 100);
-        }
+    if (signUpError) return showToast('⚠️ ' + signUpError.message, true);
+
+    // Step 3 — Account is new, send OTP for verification
+    const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: false }
+    });
+
+    if (otpError) return showToast('⚠️ ' + otpError.message, true);
+
+    window._signUpData = { firstName, lastName, email, password };
+    showToast('✅ Code sent! Check your email.');
+    show('formSignUpOTP');
+    document.getElementById('signup-otp-email').textContent = email;
+    ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'].forEach(id => {
+        document.getElementById(id).value = '';
+        document.getElementById(id).classList.remove('filled');
+    });
+    setTimeout(() => document.getElementById('sotp1').focus(), 100);
+}
 
         // ── Verify Signup OTP ──
         async function handleVerifySignUpOTP() {
