@@ -1036,46 +1036,84 @@ async function handleSignOut() {
                                 the sliders below to calculate live business impact</span>
                         </div>
                     </div>
-                    <div class="mb-6">
+                    <!-- Municipalities -->
+                    <div class="mb-5">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_muni"
-                                class="text-xs font-bold text-gray-400 uppercase">Municipalities</label>
+                            <label data-i18n="calc_muni" class="text-xs font-bold text-gray-400 uppercase">Municipalities</label>
                             <span id="disp-muni" class="text-xl font-black text-brand-primary">98</span>
                         </div>
                         <input type="range" id="input-muni" class="value-slider" min="1" max="98" value="98">
                     </div>
-                    <div class="mb-6">
+                    <!-- Manual Hours / Release (increased max to 1000) -->
+                    <div class="mb-5">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_hours" class="text-xs font-bold text-gray-400 uppercase">Manual Hours
-                                / Release</label>
-                            <span id="disp-hours" class="text-xl font-black text-brand-primary">40</span>
+                            <label data-i18n="calc_hours" class="text-xs font-bold text-gray-400 uppercase">Manual Testing Hours / Release</label>
+                            <span id="disp-hours" class="text-xl font-black text-brand-primary">120</span>
                         </div>
-                        <input type="range" id="input-hours" class="value-slider" min="5" max="200" value="40" step="5">
+                        <input type="range" id="input-hours" class="value-slider" min="10" max="1000" value="120" step="10">
                     </div>
-                    <div class="mb-6">
+                    <!-- Releases / Year -->
+                    <div class="mb-5">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_releases" class="text-xs font-bold text-gray-400 uppercase">Releases
-                                / Year</label>
+                            <label data-i18n="calc_releases" class="text-xs font-bold text-gray-400 uppercase">Releases / Year</label>
                             <span id="disp-releases" class="text-xl font-black text-brand-primary">4</span>
                         </div>
                         <input type="range" id="input-releases" class="value-slider" min="1" max="12" value="4">
                     </div>
-                    <div class="mb-6">
+                    <!-- Release Complexity -->
+                    <div class="mb-5">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_eff" class="text-xs font-bold text-gray-400 uppercase">Automation
-                                Gain</label>
-                            <span id="disp-eff" class="text-xl font-black text-brand-primary">75%</span>
+                            <label data-i18n="calc_complexity" class="text-xs font-bold text-gray-400 uppercase">Release Complexity</label>
+                            <span id="disp-complexity" class="text-xl font-black text-brand-primary">Medium</span>
                         </div>
-                        <input type="range" id="input-eff" class="value-slider" min="10" max="95" value="75" step="5">
+                        <input type="range" id="input-complexity" class="value-slider" min="1" max="3" value="2" step="1">
+                        <div class="flex justify-between text-[9px] text-gray-400 font-bold uppercase -mt-4 mb-2 px-0.5">
+                            <span>Simple</span><span>Medium</span><span>Complex</span>
+                        </div>
                     </div>
-                    <div>
+                    <!-- Automation Gain -->
+                    <div class="mb-5">
                         <div class="flex justify-between items-end mb-1">
-                            <label data-i18n="calc_rate" class="text-xs font-bold text-gray-400 uppercase">Hourly Rate
-                                (€)</label>
-                            <span id="disp-rate" class="text-xl font-black text-brand-primary">120</span>
+                            <label data-i18n="calc_eff" class="text-xs font-bold text-gray-400 uppercase">Automation Gain</label>
+                            <span id="disp-eff" class="text-xl font-black text-brand-primary">50%</span>
                         </div>
-                        <input type="range" id="input-rate" class="value-slider" min="50" max="300" value="120"
-                            step="10">
+                        <input type="range" id="input-eff" class="value-slider" min="10" max="95" value="50" step="5">
+                    </div>
+                    <!-- Role-based Rates -->
+                    <div class="mb-5 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-3" data-i18n="calc_roles_title">Hourly Rates by Role (€)</label>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between items-end mb-0.5">
+                                    <label data-i18n="calc_rate_manual" class="text-[10px] font-bold text-gray-400 uppercase">Manual Tester</label>
+                                    <span id="disp-rate-manual" class="text-sm font-black text-brand-primary">85</span>
+                                </div>
+                                <input type="range" id="input-rate-manual" class="value-slider" min="40" max="200" value="85" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-end mb-0.5">
+                                    <label data-i18n="calc_rate_auto" class="text-[10px] font-bold text-gray-400 uppercase">Automation Engineer</label>
+                                    <span id="disp-rate-auto" class="text-sm font-black text-brand-primary">130</span>
+                                </div>
+                                <input type="range" id="input-rate-auto" class="value-slider" min="60" max="300" value="130" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-end mb-0.5">
+                                    <label data-i18n="calc_rate_mgmt" class="text-[10px] font-bold text-gray-400 uppercase">Test Management</label>
+                                    <span id="disp-rate-mgmt" class="text-sm font-black text-brand-primary">150</span>
+                                </div>
+                                <input type="range" id="input-rate-mgmt" class="value-slider" min="80" max="350" value="150" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Automation Setup & Maintenance Cost -->
+                    <div class="mb-2">
+                        <div class="flex justify-between items-end mb-1">
+                            <label data-i18n="calc_auto_cost" class="text-xs font-bold text-gray-400 uppercase">Automation Cost / Year (€K)</label>
+                            <span id="disp-auto-cost" class="text-xl font-black text-[#E3000F]">50K</span>
+                        </div>
+                        <input type="range" id="input-auto-cost" class="value-slider" min="0" max="500" value="50" step="10">
+                        <p class="text-[9px] text-gray-400 -mt-4 mb-0" data-i18n="calc_auto_cost_hint">Tooling, infrastructure, script maintenance per municipality</p>
                     </div>
                 </div>
 
@@ -1088,7 +1126,7 @@ async function handleSignOut() {
 
                         <div class="relative z-10 flex flex-col justify-center h-full">
                             <span data-i18n="calc_res_cost"
-                                class="text-[10px] font-bold text-green-400/60 uppercase tracking-[0.3em] mb-4 block">Financial
+                                class="text-[10px] font-bold text-green-400/60 uppercase tracking-[0.3em] mb-4 block">Gross Financial
                                 Gain</span>
 
                             <div class="flex flex-col gap-3">
@@ -1111,9 +1149,13 @@ async function handleSignOut() {
                             </div>
 
                             <span data-i18n="calc_budget"
-                                class="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] block mt-8">
-                                Reinvestable Budget
+                                class="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] block mt-6">
+                                Net Savings (after automation costs)
                             </span>
+                            <div class="flex items-baseline gap-3 mt-2">
+                                <span class="text-3xl font-black text-green-400" id="res-net-savings">€0</span>
+                                <span class="text-[10px] text-red-400 font-bold" id="res-auto-cost-label">- €0 automation cost</span>
+                            </div>
                         </div>
                     </div>
 
@@ -1124,8 +1166,8 @@ async function handleSignOut() {
                             </div>
                             <div class="relative z-10">
                                 <span data-i18n="calc_res_hours"
-                                    class="text-[10px] font-bold text-blue-300/50 uppercase tracking-widest mb-3 block">Hours
-                                    Recovered</span>
+                                    class="text-[10px] font-bold text-blue-300/50 uppercase tracking-widest mb-3 block">Manual Testing
+                                    Hours Recovered</span>
                                 <span id="res-hours"
                                     class="text-5xl font-black text-white leading-none tracking-tight">0</span>
                             </div>
@@ -1142,10 +1184,10 @@ async function handleSignOut() {
                             </div>
                             <div class="relative z-10">
                                 <span data-i18n="calc_cycle"
-                                    class="text-[10px] font-bold text-red-300/50 uppercase tracking-widest mb-3 block">Efficiency
-                                    Gain</span>
+                                    class="text-[10px] font-bold text-red-300/50 uppercase tracking-widest mb-3 block">Delivery Cycle Reduction</span>
                                 <span id="res-big-eff"
                                     class="text-5xl font-black text-[#E3000F] leading-none tracking-tight">0%</span>
+                                <span class="text-[9px] text-gray-500 mt-1 block" id="dampening-note">Dampened from automation gain</span>
                             </div>
                             <div class="relative z-10 mt-6 w-full bg-black/20 h-2 rounded-full overflow-hidden">
                                 <div id="bar-cycle"
@@ -1482,15 +1524,21 @@ async function handleSignOut() {
                 calc_title: "Value Realization Calculator",
                 calc_subtitle: "Business Impact",
                 calc_muni: "Total Municipalities",
-                calc_hours: "Manual Hours / Release",
+                calc_hours: "Manual Testing Hours / Release",
                 calc_releases: "Releases / Year",
-                calc_eff: "Automation Efficiency",
-                calc_rate: "Hourly Rate (€)",
-                calc_res_hours: "Engineering Hours Recovered",
-                calc_res_cost: "Financial Efficiency Gain",
+                calc_complexity: "Release Complexity",
+                calc_eff: "Automation Gain",
+                calc_roles_title: "Hourly Rates by Role (€)",
+                calc_rate_manual: "Manual Tester",
+                calc_rate_auto: "Automation Engineer",
+                calc_rate_mgmt: "Test Management",
+                calc_auto_cost: "Automation Cost / Year (€K)",
+                calc_auto_cost_hint: "Tooling, infrastructure, script maintenance per municipality",
+                calc_res_hours: "Manual Testing Hours Recovered",
+                calc_res_cost: "Gross Financial Gain",
                 calc_annually: "Annually across selected Municipalities",
-                calc_budget: "Reinvestable Budget",
-                calc_cycle: "Delivery cycle reduced by",
+                calc_budget: "Net Savings (after automation costs)",
+                calc_cycle: "Delivery Cycle Reduction",
                 s4_usecases_title: "Everyday Impact for Test Managers",
                 s4_uc1_title: "1. Test Case Generation",
                 s4_uc1_desc: "Instead of manually writing 15 test steps from a raw Jira User Story, Aviator analyzes the acceptance criteria and generates a complete, ready-to-execute manual test script.",
@@ -1552,15 +1600,21 @@ async function handleSignOut() {
                 calc_title: "Værdi-beregner",
                 calc_subtitle: "Forretningsmæssig effekt",
                 calc_muni: "Antal Kommuner",
-                calc_hours: "Manuelle timer / Release",
+                calc_hours: "Manuelle testtimer / Release",
                 calc_releases: "Releases / år",
-                calc_eff: "Automations-effektivitet",
-                calc_rate: "Timesats (€)",
-                calc_res_hours: "Timer sparet",
-                calc_res_cost: "Økonomisk gevinst",
+                calc_complexity: "Release-kompleksitet",
+                calc_eff: "Automationsgevinst",
+                calc_roles_title: "Timesats per rolle (€)",
+                calc_rate_manual: "Manuel tester",
+                calc_rate_auto: "Automationsingeniør",
+                calc_rate_mgmt: "Testledelse",
+                calc_auto_cost: "Automationsomkostning / år (€K)",
+                calc_auto_cost_hint: "Værktøj, infrastruktur, scriptvedligeholdelse per kommune",
+                calc_res_hours: "Manuelle testtimer sparet",
+                calc_res_cost: "Brutto økonomisk gevinst",
                 calc_annually: "Årligt på tværs af kommuner",
-                calc_budget: "Geninvesterbart budget",
-                calc_cycle: "Leveringstiden reduceret med",
+                calc_budget: "Nettobesparelse (efter automationsomkostninger)",
+                calc_cycle: "Leveringstidsreduktion",
                 s4_usecases_title: "Daglig effekt for Test Managers",
                 s4_uc1_title: "1. Generering af testcases",
                 s4_uc1_desc: "I stedet for manuelt at skrive 15 testtrin fra en rå Jira User Story, analyserer Aviator acceptkriterierne og genererer et komplet, køreklar manuelt testscript.",
@@ -1621,15 +1675,21 @@ async function handleSignOut() {
                 calc_title: "Värdeberäknare",
                 calc_subtitle: "Affärspåverkan",
                 calc_muni: "Kommuner",
-                calc_hours: "Manuella timmar / Release",
+                calc_hours: "Manuella testtimmar / Release",
                 calc_releases: "Releases / år",
+                calc_complexity: "Release-komplexitet",
                 calc_eff: "Automationsvinst",
-                calc_rate: "Timpris (€)",
-                calc_res_hours: "Timmar återställda",
-                calc_res_cost: "Finansiell vinst",
+                calc_roles_title: "Timpris per roll (€)",
+                calc_rate_manual: "Manuell testare",
+                calc_rate_auto: "Automationsingenjör",
+                calc_rate_mgmt: "Testledning",
+                calc_auto_cost: "Automationskostnad / år (€K)",
+                calc_auto_cost_hint: "Verktyg, infrastruktur, skriptunderhåll per kommun",
+                calc_res_hours: "Manuella testtimmar återställda",
+                calc_res_cost: "Brutto finansiell vinst",
                 calc_annually: "Årligen",
-                calc_budget: "Återinvesterbar budget",
-                calc_cycle: "Leveranscykel minskad med",
+                calc_budget: "Nettobesparing (efter automationskostnader)",
+                calc_cycle: "Leveranscykelreduktion",
                 s4_usecases_title: "Daglig påverkan för Test Managers",
                 s4_uc1_title: "1. Generering av testfall",
                 s4_uc1_desc: "Istället för att manuellt skriva 15 teststeg från en rå Jira User Story, analyserar Aviator acceptanskriterierna och genererar ett komplett, körklart manuellt testskript.",
@@ -1689,15 +1749,21 @@ async function handleSignOut() {
                 calc_title: "Vērtības kalkulators",
                 calc_subtitle: "Ietekme uz biznesu",
                 calc_muni: "Pašvaldības",
-                calc_hours: "Manuālās stundas / Laidiens",
+                calc_hours: "Manuālās testu stundas / Laidiens",
                 calc_releases: "Laidieni / gadā",
+                calc_complexity: "Laidiena sarežģītība",
                 calc_eff: "Automatizācijas ieguvums",
-                calc_rate: "Stundas likme (€)",
-                calc_res_hours: "Atgūtās darba stundas",
-                calc_res_cost: "Finansiālais ieguvums",
+                calc_roles_title: "Stundas likme pēc lomas (€)",
+                calc_rate_manual: "Manuālais testētājs",
+                calc_rate_auto: "Automatizācijas inženieris",
+                calc_rate_mgmt: "Testu vadība",
+                calc_auto_cost: "Automatizācijas izmaksas / gadā (€K)",
+                calc_auto_cost_hint: "Rīki, infrastruktūra, skriptu uzturēšana katrai pašvaldībai",
+                calc_res_hours: "Atgūtās manuālās testu stundas",
+                calc_res_cost: "Bruto finansiālais ieguvums",
                 calc_annually: "Gadā visās pašvaldībās",
-                calc_budget: "Reinvestējams budžets",
-                calc_cycle: "Piegādes cikls samazināts par",
+                calc_budget: "Neto ietaupījums (pēc automatizācijas izmaksām)",
+                calc_cycle: "Piegādes cikla samazinājums",
                 s4_usecases_title: "Ikdienas ietekme uz testēšanas vadītājiem",
                 s4_uc1_title: "1. Testa gadījumu ģenerēšana",
                 s4_uc1_desc: "Tā vietā, lai manuāli rakstītu 15 testēšanas soļus no neapstrādāta Jira lietotāja stāsta, Aviator analizē pieņemšanas kritērijus un ģenerē pilnīgu, izpildei gatavu manuālā testa skriptu.",
@@ -1863,68 +1929,138 @@ async function handleSignOut() {
                 muni: document.getElementById('input-muni'),
                 hours: document.getElementById('input-hours'),
                 releases: document.getElementById('input-releases'),
+                complexity: document.getElementById('input-complexity'),
                 eff: document.getElementById('input-eff'),
-                rate: document.getElementById('input-rate')
+                rateManual: document.getElementById('input-rate-manual'),
+                rateAuto: document.getElementById('input-rate-auto'),
+                rateMgmt: document.getElementById('input-rate-mgmt'),
+                autoCost: document.getElementById('input-auto-cost')
             };
             const calcDisplays = {
                 muni: document.getElementById('disp-muni'),
                 hours: document.getElementById('disp-hours'),
                 releases: document.getElementById('disp-releases'),
+                complexity: document.getElementById('disp-complexity'),
                 eff: document.getElementById('disp-eff'),
-                rate: document.getElementById('disp-rate'),
+                rateManual: document.getElementById('disp-rate-manual'),
+                rateAuto: document.getElementById('disp-rate-auto'),
+                rateMgmt: document.getElementById('disp-rate-mgmt'),
+                autoCost: document.getElementById('disp-auto-cost'),
                 resHours: document.getElementById('res-hours'),
                 resCost: document.getElementById('res-cost'),
-                bigEff: document.getElementById('res-big-eff')
+                bigEff: document.getElementById('res-big-eff'),
+                netSavings: document.getElementById('res-net-savings'),
+                autoCostLabel: document.getElementById('res-auto-cost-label'),
+                dampeningNote: document.getElementById('dampening-note')
+            };
+
+            // Complexity multipliers: affects how much manual effort a release requires
+            // Simple=0.7x, Medium=1.0x, Complex=1.5x
+            const complexityMultipliers = { 1: 0.7, 2: 1.0, 3: 1.5 };
+            const complexityLabels    = { 1: 'Simple', 2: 'Medium', 3: 'Complex' };
+
+            // Dampening factor: automation efficiency does NOT translate 1:1 to
+            // delivery cycle reduction. Planning, reviews, deployment, approvals
+            // remain. A 0.4 factor means 50% automation → 20% cycle reduction.
+            const CYCLE_DAMPENING = 0.4;
+
+            // Hour distribution: of total manual hours, what % is spent on each role?
+            // Automation primarily reduces manual tester hours, partially reduces
+            // automation engineer hours (less re-work), and barely touches management.
+            const ROLE_DISTRIBUTION = {
+                manual: { share: 0.65, automationReduction: 1.0  },  // 65% of hours, fully reduced by automation
+                auto:   { share: 0.25, automationReduction: 0.3  },  // 25% of hours, only 30% reduced (they still build/maintain)
+                mgmt:   { share: 0.10, automationReduction: 0.05 }   // 10% of hours, barely reduced (oversight stays)
             };
 
             function updateCalculator() {
                 if (!calcInputs.muni) return;
 
-                // 1. Capture Input Values
-                const m = parseInt(calcInputs.muni.value);
-                const h = parseInt(calcInputs.hours.value);
-                const r = parseInt(calcInputs.releases.value);
-                const e = parseInt(calcInputs.eff.value) / 100;
-                const rt = parseInt(calcInputs.rate.value);
+                // 1. Read inputs
+                const m   = parseInt(calcInputs.muni.value);
+                const h   = parseInt(calcInputs.hours.value);
+                const r   = parseInt(calcInputs.releases.value);
+                const cx  = parseInt(calcInputs.complexity.value);
+                const eff = parseInt(calcInputs.eff.value) / 100;
+                const rManual = parseInt(calcInputs.rateManual.value);
+                const rAuto   = parseInt(calcInputs.rateAuto.value);
+                const rMgmt   = parseInt(calcInputs.rateMgmt.value);
+                const autoCostPerMuni = parseInt(calcInputs.autoCost.value) * 1000; // slider is in K
 
-                // 2. Perform Calculations
-                const recovered = m * h * r * e;
-                const savings = recovered * rt;
+                // 2. Complexity-adjusted base hours per release per municipality
+                const cxFactor = complexityMultipliers[cx] || 1.0;
+                const adjustedHours = h * cxFactor;
 
-                // 3. Update Text Labels (Rounding & Formatting)
+                // 3. Calculate hours recovered PER ROLE (not all roles reduce equally)
+                const manualHoursRecovered = adjustedHours * ROLE_DISTRIBUTION.manual.share * eff * ROLE_DISTRIBUTION.manual.automationReduction;
+                const autoHoursRecovered   = adjustedHours * ROLE_DISTRIBUTION.auto.share   * eff * ROLE_DISTRIBUTION.auto.automationReduction;
+                const mgmtHoursRecovered   = adjustedHours * ROLE_DISTRIBUTION.mgmt.share   * eff * ROLE_DISTRIBUTION.mgmt.automationReduction;
+
+                const totalHoursRecoveredPerRelease = manualHoursRecovered + autoHoursRecovered + mgmtHoursRecovered;
+                const totalHoursRecovered = m * totalHoursRecoveredPerRelease * r;
+
+                // 4. Financial savings PER ROLE (different hourly rates)
+                const savingsManual = m * manualHoursRecovered * r * rManual;
+                const savingsAuto   = m * autoHoursRecovered   * r * rAuto;
+                const savingsMgmt   = m * mgmtHoursRecovered   * r * rMgmt;
+                const grossSavings  = savingsManual + savingsAuto + savingsMgmt;
+
+                // 5. Subtract automation costs
+                const totalAutoCost = autoCostPerMuni * m;
+                const netSavings = Math.max(grossSavings - totalAutoCost, 0);
+
+                // 6. Dampened delivery cycle reduction
+                const cycleReduction = eff * CYCLE_DAMPENING;
+
+                // 7. Update display labels
                 calcDisplays.muni.innerText = m;
                 calcDisplays.hours.innerText = h;
                 calcDisplays.releases.innerText = r;
-                calcDisplays.eff.innerText = Math.round(e * 100) + "%";
-                calcDisplays.rate.innerText = rt;
-                calcDisplays.bigEff.innerText = Math.round(e * 100) + "%";
-                calcDisplays.resHours.innerText = Math.round(recovered).toLocaleString('en-US');
+                calcDisplays.complexity.innerText = complexityLabels[cx] || 'Medium';
+                calcDisplays.eff.innerText = Math.round(eff * 100) + "%";
+                calcDisplays.rateManual.innerText = rManual;
+                calcDisplays.rateAuto.innerText = rAuto;
+                calcDisplays.rateMgmt.innerText = rMgmt;
+                calcDisplays.autoCost.innerText = (autoCostPerMuni / 1000) + "K";
 
-                // Financial formatting (0.5K fix)
-                calcDisplays.resCost.innerText = savings >= 1000000 ?
-                    (savings / 1000000).toFixed(2) + "M" :
-                    (savings / 1000).toFixed(1) + "K";
+                // Hours recovered
+                calcDisplays.resHours.innerText = Math.round(totalHoursRecovered).toLocaleString('en-US');
 
-                // 4. Drive the Progress Bars (Visual Feedback)
+                // Gross Financial Gain
+                calcDisplays.resCost.innerText = grossSavings >= 1000000 ?
+                    (grossSavings / 1000000).toFixed(2) + "M" :
+                    (grossSavings / 1000).toFixed(1) + "K";
 
-                // Financial Bar (Green) - Max 67.03M
+                // Net Savings
+                calcDisplays.netSavings.innerText = "€" + (netSavings >= 1000000 ?
+                    (netSavings / 1000000).toFixed(2) + "M" :
+                    (netSavings / 1000).toFixed(1) + "K");
+
+                // Automation cost label
+                calcDisplays.autoCostLabel.innerText = "- €" + (totalAutoCost >= 1000000 ?
+                    (totalAutoCost / 1000000).toFixed(2) + "M" :
+                    (totalAutoCost / 1000).toFixed(0) + "K") + " automation cost";
+
+                // Dampened cycle reduction
+                calcDisplays.bigEff.innerText = Math.round(cycleReduction * 100) + "%";
+                calcDisplays.dampeningNote.innerText = Math.round(eff * 100) + "% automation × " + CYCLE_DAMPENING + " dampening";
+
+                // 8. Progress Bars
                 const barFinancial = document.getElementById('bar-financial');
                 if (barFinancial) {
-                    const financialPercent = Math.min((savings / 67032000) * 100, 100);
+                    const financialPercent = Math.min((netSavings / 100000000) * 100, 100);
                     barFinancial.style.width = financialPercent + '%';
                 }
 
-                // Hours Bar (Blue) - Max 250,000
                 const barHours = document.getElementById('bar-hours');
                 if (barHours) {
-                    const hoursPercent = Math.min((recovered / 250000) * 100, 100);
+                    const hoursPercent = Math.min((totalHoursRecovered / 500000) * 100, 100);
                     barHours.style.width = hoursPercent + '%';
                 }
 
-                // Efficiency Bar (Red) - Direct %
                 const barCycle = document.getElementById('bar-cycle');
                 if (barCycle) {
-                    barCycle.style.width = (e * 100) + '%';
+                    barCycle.style.width = (cycleReduction * 100) + '%';
                 }
             }
             Object.values(calcInputs).forEach(input => input?.addEventListener('input', updateCalculator));
