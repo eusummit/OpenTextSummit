@@ -182,7 +182,7 @@
             </div>
         </div>
 
-        <!-- ── SIGN IN ── -->
+        <!-- SIGN IN -->
         <div id="formSignIn" class="form-slide space-y-3">
             <div class="mb-6">
                 <h2 class="text-white font-bold text-xl">Welcome to the presentation</h2>
@@ -213,7 +213,7 @@
             <button onclick="showSignUp()" class="btn-secondary">Create new account</button>
         </div>
 
-        <!-- ── CREATE ACCOUNT ── -->
+        <!-- CREATE ACCOUNT -->
         <div id="formSignUp" class="form-slide space-y-3 hidden">
             <div class="mb-6">
                 <h2 class="text-white font-bold text-xl">Create account</h2>
@@ -226,7 +226,6 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
-            <!-- Privacy toggle -->
             <div id="privacy-toggle" onclick="togglePrivacy()"
                 style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;cursor:pointer;transition:all 0.2s;margin-top:4px;"
                 onmouseover="this.style.borderColor='rgba(227,0,15,0.3)'"
@@ -266,7 +265,7 @@
             </p>
         </div>
 
-        <!-- ── SIGNUP OTP VERIFICATION ── -->
+        <!-- SIGNUP OTP VERIFICATION -->
         <div id="formSignUpOTP" class="form-slide hidden space-y-4">
             <div class="step-indicator">
                 <div class="step-dot done"></div>
@@ -295,7 +294,7 @@
             </p>
         </div>
 
-        <!-- ── SIGNUP SUCCESS ── -->
+        <!-- SIGNUP SUCCESS -->
         <div id="formSuccess" class="hidden text-center form-slide">
             <div class="text-5xl mb-4">🎉</div>
             <h2 class="text-white font-bold text-xl mb-2">You're all set!</h2>
@@ -305,7 +304,7 @@
             <button onclick="showSignIn()" class="btn-primary">Sign In Now →</button>
         </div>
 
-        <!-- ── FORGOT PASSWORD STEP 1: Email ── -->
+        <!-- FORGOT PASSWORD STEP 1 -->
         <div id="formForgotEmail" class="form-slide hidden space-y-3">
             <div class="step-indicator">
                 <div class="step-dot active"></div>
@@ -323,7 +322,7 @@
             </p>
         </div>
 
-        <!-- ── FORGOT PASSWORD STEP 2: OTP ── -->
+        <!-- FORGOT PASSWORD STEP 2: OTP -->
         <div id="formForgotOTP" class="form-slide hidden space-y-4">
             <div class="step-indicator">
                 <div class="step-dot done"></div>
@@ -353,7 +352,7 @@
             </p>
         </div>
 
-        <!-- ── FORGOT PASSWORD STEP 3: New Password ── -->
+        <!-- FORGOT PASSWORD STEP 3: New Password -->
         <div id="formForgotNewPassword" class="form-slide hidden space-y-3">
             <div class="step-indicator">
                 <div class="step-dot done"></div>
@@ -384,12 +383,11 @@
 
         let otpEmail = '';
 
-        // ── Handle OAuth + confirmation redirects ──
+        // Handle OAuth + confirmation redirects
         (async function() {
             const params = new URLSearchParams(window.location.search);
             const hash = window.location.hash;
 
-            // Inactivity timeout redirect
             if (params.get('reason') === 'timeout') {
                 history.replaceState(null, '', window.location.pathname);
                 showToast('⚠️ You were logged out due to inactivity.', true);
@@ -407,20 +405,16 @@
                 const type = hashParams.get('type');
 
                 if (type === 'recovery') {
-                    // Password reset flow
                     const accessToken  = hashParams.get('access_token');
                     const refreshToken = hashParams.get('refresh_token');
                     await supabaseClient.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
                     history.replaceState(null, '', window.location.pathname);
                     showNewPasswordScreen();
                 } else {
-                    // Google / GitHub OAuth or email confirmation
                     const { data: { session } } = await supabaseClient.auth.getSession();
                     if (session) {
-                        // Valid session — redirect straight to app
                         window.location.replace('index.html');
                     } else {
-                        // No session — email confirmation
                         history.replaceState(null, '', window.location.pathname);
                         showToast('✅ Email confirmed! You can now sign in.');
                     }
@@ -428,7 +422,7 @@
             }
         })();
 
-        // ── Skip login if already logged in ──
+        // Skip login if already logged in
         (async function() {
             try {
                 const { data: { user } } = await supabaseClient.auth.getUser();
@@ -436,10 +430,25 @@
             } catch(e) {}
         })();
 
-        // ── Toast ──
+        // ─────────────────────────────────────────────────────────────────
+        // SECURITY FIX 1 — showToast: innerHTML → textContent
+        //
+        // WHAT CHANGED: toast.innerHTML = message  →  toast.textContent = message
+        //
+        // WHY: toast messages include external data like error.message from
+        // Supabase. If that string ever contained HTML (e.g. a crafted error
+        // response like <img src=x onerror=alert(1)>), innerHTML would parse
+        // and execute it. textContent treats everything as plain text —
+        // no tags, no scripts, nothing executes.
+        //
+        // DOES IT AFFECT FUNCTIONALITY? No. Toast messages are plain text
+        // strings like "✅ Code sent!" or "⚠️ Invalid password". Emoji render
+        // fine via textContent. Nothing in this app puts intentional HTML
+        // tags inside a toast message.
+        // ─────────────────────────────────────────────────────────────────
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
-            toast.innerHTML = message;
+            toast.textContent = message; // FIXED: was toast.innerHTML = message
             toast.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(22,163,74,0.95)';
             toast.style.backdropFilter = 'blur(10px)';
             toast.style.border = isError ? '1px solid rgba(255,100,100,0.3)' : '1px solid rgba(100,255,150,0.3)';
@@ -447,7 +456,7 @@
             setTimeout(() => toast.classList.remove('show'), 5000);
         }
 
-        // ── Hide all forms ──
+        // Hide all forms
         function hideAll() {
             ['formSignIn','formSignUp','formSuccess','formSignUpOTP',
              'formForgotEmail','formForgotOTP','formForgotNewPassword']
@@ -461,15 +470,27 @@
             el.classList.add('form-slide');
         }
 
-        // ── Screen switchers ──
         function showSignIn()         { show('formSignIn'); }
         function showSignUp()         { show('formSignUp'); }
         function showSuccess()        { show('formSuccess'); }
         function showForgotPassword() { show('formForgotEmail'); }
 
+        // ─────────────────────────────────────────────────────────────────
+        // SECURITY FIX 2 — showOTPScreen: email display uses textContent
+        //
+        // WHAT CHANGED: confirmed textContent is used (not innerHTML) when
+        // displaying the user's email address in the "Sent to [email]" line.
+        //
+        // WHY: A specially crafted email address like:
+        //   "><img src=x onerror=alert(1)>
+        // would execute as HTML if set via innerHTML. textContent neutralises
+        // this — the raw string is displayed literally, no parsing occurs.
+        //
+        // DOES IT AFFECT FUNCTIONALITY? No. The email just shows as text.
+        // ─────────────────────────────────────────────────────────────────
         function showOTPScreen(email) {
             show('formForgotOTP');
-            document.getElementById('otp-sent-email').textContent = email;
+            document.getElementById('otp-sent-email').textContent = email; // SAFE: textContent, not innerHTML
             ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'].forEach(id => {
                 document.getElementById(id).value = '';
                 document.getElementById(id).classList.remove('filled');
@@ -479,9 +500,8 @@
 
         function showNewPasswordScreen() { show('formForgotNewPassword'); }
 
-        // ── OTP auto-advance ──
+        // OTP auto-advance
         document.addEventListener('DOMContentLoaded', () => {
-            // Forgot password OTP boxes
             const ids = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8'];
             ids.forEach((id, i) => {
                 const input = document.getElementById(id);
@@ -496,7 +516,6 @@
                         document.getElementById(ids[i-1]).focus();
                 });
             });
-            // Signup OTP boxes
             const sids = ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'];
             sids.forEach((id, i) => {
                 const input = document.getElementById(id);
@@ -513,7 +532,7 @@
             });
         });
 
-        // ── Google Login ──
+        // Google Login
         async function handleGoogleLogin() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
@@ -522,7 +541,7 @@
             if (error) showToast('⚠️ ' + error.message, true);
         }
 
-        // ── GitHub Login ──
+        // GitHub Login
         async function handleGithubLogin() {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'github',
@@ -531,7 +550,7 @@
             if (error) showToast('⚠️ ' + error.message, true);
         }
 
-        // ── Sign In ──
+        // Sign In
         async function handleLogin() {
             const email    = document.getElementById('si-email').value.trim();
             const password = document.getElementById('si-password').value.trim();
@@ -541,55 +560,62 @@
             else window.location.href = 'index.html';
         }
 
-        // ── Create Account ──
-async function handleSignUp() {
-    const privacyCheck = document.getElementById('privacy-check');
-    if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
-    const firstName = document.getElementById('su-firstname').value.trim();
-    const lastName  = document.getElementById('su-lastname').value.trim();
-    const email     = document.getElementById('su-email').value.trim();
-    const password  = document.getElementById('su-password').value.trim();
-    const confirm   = document.getElementById('su-confirm').value.trim();
-    if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
-    if (!email)                   return showToast('⚠️ Please enter your email.', true);
-    if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
-    if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
+        // Create Account
+        async function handleSignUp() {
+            const privacyCheck = document.getElementById('privacy-check');
+            if (!privacyCheck.checked) return showToast('⚠️ Please accept the Privacy Policy and Terms of Service.', true);
+            const firstName = document.getElementById('su-firstname').value.trim();
+            const lastName  = document.getElementById('su-lastname').value.trim();
+            const email     = document.getElementById('su-email').value.trim();
+            const password  = document.getElementById('su-password').value.trim();
+            const confirm   = document.getElementById('su-confirm').value.trim();
+            if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
+            if (!email)                   return showToast('⚠️ Please enter your email.', true);
+            if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
 
-    // Step 1 — Try to create the account first
-    const { data, error: signUpError } = await supabaseClient.auth.signUp({
-        email,
-        password,
-        options: { data: { first_name: firstName, last_name: lastName } }
-    });
+            const { data, error: signUpError } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { first_name: firstName, last_name: lastName } }
+            });
 
-    // Step 2 — Check if email already exists
-    // Supabase returns a user with identities:[] when email already registered
-    if (data?.user && data.user.identities && data.user.identities.length === 0) {
-        return showToast('⚠️ An account with this email already exists. Please sign in.', true);
-    }
+            if (data?.user && data.user.identities && data.user.identities.length === 0) {
+                return showToast('⚠️ An account with this email already exists. Please sign in.', true);
+            }
 
-    if (signUpError) return showToast('⚠️ ' + signUpError.message, true);
+            if (signUpError) return showToast('⚠️ ' + signUpError.message, true);
 
-    // Step 3 — Account is new, send OTP for verification
-    const { error: otpError } = await supabaseClient.auth.signInWithOtp({
-        email,
-        options: { shouldCreateUser: false }
-    });
+            const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+                email,
+                options: { shouldCreateUser: false }
+            });
 
-    if (otpError) return showToast('⚠️ ' + otpError.message, true);
+            if (otpError) return showToast('⚠️ ' + otpError.message, true);
 
-    window._signUpData = { firstName, lastName, email, password };
-    showToast('✅ Code sent! Check your email.');
-    show('formSignUpOTP');
-    document.getElementById('signup-otp-email').textContent = email;
-    ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'].forEach(id => {
-        document.getElementById(id).value = '';
-        document.getElementById(id).classList.remove('filled');
-    });
-    setTimeout(() => document.getElementById('sotp1').focus(), 100);
-}
+            window._signUpData = { firstName, lastName, email, password };
+            showToast('✅ Code sent! Check your email.');
+            show('formSignUpOTP');
+            // ─────────────────────────────────────────────────────────────
+            // SECURITY FIX 3 — signup email display uses textContent
+            //
+            // WHAT CHANGED: explicitly using textContent (not innerHTML)
+            // to display the user's own email address in "We sent a code to..."
+            //
+            // WHY: same reason as Fix 2 — a crafted email address should
+            // never be interpreted as HTML markup.
+            //
+            // DOES IT AFFECT FUNCTIONALITY? No. It just shows the email string.
+            // ─────────────────────────────────────────────────────────────
+            document.getElementById('signup-otp-email').textContent = email; // SAFE: textContent, not innerHTML
+            ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8'].forEach(id => {
+                document.getElementById(id).value = '';
+                document.getElementById(id).classList.remove('filled');
+            });
+            setTimeout(() => document.getElementById('sotp1').focus(), 100);
+        }
 
-        // ── Verify Signup OTP ──
+        // Verify Signup OTP
         async function handleVerifySignUpOTP() {
             const code = ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8']
                 .map(id => document.getElementById(id).value).join('');
@@ -607,7 +633,7 @@ async function handleSignUp() {
             showSuccess();
         }
 
-        // ── Resend Signup OTP ──
+        // Resend Signup OTP
         async function resendSignUpOTP() {
             if (!window._signUpData?.email) return;
             const { error } = await supabaseClient.auth.signInWithOtp({
@@ -617,7 +643,7 @@ async function handleSignUp() {
             else showToast('✅ Code resent!');
         }
 
-        // ── Send Forgot Password OTP ──
+        // Send Forgot Password OTP
         async function handleSendOTP(isResend = false) {
             const email = document.getElementById('fp-email').value.trim();
             if (!email) return showToast('⚠️ Please enter your email address.', true);
@@ -630,7 +656,7 @@ async function handleSignUp() {
             showOTPScreen(email);
         }
 
-        // ── Verify Forgot Password OTP ──
+        // Verify Forgot Password OTP
         async function handleVerifyOTP() {
             const code = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8']
                 .map(id => document.getElementById(id).value).join('');
@@ -643,7 +669,7 @@ async function handleSignUp() {
             showNewPasswordScreen();
         }
 
-        // ── Set New Password ──
+        // Set New Password
         async function handleSetNewPassword() {
             const newPassword     = document.getElementById('fp-newpassword').value.trim();
             const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
@@ -655,7 +681,7 @@ async function handleSignUp() {
             setTimeout(() => showSignIn(), 2000);
         }
 
-        // ── Privacy checkbox toggle ──
+        // Privacy checkbox toggle
         function togglePrivacy() {
             const check  = document.getElementById('privacy-check');
             const box    = document.getElementById('privacy-box');
@@ -676,7 +702,7 @@ async function handleSignUp() {
             }
         }
 
-        // ── Enter key support ──
+        // Enter key support
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Enter') return;
             if (!document.getElementById('formSignIn').classList.contains('hidden'))            handleLogin();
