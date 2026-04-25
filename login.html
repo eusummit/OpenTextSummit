@@ -690,13 +690,20 @@
             if (check.checked) {
                 box.style.background   = '#E3000F';
                 box.style.borderColor  = '#E3000F';
-                box.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                while (box.firstChild) box.removeChild(box.firstChild);
+                const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+                svg.setAttribute('width','13'); svg.setAttribute('height','13');
+                svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('fill','none');
+                svg.setAttribute('stroke','white'); svg.setAttribute('stroke-width','3');
+                const poly = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+                poly.setAttribute('points','20 6 9 17 4 12');
+                svg.appendChild(poly); box.appendChild(svg);
                 toggle.style.borderColor = 'rgba(227,0,15,0.5)';
                 toggle.style.background  = 'rgba(227,0,15,0.06)';
             } else {
                 box.style.background   = 'transparent';
                 box.style.borderColor  = 'rgba(255,255,255,0.2)';
-                box.innerHTML          = '';
+                while (box.firstChild) box.removeChild(box.firstChild);
                 toggle.style.borderColor = 'rgba(255,255,255,0.08)';
                 toggle.style.background  = 'rgba(255,255,255,0.04)';
             }
