@@ -27,12 +27,13 @@
             }
         })();
 
-        // ── Listen for ANY auth change across the app ──
+       // ── Listen for ANY auth change across the app ──
         // Catches: sign out from index.html,
         // inactivity timeout, token expiry — anything
+        // Note: only act on SIGNED_OUT — not on null session during init
         (async function() {
             getSB().auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_OUT' || !session) {
+                if (event === 'SIGNED_OUT') {
                     window.location.replace('login.html');
                 }
             });
