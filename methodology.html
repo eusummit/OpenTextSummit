@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value Realization Methodology | KOMBIT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --red:    #E3000F;
+            --dark:   #0B1B3D;
+            --blue:   #0052CC;
+            --accent: #00B8D9;
+            --light:  #F4F7F9;
+            --mono:   'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; }
+        html { overflow-x: hidden; scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: #1F2937;
+            overflow-x: hidden;
+        }
+
+        /* ── PRINT STYLES ── */
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            body { background: white; font-size: 11px; }
+            nav { display: none; }
+            .section-card { box-shadow: none !important; border: 1px solid #ddd !important; }
+            #scroll-progress { display: none; }
+            .bottom-ticker { display: none; }
+            a { color: inherit; text-decoration: none; }
+        }
+
+        /* ── SCROLL PROGRESS ── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--red); z-index: 100;
+            transition: width 0.1s;
+        }
+
+        /* ── NAV ── */
+        .top-nav {
+            position: sticky; top: 0; z-index: 90;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding: 14px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a3a6b 100%);
+            padding: 80px 10% 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 80% 50%, rgba(0,82,204,0.3) 0%, transparent 60%);
+        }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ── SECTION CARDS ── */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 20px 28px;
+            border-bottom: 1px solid #F3F4F6;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .card-num {
+            width: 32px; height: 32px;
+            background: var(--red);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 11px; font-weight: 900;
+            flex-shrink: 0;
+        }
+        .card-body { padding: 28px; }
+
+        /* ── FORMULA BOX ── */
+        .formula-box {
+            background: #0B1B3D;
+            border-radius: 10px;
+            padding: 20px 24px;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: #e2e8f0;
+            line-height: 1.9;
+            overflow-x: auto;
+        }
+        .formula-box .comment { color: #64748b; }
+        .formula-box .highlight { color: #4ade80; font-weight: 700; }
+        .formula-box .var { color: #60a5fa; }
+        .formula-box .operator { color: #f472b6; }
+        .formula-box .result { color: #fbbf24; font-weight: 700; }
+
+        /* ── PARAM TABLE ── */
+        .param-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .param-table th {
+            background: var(--dark); color: white;
+            padding: 10px 14px; text-align: left;
+            font-size: 10px; text-transform: uppercase;
+            letter-spacing: 0.1em; font-weight: 700;
+        }
+        .param-table td { padding: 12px 14px; border-bottom: 1px solid #F3F4F6; vertical-align: top; }
+        .param-table tr:last-child td { border-bottom: none; }
+        .param-table tr:hover td { background: #F9FAFB; }
+        .param-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .tag-slider  { background: #EEF2FF; color: #4F46E5; }
+        .tag-fixed   { background: #FEF3C7; color: #D97706; }
+        .tag-derived { background: #ECFDF5; color: #059669; }
+
+        /* ── ASSUMPTION BOX ── */
+        .assumption-row {
+            display: grid; grid-template-columns: 140px 80px 1fr;
+            gap: 16px; padding: 14px 0;
+            border-bottom: 1px solid #F3F4F6;
+            align-items: start;
+        }
+        .assumption-row:last-child { border-bottom: none; }
+        .assumption-value {
+            font-family: var(--mono);
+            font-size: 18px; font-weight: 900;
+            color: var(--red);
+        }
+
+        /* ── WORKED EXAMPLE ── */
+        .step-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-left: 4px solid var(--blue);
+            border-radius: 0 10px 10px 0;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+        }
+        .step-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px;
+            background: var(--blue); color: white;
+            border-radius: 50%; font-size: 11px; font-weight: 900;
+            margin-right: 8px; flex-shrink: 0;
+        }
+        .calc-line {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+        .calc-equals { color: var(--red); font-weight: 900; }
+        .calc-result { color: #059669; font-weight: 900; }
+
+        /* ── GLOSSARY ── */
+        .glossary-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #F3F4F6;
+            display: grid; grid-template-columns: 180px 1fr;
+            gap: 16px; align-items: start;
+        }
+        .glossary-item:last-child { border-bottom: none; }
+        .glossary-term {
+            font-family: var(--mono);
+            font-size: 12px; font-weight: 700;
+            color: var(--dark);
+            padding: 3px 8px;
+            background: #EFF6FF;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* ── LIMITATION CARD ── */
+        .limit-item {
+            display: flex; align-items: start; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid #F3F4F6;
+        }
+        .limit-item:last-child { border-bottom: none; }
+        .limit-icon {
+            width: 28px; height: 28px; flex-shrink: 0;
+            background: #FEF3C7; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+        }
+
+        /* ── VERSION BADGE ── */
+        .version-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px;
+            background: rgba(227,0,15,0.08);
+            border: 1px solid rgba(227,0,15,0.2);
+            border-radius: 20px;
+            font-size: 11px; font-weight: 800;
+            color: var(--red);
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+
+        /* ── PRINT BUTTON ── */
+        .print-btn {
+            display: inline-flex; align-items: center; gap-8px;
+            padding: 10px 20px;
+            background: var(--dark);
+            color: white; border: none;
+            border-radius: 8px;
+            font-size: 12px; font-weight: 700;
+            cursor: pointer; letter-spacing: 0.05em;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+        .print-btn:hover { background: var(--red); transform: translateY(-1px); }
+
+        /* ── TOC ── */
+        .toc-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px; border-radius: 8px;
+            font-size: 12px; font-weight: 600;
+            color: #4B5563;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .toc-item:hover { background: #F3F4F6; color: var(--dark); }
+        .toc-num {
+            width: 20px; height: 20px;
+            background: var(--red); color: white;
+            border-radius: 4px; font-size: 9px; font-weight: 900;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ── BOTTOM TICKER ── */
+        .bottom-ticker {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--dark);
+            color: rgba(255,255,255,0.7);
+            z-index: 50; font-family: var(--mono);
+            font-size: 11px; letter-spacing: 1px;
+            padding: 6px 0;
+            border-top: 1px solid rgba(227,0,15,0.3);
+            overflow: hidden; pointer-events: none;
+        }
+        .ticker-wrap { display:flex; white-space:nowrap; width:max-content; animation:tickerSlide 30s linear infinite; }
+        .ticker-item-bt { padding: 0 50px; }
+        .ticker-red { color: var(--red); font-weight: bold; margin: 0 4px; }
+        @keyframes tickerSlide { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .top-nav { padding: 12px 20px; }
+            .hero { padding: 60px 5% 40px; }
+            .card-body { padding: 20px; }
+            .assumption-row { grid-template-columns: 1fr 60px; }
+            .glossary-item { grid-template-columns: 1fr; }
+        }
+
+        /* ── LANG TOGGLE ── */
+        #lang-dropdown-m { display: none; position: absolute; right: 0; top: 100%; margin-top: 8px; background: white; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #E5E7EB; z-index: 200; min-width: 130px; overflow: hidden; }
+        #lang-dropdown-m.show { display: block; }
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress" style="width:0%"></div>
+
+<!-- ══════════════ TOP NAV ══════════════ -->
+<nav class="top-nav no-print">
+    <div class="flex items-center gap-4">
+        <!-- KOMBIT Logo -->
+        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-xl leading-none" style="font-family:Arial,sans-serif;">
+            <span>KOMB</span>
+            <div style="display:flex;flex-direction:column;width:5px;height:14px;margin:0 3px;justify-content:space-between;transform:translateY(1px);">
+                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
+                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
+                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
+            </div>
+            <span>T</span>
+        </div>
+        <div style="width:1px;height:20px;background:rgba(0,0,0,0.1);"></div>
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest" data-i18n="nav_subtitle">Value Realization Methodology</span>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Back to calculator -->
+        <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all no-print" data-i18n="nav_back">
+            ← Back to Calculator
+        </a>
+        <!-- Language toggle -->
+        <div class="relative">
+            <button onclick="toggleLangMenuM(event)" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-200 transition-all">
+                <img id="current-lang-flag-m" src="https://flagcdn.com/w20/gb.png" width="18" alt="flag">
+                <span id="current-lang-code-m">EN</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="lang-dropdown-m">
+                <button onclick="setLanguageM('en')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN"> English</button>
+                <button onclick="setLanguageM('da')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/dk.png" width="16" alt="DA"> Dansk</button>
+                <button onclick="setLanguageM('sv')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/se.png" width="16" alt="SV"> Svenska</button>
+                <button onclick="setLanguageM('lv')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/lv.png" width="16" alt="LV"> Latviešu</button>
+            </div>
+        </div>
+        <!-- Print button -->
+        <button onclick="window.print()" class="print-btn no-print" data-i18n="nav_print">⬇ Download / Print</button>
+    </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="hero">
+    <div class="hero-grid"></div>
+    <div class="relative z-10 max-w-5xl mx-auto">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="version-badge">
+                <span>∑</span>
+                <span data-i18n="hero_badge">Methodology Document</span>
+            </div>
+            <span class="text-white/30 text-xs font-mono">v2.0 — 2026</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black text-white mb-4 leading-tight" data-i18n="hero_title">
+            Value Realization<br><span style="color:#E3000F;">Calculator Methodology</span>
+        </h1>
+        <p class="text-gray-300 text-lg max-w-3xl mb-8 font-light leading-relaxed" data-i18n="hero_desc">
+            A complete reference document explaining every parameter, assumption, formula step, and interpretation guideline behind the KOMBIT TaaS Value Realization Calculator.
+        </p>
+        <div class="flex flex-wrap gap-3">
+            <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
+                <span style="color:#4ade80;">●</span> <span data-i18n="hero_tag1">All Parameters Documented</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
+                <span style="color:#60a5fa;">●</span> <span data-i18n="hero_tag2">Worked Example Included</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
+                <span style="color:#f472b6;">●</span> <span data-i18n="hero_tag3">All Assumptions Explained</span>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
+                <span style="color:#fbbf24;">●</span> <span data-i18n="hero_tag4">EN / DA / SV / LV</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ MAIN CONTENT ══════════════ -->
+<main class="max-w-5xl mx-auto px-6 py-12 pb-24">
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="section-card mb-8 no-print" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">≡</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="toc_title">Table of Contents</h2>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="grid md:grid-cols-2 gap-1">
+                <a href="#s1"  class="toc-item"><span class="toc-num">1</span> <span data-i18n="toc_1">Executive Summary</span></a>
+                <a href="#s2"  class="toc-item"><span class="toc-num">2</span> <span data-i18n="toc_2">Purpose & Scope</span></a>
+                <a href="#s3"  class="toc-item"><span class="toc-num">3</span> <span data-i18n="toc_3">Parameters Reference</span></a>
+                <a href="#s4"  class="toc-item"><span class="toc-num">4</span> <span data-i18n="toc_4">Formula — Plain English</span></a>
+                <a href="#s5"  class="toc-item"><span class="toc-num">5</span> <span data-i18n="toc_5">Formula — Mathematical</span></a>
+                <a href="#s6"  class="toc-item"><span class="toc-num">6</span> <span data-i18n="toc_6">Worked Example</span></a>
+                <a href="#s7"  class="toc-item"><span class="toc-num">7</span> <span data-i18n="toc_7">Hardcoded Assumptions</span></a>
+                <a href="#s8"  class="toc-item"><span class="toc-num">8</span> <span data-i18n="toc_8">Hours vs Days Explained</span></a>
+                <a href="#s9"  class="toc-item"><span class="toc-num">9</span> <span data-i18n="toc_9">Interpreting Results</span></a>
+                <a href="#s10" class="toc-item"><span class="toc-num">10</span> <span data-i18n="toc_10">What Is Not Measured</span></a>
+                <a href="#s11" class="toc-item"><span class="toc-num">11</span> <span data-i18n="toc_11">Glossary</span></a>
+                <a href="#s12" class="toc-item"><span class="toc-num">12</span> <span data-i18n="toc_12">Version & Author</span></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S1: EXECUTIVE SUMMARY ─── -->
+    <div id="s1" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">1</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s1_title">Executive Summary</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s1_sub">What this calculator is and who it is for</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="text-gray-600 text-sm leading-relaxed mb-4" data-i18n="s1_p1">
+                The KOMBIT Value Realization Calculator is an interactive financial model designed to estimate the annual cost savings achievable through Testing as a Service (TaaS) combined with test automation, deployed across Danish municipal IT projects.
+            </p>
+            <p class="text-gray-600 text-sm leading-relaxed mb-6" data-i18n="s1_p2">
+                It is designed for three audiences: executive leadership (CFOs, IT Directors) who need a financial justification; Test Managers and Test Architects who need an auditable breakdown; and external stakeholders (OpenText, KL, municipal representatives) who need to understand the methodology behind the numbers.
+            </p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-black text-green-600 mb-1">€</div>
+                    <div class="text-xs font-bold text-green-700 uppercase tracking-wider" data-i18n="s1_card1">Financial Gain</div>
+                    <div class="text-[10px] text-gray-500 mt-1" data-i18n="s1_card1_sub">Gross annual savings from automation</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-black text-blue-600 mb-1">⏱</div>
+                    <div class="text-xs font-bold text-blue-700 uppercase tracking-wider" data-i18n="s1_card2">Time Recovered</div>
+                    <div class="text-[10px] text-gray-500 mt-1" data-i18n="s1_card2_sub">Hours, days, sprints saved per year</div>
+                </div>
+                <div class="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-black mb-1" style="color:#E3000F;">⚡</div>
+                    <div class="text-xs font-bold uppercase tracking-wider" style="color:#E3000F;" data-i18n="s1_card3">Faster Delivery</div>
+                    <div class="text-[10px] text-gray-500 mt-1" data-i18n="s1_card3_sub">Cycle reduction per release</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S2: PURPOSE & SCOPE ─── -->
+    <div id="s2" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">2</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s2_title">Purpose & Scope</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s2_sub">What the calculator does and does not do</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-3"><div style="width:3px;height:16px;background:#059669;border-radius:2px;"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_does">What it DOES</span></div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_1">Estimates gross financial gain from automation across municipalities</span></li>
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_2">Calculates per-role, per-person, per-release savings</span></li>
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_3">Converts hours saved to days, weeks, and sprint equivalents</span></li>
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_4">Shows net savings after deducting automation infrastructure cost</span></li>
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_5">Provides breakeven guidance when net is negative</span></li>
+                        <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_6">Assumes 100% tester utilisation (all hours are billable)</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-3"><div style="width:3px;height:16px;background:#E3000F;border-radius:2px;"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_not">What it DOES NOT do</span></div>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_1">Does not measure quality improvements or defect prevention value</span></li>
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_2">Does not account for risk reduction or compliance benefits</span></li>
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_3">Does not model partial utilisation or over-capacity scenarios</span></li>
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_4">Does not account for staff redeployment value</span></li>
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_5">Does not model the compounding value of faster releases</span></li>
+                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_6">Does not replace a full business case analysis</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S3: PARAMETERS ─── -->
+    <div id="s3" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">3</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s3_title">Parameters Reference</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s3_sub">Every slider and input explained with default values and real-world guidance</p>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="flex gap-3 p-4 border-b border-gray-100 flex-wrap">
+                <span class="param-tag tag-slider" data-i18n="tag_slider">Slider Input</span>
+                <span class="param-tag tag-fixed" data-i18n="tag_fixed">Hardcoded Assumption</span>
+                <span class="param-tag tag-derived" data-i18n="tag_derived">Derived / Calculated</span>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th data-i18n="pt_param">Parameter</th>
+                            <th data-i18n="pt_type">Type</th>
+                            <th data-i18n="pt_default">Default</th>
+                            <th data-i18n="pt_range">Range</th>
+                            <th data-i18n="pt_why">Why It Exists</th>
+                            <th data-i18n="pt_effect">If Increased</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_muni">Municipalities</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">98</td><td class="text-xs text-gray-500">1–98</td><td class="text-xs text-gray-600" data-i18n="p_muni_why">KOMBIT serves 98 Danish municipalities. Each runs independent test cycles, so savings scale linearly.</td><td class="text-xs text-gray-600" data-i18n="p_muni_effect">Linear increase in gross gain and total hours recovered</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_hours">Manual Hrs / Release</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">120</td><td class="text-xs text-gray-500">10–1000</td><td class="text-xs text-gray-600" data-i18n="p_hours_why">The baseline effort per release before automation. This is your single most important input. Should reflect actual hours logged.</td><td class="text-xs text-gray-600" data-i18n="p_hours_effect">All savings scale proportionally upward</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_releases">Releases / Year</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">4</td><td class="text-xs text-gray-500">1–12</td><td class="text-xs text-gray-600" data-i18n="p_releases_why">The annual release cadence. More releases means automation pays back more frequently within the year.</td><td class="text-xs text-gray-600" data-i18n="p_releases_effect">Annual figures increase; per-release figures unchanged</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_cx">Release Complexity</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">Medium</td><td class="text-xs text-gray-500">Simple / Medium / Complex</td><td class="text-xs text-gray-600" data-i18n="p_cx_why">Not all releases require the same testing effort. A security patch needs less testing than a full system upgrade. Scales the base hours up or down.</td><td class="text-xs text-gray-600" data-i18n="p_cx_effect">Simple: ×0.7 (reduces). Complex: ×1.5 (increases)</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_eff">Automation Gain %</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">50%</td><td class="text-xs text-gray-500">10–95%</td><td class="text-xs text-gray-600" data-i18n="p_eff_why">The percentage of testing effort eliminated by automation. Industry benchmarks: basic automation 30–50%, mature framework 60–80%, advanced AI-assisted 80–90%.</td><td class="text-xs text-gray-600" data-i18n="p_eff_effect">All savings increase. Applied differently per role — see Assumptions.</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_workday">Working Hrs / Day</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">8</td><td class="text-xs text-gray-500">6–9</td><td class="text-xs text-gray-600" data-i18n="p_workday_why">Used only for converting hours to days and weeks. Danish standard working day is 7.4 hours. Adjust to match your organisation.</td><td class="text-xs text-gray-600" data-i18n="p_workday_effect">Fewer days/weeks shown (same hours ÷ longer day)</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_rate_m">Manual Tester Rate</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">€85/hr</td><td class="text-xs text-gray-500">€40–200</td><td class="text-xs text-gray-600" data-i18n="p_rate_m_why">Hourly cost of a manual tester (TaaS consultant). Applied to 65% of total hours. Nordic market range: €70–120/hr.</td><td class="text-xs text-gray-600" data-i18n="p_rate_m_effect">Manual saving component increases</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_rate_a">Auto Engineer Rate</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">€130/hr</td><td class="text-xs text-gray-500">€60–300</td><td class="text-xs text-gray-600" data-i18n="p_rate_a_why">Hourly cost of an automation engineer. Applied to 25% of total hours. Higher rate but smaller time reduction (they still maintain scripts).</td><td class="text-xs text-gray-600" data-i18n="p_rate_a_effect">Automation saving component increases</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_rate_mg">Test Mgmt Rate</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">€150/hr</td><td class="text-xs text-gray-500">€80–350</td><td class="text-xs text-gray-600" data-i18n="p_rate_mg_why">Hourly cost of a Test Manager. Applied to 10% of hours with only 5% reduction — management oversight remains largely constant regardless of automation.</td><td class="text-xs text-gray-600" data-i18n="p_rate_mg_effect">Minimal impact — management hours barely reduce</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_hc_m">Manual Tester Count</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">5</td><td class="text-xs text-gray-500">1–20</td><td class="text-xs text-gray-600" data-i18n="p_hc_m_why">Number of manual testers per municipality. At 100% utilisation, total gain is unchanged — this parameter enables the per-person breakdown only.</td><td class="text-xs text-gray-600" data-i18n="p_hc_m_effect">Per-person hours/savings decrease (same total, more people)</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_hc_a">Auto Engineer Count</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">2</td><td class="text-xs text-gray-500">1–20</td><td class="text-xs text-gray-600" data-i18n="p_hc_a_why">Number of automation engineers per municipality. Same behaviour as manual tester count — presentation only at 100% utilisation.</td><td class="text-xs text-gray-600" data-i18n="p_hc_a_effect">Per-person savings decrease proportionally</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_hc_mg">Test Manager Count</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">1</td><td class="text-xs text-gray-500">1–10</td><td class="text-xs text-gray-600" data-i18n="p_hc_mg_why">Number of Test Managers per municipality. Typically 1 per domain — increases reflect multi-domain governance structures.</td><td class="text-xs text-gray-600" data-i18n="p_hc_mg_effect">Per-manager savings decrease proportionally</td></tr>
+                        <tr><td class="font-bold text-gray-800" data-i18n="p_cost">Automation Cost/yr</td><td><span class="param-tag tag-slider" data-i18n="tag_slider">Slider</span></td><td class="font-mono text-sm font-bold">€50K</td><td class="text-xs text-gray-500">€0–500K</td><td class="text-xs text-gray-600" data-i18n="p_cost_why">Annual cost of automation tooling, infrastructure, and script maintenance per municipality. Subtracted from gross gain to produce net savings. This is the key lever for breakeven.</td><td class="text-xs text-gray-600" data-i18n="p_cost_effect">Net savings decrease; may flip to negative</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S4: FORMULA — PLAIN ENGLISH ─── -->
+    <div id="s4" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">4</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s4_title">Formula — Plain English</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s4_sub">Step by step in plain language — no prior knowledge required</p>
+            </div>
+        </div>
+        <div class="card-body space-y-5 text-sm text-gray-700 leading-relaxed">
+            <div class="step-box"><span class="step-num">1</span><strong data-i18n="s4_s1_title">Start with your baseline hours.</strong> <span data-i18n="s4_s1">You enter how many manual testing hours one release takes. This is your starting point — the total effort before any automation exists.</span></div>
+            <div class="step-box"><span class="step-num">2</span><strong data-i18n="s4_s2_title">Adjust for release complexity.</strong> <span data-i18n="s4_s2">A simple release takes less effort than your baseline suggests; a complex release takes more. The calculator scales your hours by 0.7×, 1.0×, or 1.5× accordingly.</span></div>
+            <div class="step-box"><span class="step-num">3</span><strong data-i18n="s4_s3_title">Split hours across three roles.</strong> <span data-i18n="s4_s3">Not everyone on the team does the same work. 65% of hours belong to Manual Testers, 25% to Automation Engineers, and 10% to Test Managers. Each role has its own hourly rate.</span></div>
+            <div class="step-box"><span class="step-num">4</span><strong data-i18n="s4_s4_title">Apply automation gain — differently per role.</strong> <span data-i18n="s4_s4">Automation eliminates 100% of recoverable manual tester hours, but only 30% of automation engineer hours (they still build and maintain scripts), and only 5% of manager hours (oversight does not go away). This prevents overestimating savings.</span></div>
+            <div class="step-box"><span class="step-num">5</span><strong data-i18n="s4_s5_title">Multiply across releases and municipalities.</strong> <span data-i18n="s4_s5">The savings per release are multiplied by the number of releases per year and the number of municipalities. This gives you the annual total across the entire KOMBIT ecosystem.</span></div>
+            <div class="step-box"><span class="step-num">6</span><strong data-i18n="s4_s6_title">Convert hours to money.</strong> <span data-i18n="s4_s6">Each role's saved hours are multiplied by that role's hourly rate. The three totals are summed to produce the Gross Financial Gain — what you would save if automation had no cost.</span></div>
+            <div class="step-box"><span class="step-num">7</span><strong data-i18n="s4_s7_title">Subtract automation costs to get net savings.</strong> <span data-i18n="s4_s7">The annual automation cost per municipality (tooling, infrastructure, maintenance) is multiplied by the number of municipalities and subtracted from the gross gain. The result can be positive or negative — both are shown honestly.</span></div>
+            <div class="step-box" style="border-left-color:#E3000F;"><span class="step-num" style="background:#E3000F;">8</span><strong data-i18n="s4_s8_title">Convert hours to days and weeks for operational context.</strong> <span data-i18n="s4_s8">Total hours are divided by your working hours per day to produce person-days. Days per release are divided by 5 to show weeks earlier delivery. Person-days are divided by 10 (one sprint) to show sprint equivalents recovered.</span></div>
+        </div>
+    </div>
+
+    <!-- ─── S5: FORMULA — MATHEMATICAL ─── -->
+    <div id="s5" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">5</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s5_title">Formula — Mathematical Notation</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s5_sub">For technical audiences and audit purposes</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="formula-box">
+<span class="comment">// ─── STEP 1: Complexity-adjusted hours ───────────────────────────────</span>
+<span class="var">AdjustedHours</span> <span class="operator">=</span> <span class="var">ManualHours</span> <span class="operator">×</span> <span class="var">ComplexityMultiplier</span>
+<span class="comment">//   Where ComplexityMultiplier: Simple=0.7 | Medium=1.0 | Complex=1.5</span>
+
+<span class="comment">// ─── STEP 2: Hours per role ───────────────────────────────────────────</span>
+<span class="var">ManualRoleHours</span> <span class="operator">=</span> <span class="var">AdjustedHours</span> <span class="operator">×</span> 0.65
+<span class="var">AutoRoleHours</span>   <span class="operator">=</span> <span class="var">AdjustedHours</span> <span class="operator">×</span> 0.25
+<span class="var">MgmtRoleHours</span>   <span class="operator">=</span> <span class="var">AdjustedHours</span> <span class="operator">×</span> 0.10
+
+<span class="comment">// ─── STEP 3: Hours recovered per role per release per municipality ────</span>
+<span class="var">ManualRecovered</span> <span class="operator">=</span> <span class="var">ManualRoleHours</span> <span class="operator">×</span> <span class="var">AutomationGain</span> <span class="operator">×</span> 1.0
+<span class="var">AutoRecovered</span>   <span class="operator">=</span> <span class="var">AutoRoleHours</span>   <span class="operator">×</span> <span class="var">AutomationGain</span> <span class="operator">×</span> 0.3
+<span class="var">MgmtRecovered</span>   <span class="operator">=</span> <span class="var">MgmtRoleHours</span>   <span class="operator">×</span> <span class="var">AutomationGain</span> <span class="operator">×</span> 0.05
+
+<span class="comment">// ─── STEP 4: Total hours recovered annually ───────────────────────────</span>
+<span class="var">TotalHrsRecovered</span> <span class="operator">=</span> (<span class="var">ManualRecovered</span> <span class="operator">+</span> <span class="var">AutoRecovered</span> <span class="operator">+</span> <span class="var">MgmtRecovered</span>)
+                    <span class="operator">×</span> <span class="var">Municipalities</span> <span class="operator">×</span> <span class="var">ReleasesPerYear</span>
+
+<span class="comment">// ─── STEP 5: Gross financial gain ─────────────────────────────────────</span>
+<span class="var">GrossGain</span> <span class="operator">=</span> (<span class="var">ManualRecovered</span> <span class="operator">×</span> <span class="var">RateManual</span>
+           <span class="operator">+</span> <span class="var">AutoRecovered</span>   <span class="operator">×</span> <span class="var">RateAuto</span>
+           <span class="operator">+</span> <span class="var">MgmtRecovered</span>   <span class="operator">×</span> <span class="var">RateMgmt</span>)
+           <span class="operator">×</span> <span class="var">Municipalities</span> <span class="operator">×</span> <span class="var">ReleasesPerYear</span>
+
+<span class="comment">// ─── STEP 6: Net savings (honest — no floor at zero) ──────────────────</span>
+<span class="var">TotalAutoCost</span> <span class="operator">=</span> <span class="var">AutoCostPerMuniPerYear</span> <span class="operator">×</span> <span class="var">Municipalities</span>
+<span class="highlight">NetSavings</span>    <span class="operator">=</span> <span class="var">GrossGain</span> <span class="operator">-</span> <span class="var">TotalAutoCost</span>   <span class="comment">// can be negative</span>
+
+<span class="comment">// ─── STEP 7: Time conversions ─────────────────────────────────────────</span>
+<span class="var">PersonDays</span>       <span class="operator">=</span> <span class="var">TotalHrsRecovered</span> <span class="operator">÷</span> <span class="var">WorkingHrsPerDay</span>
+<span class="var">SprintEquivalents</span><span class="operator">=</span> <span class="var">PersonDays</span> <span class="operator">÷</span> 10
+<span class="var">DaysPerRelease</span>   <span class="operator">=</span> (<span class="var">ManualRecovered</span><span class="operator">+</span><span class="var">AutoRecovered</span><span class="operator">+</span><span class="var">MgmtRecovered</span>) <span class="operator">÷</span> <span class="var">WorkingHrsPerDay</span>
+<span class="var">WeeksEarlier</span>     <span class="operator">=</span> <span class="var">DaysPerRelease</span> <span class="operator">÷</span> 5
+
+<span class="comment">// ─── STEP 8: Delivery cycle reduction (dampened) ─────────────────────</span>
+<span class="var">CycleReduction</span>   <span class="operator">=</span> <span class="var">AutomationGain</span> <span class="operator">×</span> 0.4
+<span class="comment">//   0.4 dampening: planning, reviews, deployment, approvals remain</span>
+
+<span class="comment">// ─── STEP 9: Per-person breakdown (presentation only) ─────────────────</span>
+<span class="var">HrsPerManualTester</span> <span class="operator">=</span> (<span class="var">ManualRecovered</span> <span class="operator">×</span> <span class="var">ReleasesPerYear</span>) <span class="operator">÷</span> <span class="var">ManualTesterCount</span>
+<span class="var">HrsPerAutoEng</span>      <span class="operator">=</span> (<span class="var">AutoRecovered</span>   <span class="operator">×</span> <span class="var">ReleasesPerYear</span>) <span class="operator">÷</span> <span class="var">AutoEngCount</span>
+<span class="var">HrsPerMgr</span>          <span class="operator">=</span> (<span class="var">MgmtRecovered</span>   <span class="operator">×</span> <span class="var">ReleasesPerYear</span>) <span class="operator">÷</span> <span class="var">MgrCount</span>
+<span class="comment">//   Note: these cancel out in total — headcount does not change GrossGain</span>
+<span class="comment">//   at 100% utilisation. They exist for auditability only.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S6: WORKED EXAMPLE ─── -->
+    <div id="s6" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">6</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s6_title">Worked Example</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s6_sub">Full step-by-step calculation using illustrative default values</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Input table -->
+            <div class="bg-gray-50 rounded-xl p-5 mb-6 border border-gray-100">
+                <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-4" data-i18n="s6_inputs">Example Inputs</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_muni">Municipalities</div><div class="text-xl font-black text-blue-600">10</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_hrs">Manual Hrs/Release</div><div class="text-xl font-black text-blue-600">120</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_rel">Releases/Year</div><div class="text-xl font-black text-blue-600">4</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_cx">Complexity</div><div class="text-xl font-black text-blue-600">Medium</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_eff">Automation Gain</div><div class="text-xl font-black text-blue-600">50%</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_rm">Manual Rate</div><div class="text-xl font-black text-blue-600">€85</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_ra">Auto Rate</div><div class="text-xl font-black text-blue-600">€130</div></div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-3"><div class="text-[10px] text-gray-400 uppercase font-bold mb-1" data-i18n="s6_i_cost">Auto Cost/Muni</div><div class="text-xl font-black text-blue-600">€50K</div></div>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="space-y-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">1</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step1_t">Complexity Adjustment</span></div>
+                    <div class="calc-line">120 hrs <span class="calc-equals">×</span> 1.0 (Medium) <span class="calc-equals">=</span> <span class="calc-result">120 adjusted hrs / release</span></div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">2</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step2_t">Role Hour Split</span></div>
+                    <div class="calc-line">
+                        Manual: 120 <span class="calc-equals">×</span> 0.65 <span class="calc-equals">=</span> <span class="calc-result">78 hrs</span><br>
+                        Auto:   120 <span class="calc-equals">×</span> 0.25 <span class="calc-equals">=</span> <span class="calc-result">30 hrs</span><br>
+                        Mgmt:   120 <span class="calc-equals">×</span> 0.10 <span class="calc-equals">=</span> <span class="calc-result">12 hrs</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">3</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step3_t">Hours Recovered Per Role (per release, per muni)</span></div>
+                    <div class="calc-line">
+                        Manual: 78 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 1.0  <span class="calc-equals">=</span> <span class="calc-result">39.0 hrs</span><br>
+                        Auto:   30 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.3  <span class="calc-equals">=</span> <span class="calc-result"> 4.5 hrs</span><br>
+                        Mgmt:   12 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.05 <span class="calc-equals">=</span> <span class="calc-result"> 0.3 hrs</span><br>
+                        <span style="border-top:1px solid #E2E8F0;display:block;margin-top:6px;padding-top:6px;">Total per release per muni <span class="calc-equals">=</span> <span class="calc-result">43.8 hrs</span></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">4</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step4_t">Annual Total Hours</span></div>
+                    <div class="calc-line">43.8 hrs <span class="calc-equals">×</span> 4 releases <span class="calc-equals">×</span> 10 munis <span class="calc-equals">=</span> <span class="calc-result">1,752 hrs / year</span><br>
+                    1,752 <span class="calc-equals">÷</span> 8 hrs/day <span class="calc-equals">=</span> <span class="calc-result">219 person-days</span><br>
+                    219 <span class="calc-equals">÷</span> 10 <span class="calc-equals">=</span> <span class="calc-result">21.9 sprint equivalents</span></div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">5</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step5_t">Gross Financial Gain</span></div>
+                    <div class="calc-line">
+                        Manual: 39.0 <span class="calc-equals">×</span> €85  <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">€132,600</span><br>
+                        Auto:    4.5 <span class="calc-equals">×</span> €130 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result"> €23,400</span><br>
+                        Mgmt:    0.3 <span class="calc-equals">×</span> €150 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">  €1,800</span><br>
+                        <span style="border-top:1px solid #E2E8F0;display:block;margin-top:6px;padding-top:6px;"><strong>GROSS GAIN</strong> <span class="calc-equals">=</span> <span class="calc-result" style="font-size:15px;">€157,800</span></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num">6</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step6_t">Net Savings</span></div>
+                    <div class="calc-line">
+                        Automation Cost: €50,000 <span class="calc-equals">×</span> 10 munis <span class="calc-equals">=</span> €500,000<br>
+                        Net Savings: €157,800 <span class="calc-equals">-</span> €500,000 <span class="calc-equals">=</span> <span style="color:#E3000F;font-weight:900;">-€342,200</span><br>
+                        <span class="text-gray-400 text-xs" data-i18n="s6_negative_note">⚠ Negative because automation cost is high relative to testing volume. Reduce cost slider or increase hours/municipalities.</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-2"><span class="step-num" style="background:#E3000F;">7</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step7_t">Delivery Cycle Reduction</span></div>
+                    <div class="calc-line">
+                        50% automation <span class="calc-equals">×</span> 0.4 dampening <span class="calc-equals">=</span> <span class="calc-result">20% cycle reduction</span><br>
+                        43.8 hrs <span class="calc-equals">÷</span> 8 hrs/day <span class="calc-equals">=</span> <span class="calc-result">5.5 days earlier per release per muni</span><br>
+                        5.5 days <span class="calc-equals">÷</span> 5 <span class="calc-equals">=</span> <span class="calc-result">1.1 weeks earlier delivery</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S7: HARDCODED ASSUMPTIONS ─── -->
+    <div id="s7" class="section-card mb-8 print-break" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">7</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s7_title">Hardcoded Assumptions</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s7_sub">Every fixed value used in the formula — what it is, why it was chosen, and what changing it would mean</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div>
+                <!-- Role Distribution -->
+                <div class="mb-6">
+                    <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s7_rd_title">Role Hour Distribution</div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_manual_label">Manual Tester Share</div>
+                        <div class="assumption-value">65%</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_manual_why">Based on typical QE team composition in public sector IT projects. Manual testers perform the bulk of execution work — functional testing, regression, exploratory. Industry references (ISTQB, Gartner) suggest 60–70% for organisations at early-to-mid automation maturity.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_auto_label">Automation Engineer Share</div>
+                        <div class="assumption-value">25%</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_auto_why">Automation engineers spend time building frameworks, writing scripts, maintaining pipelines, and reviewing failures. At 50% automation maturity, approximately one-quarter of total effort is in this role.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_mgmt_label">Test Manager Share</div>
+                        <div class="assumption-value">10%</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_mgmt_why">Test management covers planning, coordination, reporting, stakeholder communication and governance. This overhead is relatively constant regardless of automation level, typically 8–12% of total effort.</div>
+                    </div>
+                </div>
+
+                <!-- Automation Reduction Factors -->
+                <div class="mb-6">
+                    <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s7_arf_title">Automation Reduction Factors Per Role</div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_red_manual">Manual Tester</div>
+                        <div class="assumption-value">1.0×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_red_manual_why">Automation directly replaces manual test execution. Every hour of automated test coverage directly removes one manual tester hour. This is the role automation was designed to replace, so the full gain applies.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_red_auto">Automation Engineer</div>
+                        <div class="assumption-value">0.3×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_red_auto_why">Automation engineers still spend most of their time building and maintaining the automation that produces the savings. Only 30% of their effort is freed — the overhead of creating and maintaining tests does not disappear, it shifts. Ignoring this would significantly overstate savings.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_red_mgmt">Test Manager</div>
+                        <div class="assumption-value">0.05×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_red_mgmt_why">Management overhead — planning, governance, stakeholder reporting, compliance — is largely independent of whether tests are manual or automated. Only 5% of management time is estimated to reduce. This is a conservative and intentional choice to avoid inflating the model.</div>
+                    </div>
+                </div>
+
+                <!-- Complexity Multipliers -->
+                <div class="mb-6">
+                    <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s7_cx_title">Complexity Multipliers</div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_cx_simple">Simple</div>
+                        <div class="assumption-value">0.7×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_cx_simple_why">A simple release (patch, minor update, single module change) requires approximately 70% of the effort of a medium release. Fewer test cases, less regression depth, smaller scope. The 30% reduction is a calibration assumption — replace with your own historical data for higher accuracy.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_cx_medium">Medium</div>
+                        <div class="assumption-value">1.0×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_cx_medium_why">Medium is the baseline — it means the hours you entered are assumed to be representative of a typical medium-complexity release. No adjustment is made. This is why you should enter your most common release type's hours as the baseline.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_cx_complex">Complex</div>
+                        <div class="assumption-value">1.5×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_cx_complex_why">A complex release (major integration, system overhaul, cross-municipality scope) requires 50% more effort than a medium release. This asymmetry is intentional — complexity adds more testing pain than simplicity saves, reflecting real-world QE experience.</div>
+                    </div>
+                </div>
+
+                <!-- Other Assumptions -->
+                <div>
+                    <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s7_other_title">Other Fixed Values</div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_damp_label">Cycle Dampening</div>
+                        <div class="assumption-value">0.4×</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_damp_why">Automation gain does not translate 1:1 to delivery cycle reduction. Planning, reviews, deployment gates, and approval processes remain unchanged. At 50% automation gain, the actual cycle reduction is approximately 20% (50% × 0.4). This prevents the dashboard from claiming unrealistic speed improvements.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_sprint_label">Sprint Length</div>
+                        <div class="assumption-value">10 days</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_sprint_why">A standard two-week sprint = 10 working days. Used to convert person-days to sprint equivalents for agile teams. Adjust your working hours per day slider if your sprints run on a different working-day calendar.</div>
+                    </div>
+                    <div class="assumption-row">
+                        <div class="font-bold text-gray-700 text-sm" data-i18n="s7_util_label">Utilisation</div>
+                        <div class="assumption-value">100%</div>
+                        <div class="text-sm text-gray-600" data-i18n="s7_util_why">All testers are assumed to be fully utilised — every hour entered is a billable hour. This is valid for KOMBIT's TaaS model where consultants are engaged per-project. For organisations with permanent employees where hours saved do not reduce cost directly, the gross gain would be overstated.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S8: HOURS VS DAYS ─── -->
+    <div id="s8" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">8</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s8_title">Hours vs Days — Why Both Matter</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s8_sub">The same number, told in the language of each stakeholder</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="text-sm text-gray-600 mb-6 leading-relaxed" data-i18n="s8_intro">Hours are the unit of financial calculation — they convert directly to money. Days and weeks are the unit of operational planning — they communicate what the saving actually means to a team, a project, or a release calendar.</p>
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                    <div class="text-xs font-black text-blue-600 uppercase tracking-wider mb-2" data-i18n="s8_audience1">For CFOs</div>
+                    <div class="text-2xl font-black text-blue-700 mb-1">1,752 hrs</div>
+                    <div class="text-xs text-blue-600" data-i18n="s8_desc1">Converts to money. This is what gets signed off.</div>
+                </div>
+                <div class="bg-green-50 border border-green-100 rounded-xl p-4">
+                    <div class="text-xs font-black text-green-600 uppercase tracking-wider mb-2" data-i18n="s8_audience2">For Project Managers</div>
+                    <div class="text-2xl font-black text-green-700 mb-1">219 days</div>
+                    <div class="text-xs text-green-600" data-i18n="s8_desc2">Capacity freed for higher-value work. This is what gets planned.</div>
+                </div>
+                <div class="bg-red-50 border border-red-100 rounded-xl p-4">
+                    <div class="text-xs font-black uppercase tracking-wider mb-2" style="color:#E3000F;" data-i18n="s8_audience3">For Scrum Teams</div>
+                    <div class="text-2xl font-black mb-1" style="color:#E3000F;">21.9 sprints</div>
+                    <div class="text-xs" style="color:#E3000F;" data-i18n="s8_desc3">Equivalent capacity recovered. This is what feels real.</div>
+                </div>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+                <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s8_conversion">Conversion Chain</div>
+                <div class="calc-line">
+                    Total Hrs Recovered <span class="calc-equals">÷</span> Working Hrs/Day <span class="calc-equals">=</span> <span class="calc-result">Person-Days</span><br>
+                    Person-Days <span class="calc-equals">÷</span> 10 <span class="calc-equals">=</span> <span class="calc-result">Sprint Equivalents</span><br>
+                    Hrs per Release per Muni <span class="calc-equals">÷</span> Working Hrs/Day <span class="calc-equals">=</span> <span class="calc-result">Days Earlier per Release</span><br>
+                    Days Earlier per Release <span class="calc-equals">÷</span> 5 <span class="calc-equals">=</span> <span class="calc-result">Weeks Earlier Delivery</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S9: INTERPRETING RESULTS ─── -->
+    <div id="s9" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">9</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s9_title">How To Interpret Results</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s9_sub">What each output means and how to act on it</p>
+            </div>
+        </div>
+        <div class="card-body space-y-5">
+            <div class="border border-green-200 bg-green-50 rounded-xl p-5">
+                <div class="flex items-center gap-2 mb-2"><span class="text-green-600 font-black text-lg">✓</span><span class="font-black text-green-700 text-sm" data-i18n="s9_pos_title">Positive Net Savings</span></div>
+                <p class="text-sm text-green-700" data-i18n="s9_pos">The automation investment pays for itself from cost savings alone. The higher the number, the faster the payback. This can be used directly in a business case for automation investment approval.</p>
+            </div>
+            <div class="border border-red-200 bg-red-50 rounded-xl p-5">
+                <div class="flex items-center gap-2 mb-2"><span style="color:#E3000F;" class="font-black text-lg">−</span><span class="font-black text-sm" style="color:#E3000F;" data-i18n="s9_neg_title">Negative Net Savings</span></div>
+                <p class="text-sm text-gray-700 mb-3" data-i18n="s9_neg">The automation cost in the current slider configuration exceeds the gross savings. This does NOT mean ValueEdge or automation has no value. It means one or more of the following:</p>
+                <ul class="space-y-1 text-sm text-gray-700">
+                    <li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_1">The automation cost per municipality is set too high — reduce it to reflect shared infrastructure</span></li>
+                    <li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_2">The testing volume (hours/releases) is set too low — increase to reflect actual effort</span></li>
+                    <li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_3">The automation gain is set too conservatively — mature frameworks achieve 70–85%</span></li>
+                    <li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_4">The number of municipalities is low — more municipalities spread the automation cost</span></li>
+                </ul>
+            </div>
+            <div class="border border-gray-200 bg-gray-50 rounded-xl p-5">
+                <div class="flex items-center gap-2 mb-2"><span class="text-gray-500 font-black text-lg">i</span><span class="font-black text-gray-700 text-sm" data-i18n="s9_pb_title">Per-Person Breakdown</span></div>
+                <p class="text-sm text-gray-600" data-i18n="s9_pb">The per-person breakdown does not change the total numbers — it redistributes the total across the team. Use it to communicate to each role what automation means for their workload: a manual tester saving 31 hours per year understands the impact better than an abstract total of 1,752 hours.</p>
+            </div>
+            <div class="border border-blue-200 bg-blue-50 rounded-xl p-5">
+                <div class="flex items-center gap-2 mb-2"><span class="text-blue-600 font-black text-lg">⚡</span><span class="font-black text-blue-700 text-sm" data-i18n="s9_cycle_title">Delivery Cycle Reduction</span></div>
+                <p class="text-sm text-blue-700" data-i18n="s9_cycle">The cycle reduction percentage is dampened by 0.4 to reflect real-world constraints. A 50% automation gain does not produce a 50% faster release — planning, approval, and deployment remain unchanged. The days and weeks figures translate the percentage into operational language.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S10: LIMITATIONS ─── -->
+    <div id="s10" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">10</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s10_title">What This Calculator Does Not Measure</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s10_sub">The financial model captures cost savings only — real value is significantly higher</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="text-sm text-gray-600 mb-5 leading-relaxed" data-i18n="s10_intro">The numbers produced by this calculator represent a conservative lower bound of the total value of automation. The following value dimensions are real but not quantified here:</p>
+            <div class="space-y-1">
+                <div class="limit-item"><div class="limit-icon">🎯</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_1_t">Quality Improvements</div><div class="text-xs text-gray-600" data-i18n="s10_1">Fewer defects reaching production, earlier defect detection, higher test coverage — none of these are captured. The cost of a production defect in a municipal system serving citizens is significant.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">🛡</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_2_t">Risk Reduction</div><div class="text-xs text-gray-600" data-i18n="s10_2">Automated regression prevents regression defects on every release. The avoided cost of a regression incident — downtime, citizen impact, emergency fix — is not in this model.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">⚖️</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_3_t">Compliance Value</div><div class="text-xs text-gray-600" data-i18n="s10_3">KOMBIT operates under strict public sector compliance requirements. Automated audit trails, traceability from requirement to test execution, and documented test evidence have compliance value not captured here.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">👥</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_4_t">Staff Redeployment</div><div class="text-xs text-gray-600" data-i18n="s10_4">Hours freed from manual testing are not destroyed — they are redeployed. Testers shift to exploratory testing, test design, requirement review, and higher-value activities. This productivity uplift is not in this model.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">📈</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_5_t">Compounding Release Value</div><div class="text-xs text-gray-600" data-i18n="s10_5">Releasing 1.1 weeks earlier per release, compounded across 4 releases, means features and fixes reach citizens significantly earlier each year. The citizen and organisational value of earlier delivery is not captured.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">🧠</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_6_t">Knowledge Retention</div><div class="text-xs text-gray-600" data-i18n="s10_6">Automated tests are living documentation. They encode system knowledge that survives staff turnover. The cost of knowledge loss when a manual tester leaves is not in this model.</div></div></div>
+                <div class="limit-item"><div class="limit-icon">🤖</div><div><div class="text-sm font-bold text-gray-800 mb-0.5" data-i18n="s10_7_t">Aviator AI Multiplier</div><div class="text-xs text-gray-600" data-i18n="s10_7">The integration of OpenText Aviator AI further accelerates test creation, defect summarization, and requirement analysis — saving an additional 45 minutes to 2 hours per task. This AI productivity layer is separate from the automation gain modelled here and adds significant additional value.</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── S11: GLOSSARY ─── -->
+    <div id="s11" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">11</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s11_title">Glossary</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s11_sub">Every term used in the calculator and this document, defined</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="glossary-item"><div><span class="glossary-term">TaaS</span></div><div class="text-sm text-gray-600" data-i18n="g_taas">Testing as a Service. A delivery model where testing expertise, processes, and tools are provided as a managed service, typically by an external vendor. KOMBIT uses TaaS to flex testing capacity across 98 municipalities without maintaining a permanent in-house testing team for each.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">CSDP / ValueEdge</span></div><div class="text-sm text-gray-600" data-i18n="g_ve">Core Software Delivery Platform. OpenText's unified platform for managing the full quality lifecycle — requirements, test planning, execution, defect tracking, and reporting. Referred to as ValueEdge in its current product generation.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Automation Gain</span></div><div class="text-sm text-gray-600" data-i18n="g_ag">The percentage of total testing effort eliminated through automated test execution. A 50% automation gain means half the manual testing work is replaced by scripts that run automatically. Applied differently per role — see Assumptions section.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Gross Gain</span></div><div class="text-sm text-gray-600" data-i18n="g_gg">The total financial saving from automation before any costs are deducted. Calculated from hours recovered × hourly rates × releases × municipalities. Represents the theoretical maximum saving if automation had no cost.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Net Savings</span></div><div class="text-sm text-gray-600" data-i18n="g_ns">Gross Gain minus the annual automation infrastructure cost. Can be negative — this does not indicate failure, it indicates that the current cost structure needs optimisation. The calculator shows the real number honestly.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Role Distribution</span></div><div class="text-sm text-gray-600" data-i18n="g_rd">The assumed split of total testing hours across the three roles: Manual Tester (65%), Automation Engineer (25%), Test Manager (10%). A hardcoded assumption reflecting typical QE team structures in public sector IT.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Reduction Factor</span></div><div class="text-sm text-gray-600" data-i18n="g_rf">A per-role multiplier applied to the automation gain to prevent overestimation. Manual testers: 1.0 (full reduction). Automation engineers: 0.3 (they still maintain scripts). Test managers: 0.05 (oversight remains). Without these factors, the model would claim every automation gain is equally distributed.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Complexity Multiplier</span></div><div class="text-sm text-gray-600" data-i18n="g_cm">A factor applied to baseline hours to reflect release complexity: Simple ×0.7, Medium ×1.0, Complex ×1.5. Allows the calculator to model different release types without requiring separate input for each.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Cycle Dampening</span></div><div class="text-sm text-gray-600" data-i18n="g_cd">A fixed factor of 0.4 applied to automation gain when calculating delivery cycle reduction. Reflects the reality that not all release activities benefit from test automation — planning, reviews, deployment, and approval gates remain. A 50% automation gain yields only a 20% cycle reduction.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Person-Days</span></div><div class="text-sm text-gray-600" data-i18n="g_pd">Total hours recovered divided by working hours per day. One person-day represents one team member's full working day worth of effort recovered. A more intuitive unit than hours for capacity planning discussions.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Sprint Equivalent</span></div><div class="text-sm text-gray-600" data-i18n="g_se">Total person-days divided by 10 (one standard two-week sprint). Expresses recovered capacity in agile planning terms. "21.9 sprint equivalents" is more meaningful to an agile team than "219 person-days."</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Breakeven</span></div><div class="text-sm text-gray-600" data-i18n="g_be">The point at which Gross Gain equals Total Automation Cost, producing a Net Savings of zero. The calculator provides breakeven guidance when net savings are negative, showing which sliders to adjust to reach this point.</div></div>
+            <div class="glossary-item"><div><span class="glossary-term">Fully Utilised</span></div><div class="text-sm text-gray-600" data-i18n="g_fu">The assumption that all testers are working at 100% capacity — every hour is billable. This means headcount inputs only affect the per-person breakdown display, not the total financial gain. Valid for TaaS consultant models.</div></div>
+        </div>
+    </div>
+
+    <!-- ─── S12: VERSION & AUTHOR ─── -->
+    <div id="s12" class="section-card mb-8" data-aos="fade-up">
+        <div class="card-header">
+            <div class="card-num">12</div>
+            <div>
+                <h2 class="text-sm font-black text-gray-800 uppercase tracking-widest" data-i18n="s12_title">Version & Author</h2>
+                <p class="text-xs text-gray-400 mt-0.5" data-i18n="s12_sub">Document provenance and contact information</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-[#0B1B3D] to-[#0052CC] rounded-xl flex items-center justify-center text-white font-black text-xl flex-shrink-0">MB</div>
+                        <div>
+                            <div class="font-black text-gray-800 text-base">Monty Bagati</div>
+                            <div class="text-xs text-gray-500 mt-0.5" data-i18n="s12_role">Test Architect · Quality Engineering</div>
+                            <div class="text-xs text-gray-500 mt-0.5">KOMBIT · Denmark</div>
+                            <div class="flex flex-wrap gap-2 mt-3">
+                                <a href="mailto:qxmbg@kombit.dk" class="text-[10px] font-bold text-blue-600 hover:underline">qxmbg@kombit.dk</a>
+                                <span class="text-gray-300">·</span>
+                                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline">LinkedIn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider" data-i18n="s12_version">Document Version</span>
+                        <span class="text-xs font-mono font-bold text-gray-800">v2.0</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider" data-i18n="s12_year">Year</span>
+                        <span class="text-xs font-mono font-bold text-gray-800">2026</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider" data-i18n="s12_context">Context</span>
+                        <span class="text-xs font-mono font-bold text-gray-800">OpenText Nordic Summit</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider" data-i18n="s12_location">Location</span>
+                        <span class="text-xs font-mono font-bold text-gray-800">Stockholm, Sweden</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider" data-i18n="s12_languages">Languages</span>
+                        <span class="text-xs font-mono font-bold text-gray-800">EN · DA · SV · LV</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Print section -->
+            <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 no-print">
+                <p class="text-xs text-gray-500" data-i18n="s12_print_note">Download or print this document as a PDF to share with stakeholders who do not have access to the web application.</p>
+                <button onclick="window.print()" class="print-btn flex-shrink-0">⬇ <span data-i18n="s12_print_btn">Download / Print PDF</span></button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- BOTTOM TICKER -->
+<div class="bottom-ticker no-print">
+    <div class="ticker-wrap">
+        <span class="ticker-item-bt">DESIGNED, DEVELOPED AND MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> · TEST ARCHITECT · KOMBIT · DENMARK · OPENTEXT NORDIC SUMMIT 2026 · STOCKHOLM</span>
+        <span class="ticker-item-bt">DESIGNED, DEVELOPED AND MAINTAINED BY <span class="ticker-red">MONTY BAGATI</span> · TEST ARCHITECT · KOMBIT · DENMARK · OPENTEXT NORDIC SUMMIT 2026 · STOCKHOLM</span>
+    </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({ once:true, offset:50, duration:700 });
+
+// ── SCROLL PROGRESS ──
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('scroll-progress').style.width = ((winScroll / height) * 100) + '%';
+});
+
+// ── LANG MENU ──
+function toggleLangMenuM(e) {
+    e.stopPropagation();
+    document.getElementById('lang-dropdown-m').classList.toggle('show');
+}
+window.addEventListener('click', () => {
+    document.getElementById('lang-dropdown-m').classList.remove('show');
+});
+
+// ══════════════════════════════════════════════
+// TRANSLATIONS — all 4 languages
+// ══════════════════════════════════════════════
+const i18nM = {
+    en: {
+        flag:'https://flagcdn.com/w20/gb.png', code:'EN',
+        nav_subtitle:"Value Realization Methodology",
+        nav_back:"← Back to Calculator",
+        nav_print:"⬇ Download / Print",
+        hero_badge:"Methodology Document",
+        hero_title:"Value Realization\nCalculator Methodology",
+        hero_desc:"A complete reference document explaining every parameter, assumption, formula step, and interpretation guideline behind the KOMBIT TaaS Value Realization Calculator.",
+        hero_tag1:"All Parameters Documented", hero_tag2:"Worked Example Included", hero_tag3:"All Assumptions Explained", hero_tag4:"EN / DA / SV / LV",
+        toc_title:"Table of Contents", toc_1:"Executive Summary", toc_2:"Purpose & Scope", toc_3:"Parameters Reference", toc_4:"Formula — Plain English", toc_5:"Formula — Mathematical", toc_6:"Worked Example", toc_7:"Hardcoded Assumptions", toc_8:"Hours vs Days Explained", toc_9:"Interpreting Results", toc_10:"What Is Not Measured", toc_11:"Glossary", toc_12:"Version & Author",
+        s1_title:"Executive Summary", s1_sub:"What this calculator is and who it is for",
+        s1_p1:"The KOMBIT Value Realization Calculator is an interactive financial model designed to estimate the annual cost savings achievable through Testing as a Service (TaaS) combined with test automation, deployed across Danish municipal IT projects.",
+        s1_p2:"It is designed for three audiences: executive leadership (CFOs, IT Directors) who need a financial justification; Test Managers and Test Architects who need an auditable breakdown; and external stakeholders (OpenText, KL, municipal representatives) who need to understand the methodology behind the numbers.",
+        s1_card1:"Financial Gain", s1_card1_sub:"Gross annual savings from automation", s1_card2:"Time Recovered", s1_card2_sub:"Hours, days, sprints saved per year", s1_card3:"Faster Delivery", s1_card3_sub:"Cycle reduction per release",
+        s2_title:"Purpose & Scope", s2_sub:"What the calculator does and does not do",
+        s2_does:"What it DOES", s2_not:"What it DOES NOT do",
+        s2_does_1:"Estimates gross financial gain from automation across municipalities", s2_does_2:"Calculates per-role, per-person, per-release savings", s2_does_3:"Converts hours saved to days, weeks, and sprint equivalents", s2_does_4:"Shows net savings after deducting automation infrastructure cost", s2_does_5:"Provides breakeven guidance when net is negative", s2_does_6:"Assumes 100% tester utilisation (all hours are billable)",
+        s2_not_1:"Does not measure quality improvements or defect prevention value", s2_not_2:"Does not account for risk reduction or compliance benefits", s2_not_3:"Does not model partial utilisation or over-capacity scenarios", s2_not_4:"Does not account for staff redeployment value", s2_not_5:"Does not model the compounding value of faster releases", s2_not_6:"Does not replace a full business case analysis",
+        s3_title:"Parameters Reference", s3_sub:"Every slider and input explained with default values and real-world guidance",
+        tag_slider:"Slider Input", tag_fixed:"Hardcoded Assumption", tag_derived:"Derived / Calculated",
+        pt_param:"Parameter", pt_type:"Type", pt_default:"Default", pt_range:"Range", pt_why:"Why It Exists", pt_effect:"If Increased",
+        p_muni:"Municipalities", p_muni_why:"KOMBIT serves 98 Danish municipalities. Each runs independent test cycles, so savings scale linearly.", p_muni_effect:"Linear increase in gross gain and total hours recovered",
+        p_hours:"Manual Hrs / Release", p_hours_why:"The baseline effort per release before automation. This is your single most important input. Should reflect actual hours logged.", p_hours_effect:"All savings scale proportionally upward",
+        p_releases:"Releases / Year", p_releases_why:"The annual release cadence. More releases means automation pays back more frequently within the year.", p_releases_effect:"Annual figures increase; per-release figures unchanged",
+        p_cx:"Release Complexity", p_cx_why:"Not all releases require the same testing effort. Scales the base hours up or down.", p_cx_effect:"Simple: ×0.7 (reduces). Complex: ×1.5 (increases)",
+        p_eff:"Automation Gain %", p_eff_why:"The percentage of testing effort eliminated by automation. Industry benchmarks: basic 30–50%, mature 60–80%, AI-assisted 80–90%.", p_eff_effect:"All savings increase. Applied differently per role.",
+        p_workday:"Working Hrs / Day", p_workday_why:"Used only for converting hours to days and weeks. Danish standard working day is 7.4 hours.", p_workday_effect:"Fewer days/weeks shown (same hours ÷ longer day)",
+        p_rate_m:"Manual Tester Rate", p_rate_m_why:"Hourly cost of a manual tester (TaaS consultant). Applied to 65% of total hours. Nordic market range: €70–120/hr.", p_rate_m_effect:"Manual saving component increases",
+        p_rate_a:"Auto Engineer Rate", p_rate_a_why:"Hourly cost of an automation engineer. Applied to 25% of total hours.", p_rate_a_effect:"Automation saving component increases",
+        p_rate_mg:"Test Mgmt Rate", p_rate_mg_why:"Hourly cost of a Test Manager. Applied to 10% of hours with only 5% reduction.", p_rate_mg_effect:"Minimal impact — management hours barely reduce",
+        p_hc_m:"Manual Tester Count", p_hc_m_why:"Number of manual testers per municipality. At 100% utilisation, total gain is unchanged — enables per-person breakdown only.", p_hc_m_effect:"Per-person hours/savings decrease (same total, more people)",
+        p_hc_a:"Auto Engineer Count", p_hc_a_why:"Number of automation engineers per municipality. Presentation only at 100% utilisation.", p_hc_a_effect:"Per-person savings decrease proportionally",
+        p_hc_mg:"Test Manager Count", p_hc_mg_why:"Number of Test Managers per municipality. Typically 1 per domain.", p_hc_mg_effect:"Per-manager savings decrease proportionally",
+        p_cost:"Automation Cost/yr", p_cost_why:"Annual cost of automation tooling, infrastructure, and script maintenance per municipality. Key lever for breakeven.", p_cost_effect:"Net savings decrease; may flip to negative",
+        s4_title:"Formula — Plain English", s4_sub:"Step by step in plain language — no prior knowledge required",
+        s4_s1_title:"Start with your baseline hours.", s4_s1:"You enter how many manual testing hours one release takes. This is your starting point — the total effort before any automation exists.",
+        s4_s2_title:"Adjust for release complexity.", s4_s2:"A simple release takes less effort than your baseline suggests; a complex release takes more. The calculator scales your hours by 0.7×, 1.0×, or 1.5× accordingly.",
+        s4_s3_title:"Split hours across three roles.", s4_s3:"65% of hours belong to Manual Testers, 25% to Automation Engineers, and 10% to Test Managers. Each role has its own hourly rate.",
+        s4_s4_title:"Apply automation gain — differently per role.", s4_s4:"Automation eliminates 100% of recoverable manual tester hours, but only 30% of automation engineer hours (they still build scripts), and only 5% of manager hours (oversight does not go away).",
+        s4_s5_title:"Multiply across releases and municipalities.", s4_s5:"The savings per release are multiplied by releases per year and the number of municipalities to give the annual total.",
+        s4_s6_title:"Convert hours to money.", s4_s6:"Each role's saved hours are multiplied by that role's hourly rate. The three totals are summed to produce the Gross Financial Gain.",
+        s4_s7_title:"Subtract automation costs to get net savings.", s4_s7:"The annual automation cost per municipality is multiplied by municipalities and subtracted from gross gain. The result can be positive or negative — both shown honestly.",
+        s4_s8_title:"Convert hours to days and weeks.", s4_s8:"Total hours ÷ working hours per day = person-days. Days per release ÷ 5 = weeks earlier. Person-days ÷ 10 = sprint equivalents.",
+        s5_title:"Formula — Mathematical Notation", s5_sub:"For technical audiences and audit purposes",
+        s6_title:"Worked Example", s6_sub:"Full step-by-step calculation using illustrative default values",
+        s6_inputs:"Example Inputs", s6_i_muni:"Municipalities", s6_i_hrs:"Manual Hrs/Release", s6_i_rel:"Releases/Year", s6_i_cx:"Complexity", s6_i_eff:"Automation Gain", s6_i_rm:"Manual Rate", s6_i_ra:"Auto Rate", s6_i_cost:"Auto Cost/Muni",
+        s6_step1_t:"Complexity Adjustment", s6_step2_t:"Role Hour Split", s6_step3_t:"Hours Recovered Per Role", s6_step4_t:"Annual Total Hours", s6_step5_t:"Gross Financial Gain", s6_step6_t:"Net Savings", s6_step7_t:"Delivery Cycle Reduction",
+        s6_negative_note:"⚠ Negative because automation cost is high relative to testing volume. Reduce cost slider or increase hours/municipalities.",
+        s7_title:"Hardcoded Assumptions", s7_sub:"Every fixed value used in the formula — what it is, why it was chosen",
+        s7_rd_title:"Role Hour Distribution", s7_manual_label:"Manual Tester Share", s7_manual_why:"Based on typical QE team composition in public sector IT. Industry references suggest 60–70% for early-to-mid automation maturity.", s7_auto_label:"Automation Engineer Share", s7_auto_why:"Automation engineers build frameworks, write scripts, maintain pipelines. At 50% maturity, approximately one-quarter of total effort.", s7_mgmt_label:"Test Manager Share", s7_mgmt_why:"Planning, coordination, reporting, governance. Relatively constant regardless of automation level, typically 8–12%.",
+        s7_arf_title:"Automation Reduction Factors Per Role", s7_red_manual:"Manual Tester", s7_red_manual_why:"Automation directly replaces manual execution. Full gain applies.", s7_red_auto:"Automation Engineer", s7_red_auto_why:"Engineers still build and maintain scripts. Only 30% of effort freed. Ignoring this would significantly overstate savings.", s7_red_mgmt:"Test Manager", s7_red_mgmt_why:"Management overhead is largely independent of automation. Only 5% reduces. Conservative and intentional choice.",
+        s7_cx_title:"Complexity Multipliers", s7_cx_simple:"Simple", s7_cx_simple_why:"Requires approximately 70% of medium effort. 30% reduction is a calibration assumption.", s7_cx_medium:"Medium", s7_cx_medium_why:"The baseline — hours entered are representative of a typical medium release. No adjustment.", s7_cx_complex:"Complex", s7_cx_complex_why:"50% more effort than medium. Asymmetry is intentional — complexity adds more pain than simplicity saves.",
+        s7_other_title:"Other Fixed Values", s7_damp_label:"Cycle Dampening", s7_damp_why:"Automation gain does not translate 1:1 to delivery cycle reduction. Planning, reviews, deployment remain. 50% automation = 20% cycle reduction.", s7_sprint_label:"Sprint Length", s7_sprint_why:"Standard two-week sprint = 10 working days. Used to convert person-days to sprint equivalents.", s7_util_label:"Utilisation", s7_util_why:"All testers assumed fully utilised. Valid for KOMBIT's TaaS model. For permanent employees, gross gain would be overstated.",
+        s8_title:"Hours vs Days — Why Both Matter", s8_sub:"The same number, told in the language of each stakeholder",
+        s8_intro:"Hours are the unit of financial calculation. Days and weeks are the unit of operational planning.",
+        s8_audience1:"For CFOs", s8_desc1:"Converts to money. This is what gets signed off.", s8_audience2:"For Project Managers", s8_desc2:"Capacity freed for higher-value work.", s8_audience3:"For Scrum Teams", s8_desc3:"Equivalent capacity recovered.",
+        s8_conversion:"Conversion Chain",
+        s9_title:"How To Interpret Results", s9_sub:"What each output means and how to act on it",
+        s9_pos_title:"Positive Net Savings", s9_pos:"Automation investment pays for itself. Use directly in a business case for investment approval.",
+        s9_neg_title:"Negative Net Savings", s9_neg:"Automation cost exceeds gross savings. Does NOT mean ValueEdge has no value. Indicates input calibration is needed:",
+        s9_neg_1:"Automation cost per municipality is set too high — reduce to reflect shared infrastructure", s9_neg_2:"Testing volume is set too low — increase to reflect actual effort", s9_neg_3:"Automation gain is too conservative — mature frameworks achieve 70–85%", s9_neg_4:"Number of municipalities is low — more municipalities spread the automation cost",
+        s9_pb_title:"Per-Person Breakdown", s9_pb:"Does not change totals. Use to communicate per-role impact — more meaningful than abstract totals.",
+        s9_cycle_title:"Delivery Cycle Reduction", s9_cycle:"Dampened by 0.4 to reflect real-world constraints. Days and weeks translate the percentage into operational language.",
+        s10_title:"What This Calculator Does Not Measure", s10_sub:"The financial model captures cost savings only — real value is significantly higher",
+        s10_intro:"These numbers represent a conservative lower bound. The following dimensions are real but not quantified:",
+        s10_1_t:"Quality Improvements", s10_1:"Fewer defects, earlier detection, higher coverage — not captured. Cost of a production defect in a municipal system is significant.",
+        s10_2_t:"Risk Reduction", s10_2:"Automated regression prevents regression defects. Avoided cost of an incident — downtime, citizen impact, emergency fix — not in this model.",
+        s10_3_t:"Compliance Value", s10_3:"Automated audit trails, traceability, and documented evidence have compliance value not captured here.",
+        s10_4_t:"Staff Redeployment", s10_4:"Hours freed shift to exploratory testing, test design, requirement review. Productivity uplift not in this model.",
+        s10_5_t:"Compounding Release Value", s10_5:"1.1 weeks earlier per release × 4 releases = significantly earlier annually. Citizen and organisational value not captured.",
+        s10_6_t:"Knowledge Retention", s10_6:"Automated tests are living documentation surviving staff turnover. Cost of knowledge loss not in this model.",
+        s10_7_t:"Aviator AI Multiplier", s10_7:"OpenText Aviator AI saves additional 45 minutes to 2 hours per task on test creation, defect summarisation, and requirement analysis. This AI productivity layer is separate and adds significant additional value.",
+        s11_title:"Glossary", s11_sub:"Every term used in the calculator and this document, defined",
+        g_taas:"Testing as a Service. A delivery model where testing expertise is provided as a managed service. KOMBIT uses TaaS to flex testing capacity across 98 municipalities.",
+        g_ve:"Core Software Delivery Platform. OpenText's unified platform for managing the full quality lifecycle. Referred to as ValueEdge in its current product generation.",
+        g_ag:"The percentage of testing effort eliminated by automation. Applied differently per role — see Assumptions.",
+        g_gg:"Total financial saving before costs. Hours recovered × hourly rates × releases × municipalities.",
+        g_ns:"Gross Gain minus automation cost. Can be negative — shown honestly without a zero floor.",
+        g_rd:"Assumed split: Manual Tester 65%, Automation Engineer 25%, Test Manager 10%.",
+        g_rf:"Per-role multiplier on automation gain: Manual 1.0, Auto Engineer 0.3, Test Manager 0.05.",
+        g_cm:"Factor applied to baseline hours: Simple ×0.7, Medium ×1.0, Complex ×1.5.",
+        g_cd:"Fixed factor of 0.4 applied to automation gain for delivery cycle reduction. Reflects non-testing activities that remain unchanged.",
+        g_pd:"Total hours ÷ working hours per day. One person's full working day of recovered capacity.",
+        g_se:"Person-days ÷ 10. Expresses capacity in agile planning terms.",
+        g_be:"Point where Gross Gain equals Total Automation Cost. Net Savings = €0.",
+        g_fu:"All testers working at 100% capacity. Headcount inputs affect only the per-person breakdown, not the total.",
+        s12_title:"Version & Author", s12_sub:"Document provenance and contact information",
+        s12_role:"Test Architect · Quality Engineering", s12_version:"Document Version", s12_year:"Year", s12_context:"Context", s12_location:"Location", s12_languages:"Languages",
+        s12_print_note:"Download or print this document as a PDF to share with stakeholders who do not have access to the web application.",
+        s12_print_btn:"Download / Print PDF"
+    },
+    da: {
+        flag:'https://flagcdn.com/w20/dk.png', code:'DA',
+        nav_subtitle:"Metodologidokument", nav_back:"← Tilbage til beregner", nav_print:"⬇ Download / Udskriv",
+        hero_badge:"Metodologidokument",
+        hero_title:"Værdirealisering\nBeregnermetodologi",
+        hero_desc:"Et komplet referencedokument, der forklarer alle parametre, antagelser, formelsteps og fortolkningsvejledninger bag KOMBITs TaaS-beregner.",
+        hero_tag1:"Alle parametre dokumenteret", hero_tag2:"Beregningseksempel inkluderet", hero_tag3:"Alle antagelser forklaret", hero_tag4:"EN / DA / SV / LV",
+        toc_title:"Indholdsfortegnelse", toc_1:"Resumé", toc_2:"Formål og omfang", toc_3:"Parameterreference", toc_4:"Formel — Klart sprog", toc_5:"Formel — Matematisk", toc_6:"Beregningseksempel", toc_7:"Hårdkodede antagelser", toc_8:"Timer vs. dage", toc_9:"Fortolkning af resultater", toc_10:"Hvad der ikke måles", toc_11:"Ordliste", toc_12:"Version og forfatter",
+        s1_title:"Resumé", s1_sub:"Hvad beregneren er, og hvem den er til",
+        s1_p1:"KOMBIT-værdirealiseringsberegneren er en interaktiv finansiel model til at estimere de årlige besparelser ved Testing as a Service (TaaS) kombineret med testautomatisering.",
+        s1_p2:"Den er designet til tre målgrupper: ledelse (CFO'er, IT-direktører), Test Managers og Test Arkitekter samt eksterne interessenter.",
+        s1_card1:"Finansiel gevinst", s1_card1_sub:"Brutto årsbesparelser fra automatisering", s1_card2:"Tid genoprettet", s1_card2_sub:"Timer, dage, sprints sparet pr. år", s1_card3:"Hurtigere levering", s1_card3_sub:"Cyklusreduktion pr. release",
+        s2_title:"Formål og omfang", s2_sub:"Hvad beregneren gør og ikke gør",
+        s2_does:"Hvad den GØR", s2_not:"Hvad den IKKE gør",
+        s2_does_1:"Estimerer brutto finansiel gevinst fra automatisering", s2_does_2:"Beregner per-rolle, per-person, per-release besparelser", s2_does_3:"Konverterer sparede timer til dage, uger og sprint-ækvivalenter", s2_does_4:"Viser nettobesparelser efter fratrækning af automationsomkostninger", s2_does_5:"Giver breakeven-vejledning, når nettoen er negativ", s2_does_6:"Antager 100% testerforbrug",
+        s2_not_1:"Måler ikke kvalitetsforbedringer", s2_not_2:"Tager ikke højde for risikoreduktering", s2_not_3:"Modellerer ikke delvis udnyttelse", s2_not_4:"Tager ikke højde for medarbejderomplacering", s2_not_5:"Modellerer ikke sammensatte fordele", s2_not_6:"Erstatter ikke en fuld business case",
+        s3_title:"Parameterreference", s3_sub:"Alle skydere og input forklaret",
+        tag_slider:"Skyder", tag_fixed:"Hårdkodet antagelse", tag_derived:"Udledt / beregnet",
+        pt_param:"Parameter", pt_type:"Type", pt_default:"Standard", pt_range:"Interval", pt_why:"Hvorfor den eksisterer", pt_effect:"Hvis øget",
+        p_muni:"Kommuner", p_muni_why:"KOMBIT betjener 98 kommuner. Besparelser skalerer lineært.", p_muni_effect:"Lineær stigning i gevinst",
+        p_hours:"Manuelle timer / Release", p_hours_why:"Basisindsats pr. release før automatisering.", p_hours_effect:"Alle besparelser stiger proportionalt",
+        p_releases:"Releases / år", p_releases_why:"Antal releases pr. år.", p_releases_effect:"Årstal stiger; per-release uændret",
+        p_cx:"Release-kompleksitet", p_cx_why:"Ikke alle releases kræver samme testindsats.", p_cx_effect:"Simpel: ×0,7. Kompleks: ×1,5",
+        p_eff:"Automationsgevinst %", p_eff_why:"Andel af testindsats elimineret af automatisering.", p_eff_effect:"Alle besparelser stiger",
+        p_workday:"Arbejdstimer / dag", p_workday_why:"Bruges til konvertering til dage. Dansk standard ≈ 7,4 timer.", p_workday_effect:"Færre dage vist",
+        p_rate_m:"Manuel tester-sats", p_rate_m_why:"Timepris for manuel tester (TaaS-konsulent).", p_rate_m_effect:"Manuel besparelseskomponent stiger",
+        p_rate_a:"Automationsingeniør-sats", p_rate_a_why:"Timepris for automationsingeniør.", p_rate_a_effect:"Automationsbesparelseskomponent stiger",
+        p_rate_mg:"Testledelsessats", p_rate_mg_why:"Timepris for testleder.", p_rate_mg_effect:"Minimal indvirkning",
+        p_hc_m:"Antal manuelle testere", p_hc_m_why:"Antal pr. kommune. Påvirker kun per-person-opdeling.", p_hc_m_effect:"Per-person besparelser falder",
+        p_hc_a:"Antal automationsingeniører", p_hc_a_why:"Antal pr. kommune.", p_hc_a_effect:"Per-person besparelser falder",
+        p_hc_mg:"Antal testledere", p_hc_mg_why:"Antal pr. kommune.", p_hc_mg_effect:"Per-leder besparelser falder",
+        p_cost:"Automationsomkostning/år", p_cost_why:"Årlig pris for automatiseringsinfrastruktur pr. kommune.", p_cost_effect:"Nettobesparelser falder",
+        s4_title:"Formel — Klart sprog", s4_sub:"Trin for trin på klart sprog",
+        s4_s1_title:"Start med basistime.", s4_s1:"Du angiver, hvor mange manuelle testtimer én release kræver.",
+        s4_s2_title:"Juster for release-kompleksitet.", s4_s2:"Simpel release kræver færre timer; kompleks kræver flere. Skaleres med 0,7×, 1,0× eller 1,5×.",
+        s4_s3_title:"Fordel timer på tre roller.", s4_s3:"65% til manuelle testere, 25% til automationsingeniører, 10% til testledere.",
+        s4_s4_title:"Anvend automationsgevinst — forskelligt pr. rolle.", s4_s4:"Automatisering eliminerer 100% af manuelle testertimer, kun 30% af automationsingeniørers timer og kun 5% af ledertimer.",
+        s4_s5_title:"Multiplicer med releases og kommuner.", s4_s5:"Besparelserne ganges med releases pr. år og antal kommuner.",
+        s4_s6_title:"Konverter timer til penge.", s4_s6:"Sparede timer ganges med timesatser. Summen er bruttogevinsten.",
+        s4_s7_title:"Fratræk automationsomkostninger.", s4_s7:"Automationsomkostning × kommuner fratrækkes bruttogevinst. Resultatet kan være negativt.",
+        s4_s8_title:"Konverter timer til dage og uger.", s4_s8:"Timer ÷ arbejdstimer/dag = persondage. Dage/release ÷ 5 = uger tidligere.",
+        s5_title:"Formel — Matematisk notation", s5_sub:"For tekniske målgrupper",
+        s6_title:"Beregningseksempel", s6_sub:"Fuldstændig trin-for-trin-beregning",
+        s6_inputs:"Eksempelinput", s6_i_muni:"Kommuner", s6_i_hrs:"Manuelle timer/release", s6_i_rel:"Releases/år", s6_i_cx:"Kompleksitet", s6_i_eff:"Automationsgevinst", s6_i_rm:"Manuel sats", s6_i_ra:"Auto-sats", s6_i_cost:"Automationsomkostning/kommune",
+        s6_step1_t:"Kompleksitetsjustering", s6_step2_t:"Rollefordelingstimer", s6_step3_t:"Genoprettede timer pr. rolle", s6_step4_t:"Samlede årlige timer", s6_step5_t:"Brutto finansiel gevinst", s6_step6_t:"Nettobesparelse", s6_step7_t:"Leveringscyklusreduktion",
+        s6_negative_note:"⚠ Negativ fordi automationsomkostningen er høj i forhold til testmængden.",
+        s7_title:"Hårdkodede antagelser", s7_sub:"Alle faste værdier i formlen forklaret",
+        s7_rd_title:"Rolletimefordeling", s7_manual_label:"Manuel tester-andel", s7_manual_why:"Baseret på typisk QE-teamsammensætning. 60–70% ved tidlig automatiseringsmodenhed.", s7_auto_label:"Automationsingeniør-andel", s7_auto_why:"Bygger frameworks, skriver scripts. Ca. en fjerdedel af indsatsen.", s7_mgmt_label:"Testledelsesandel", s7_mgmt_why:"Planlægning, koordinering, rapportering. Typisk 8–12%.",
+        s7_arf_title:"Automationsreduktionsfaktorer pr. rolle", s7_red_manual:"Manuel tester", s7_red_manual_why:"Fuld gevinst gælder.", s7_red_auto:"Automationsingeniør", s7_red_auto_why:"Kun 30% frigivet — vedligeholdelse fortsætter.", s7_red_mgmt:"Testleder", s7_red_mgmt_why:"Kun 5% reduceres — styring forbliver.",
+        s7_cx_title:"Kompleksitetsmultiplikatorer", s7_cx_simple:"Simpel", s7_cx_simple_why:"Ca. 70% af medium indsats.", s7_cx_medium:"Medium", s7_cx_medium_why:"Baseline — ingen justering.", s7_cx_complex:"Kompleks", s7_cx_complex_why:"50% mere end medium.",
+        s7_other_title:"Andre faste værdier", s7_damp_label:"Cyklusdæmpning", s7_damp_why:"50% automatisering = 20% cyklusreduktion.", s7_sprint_label:"Sprintlængde", s7_sprint_why:"Standard to-ugers sprint = 10 arbejdsdage.", s7_util_label:"Udnyttelse", s7_util_why:"100% udnyttelse antaget. Gyldigt for TaaS-model.",
+        s8_title:"Timer vs. dage — Hvorfor begge er vigtige", s8_sub:"Samme tal, fortalt i hver interessents sprog",
+        s8_intro:"Timer er enheden for finansiel beregning. Dage og uger er enheden for operationel planlægning.",
+        s8_audience1:"For CFO'er", s8_desc1:"Konverteres til penge.", s8_audience2:"For projektledere", s8_desc2:"Kapacitet frigivet til arbejde med høj værdi.", s8_audience3:"For Scrum-teams", s8_desc3:"Ækvivalent kapacitet genoprettet.",
+        s8_conversion:"Konverteringskæde",
+        s9_title:"Fortolkning af resultater", s9_sub:"Hvad hvert output betyder",
+        s9_pos_title:"Positiv nettobesparelse", s9_pos:"Automatiseringsinvesteringen betaler sig selv. Brug direkte i en business case.",
+        s9_neg_title:"Negativ nettobesparelse", s9_neg:"Ikke tegn på fiasko — input skal kalibreres:",
+        s9_neg_1:"Automationsomkostning pr. kommune er for høj", s9_neg_2:"Testmængde er for lav", s9_neg_3:"Automationsgevinst er for konservativ", s9_neg_4:"Antal kommuner er lavt",
+        s9_pb_title:"Per-person-opdeling", s9_pb:"Ændrer ikke totaler. Brug til at kommunikere per-rolle indvirkning.",
+        s9_cycle_title:"Leveringscyklusreduktion", s9_cycle:"Dæmpet med 0,4 for at afspejle reelle begrænsninger.",
+        s10_title:"Hvad beregneren ikke måler", s10_sub:"Den finansielle model fanger kun omkostningsbesparelser",
+        s10_intro:"Disse tal er et konservativt minimumsestimat af den samlede værdi.",
+        s10_1_t:"Kvalitetsforbedringer", s10_1:"Færre defekter, tidligere detektion — ikke medtaget.", s10_2_t:"Risikoreduktering", s10_2:"Undgåede hændelsesomkostninger ikke medtaget.", s10_3_t:"Complianceværdi", s10_3:"Automatiserede revisionsspor ikke medtaget.", s10_4_t:"Medarbejderomplacering", s10_4:"Frigivet kapacitet til højere-værdis arbejde ikke modelleret.", s10_5_t:"Sammensat releaseværdi", s10_5:"Hurtigere releases sammenlagt ikke modelleret.", s10_6_t:"Videnopbevaring", s10_6:"Automatiserede tests som levende dokumentation ikke medtaget.", s10_7_t:"Aviator AI-multiplikator", s10_7:"Aviator AI sparer yderligere 45 min–2 timer pr. opgave. Separat fra automationsgevinsten.",
+        s11_title:"Ordliste", s11_sub:"Alle termer defineret",
+        g_taas:"Testing as a Service. Testekspertise leveret som en managed service.", g_ve:"Core Software Delivery Platform. OpenTexts samlede platform til kvalitetslivscyklus.", g_ag:"Andel af testindsats elimineret af automatisering.", g_gg:"Samlet finansiel besparelse før omkostninger fratrækkes.", g_ns:"Bruttogevinst minus automationsomkostning. Kan være negativ.", g_rd:"Antaget fordeling: 65% / 25% / 10%.", g_rf:"Per-rolle multiplikator: 1,0 / 0,3 / 0,05.", g_cm:"Faktor anvendt på basisstimer: ×0,7 / ×1,0 / ×1,5.", g_cd:"Fast faktor 0,4 for cyklusreduktion.", g_pd:"Samlede timer ÷ arbejdstimer pr. dag.", g_se:"Persondage ÷ 10.", g_be:"Punkt hvor bruttogevinst = samlet automationsomkostning.", g_fu:"Alle testere på 100% kapacitet.",
+        s12_title:"Version og forfatter", s12_sub:"Dokumentoprindelse og kontaktoplysninger",
+        s12_role:"Test Arkitekt · Kvalitetsteknologi", s12_version:"Dokumentversion", s12_year:"År", s12_context:"Kontekst", s12_location:"Placering", s12_languages:"Sprog",
+        s12_print_note:"Download eller udskriv dette dokument som PDF til deling med interessenter.", s12_print_btn:"Download / Udskriv PDF"
+    },
+    sv: {
+        flag:'https://flagcdn.com/w20/se.png', code:'SV',
+        nav_subtitle:"Metodologidokument", nav_back:"← Tillbaka till beräknaren", nav_print:"⬇ Ladda ner / Skriv ut",
+        hero_badge:"Metodologidokument",
+        hero_title:"Värderealisering\nBeräknarmetodologi",
+        hero_desc:"Ett komplett referensdokument som förklarar alla parametrar, antaganden och formelsteg bakom KOMBIT TaaS-värdekalkylatorn.",
+        hero_tag1:"Alla parametrar dokumenterade", hero_tag2:"Beräknat exempel inkluderat", hero_tag3:"Alla antaganden förklarade", hero_tag4:"EN / DA / SV / LV",
+        toc_title:"Innehållsförteckning", toc_1:"Sammanfattning", toc_2:"Syfte och omfång", toc_3:"Parameterreferens", toc_4:"Formel — Klarspråk", toc_5:"Formel — Matematisk", toc_6:"Beräknat exempel", toc_7:"Hårdkodade antaganden", toc_8:"Timmar vs dagar", toc_9:"Tolkning av resultat", toc_10:"Vad som inte mäts", toc_11:"Ordlista", toc_12:"Version och författare",
+        s1_title:"Sammanfattning", s1_sub:"Vad kalkylatorn är och vem den är till för",
+        s1_p1:"KOMBIT-värderealiseringskalkylatorn är en interaktiv finansiell modell för att uppskatta årliga kostnadsbesparingar från TaaS kombinerat med testautomatisering.",
+        s1_p2:"Den är utformad för tre målgrupper: ledning, Test Managers och externa intressenter.",
+        s1_card1:"Finansiell vinst", s1_card1_sub:"Bruttoårliga besparingar", s1_card2:"Tid återvunnen", s1_card2_sub:"Timmar, dagar, sprints per år", s1_card3:"Snabbare leverans", s1_card3_sub:"Cykelminskning per release",
+        s2_title:"Syfte och omfång", s2_sub:"Vad kalkylatorn gör och inte gör",
+        s2_does:"Vad den GÖR", s2_not:"Vad den INTE gör",
+        s2_does_1:"Uppskattar bruttofinansiell vinst", s2_does_2:"Beräknar per-roll, per-person besparingar", s2_does_3:"Konverterar sparade timmar till dagar och sprints", s2_does_4:"Visar nettobesparingar efter automatiseringskostnader", s2_does_5:"Ger break-even-vägledning", s2_does_6:"Antar 100% testarnyttjande",
+        s2_not_1:"Mäter inte kvalitetsförbättringar", s2_not_2:"Tar inte hänsyn till riskminskning", s2_not_3:"Modellerar inte partiellt nyttjande", s2_not_4:"Tar inte hänsyn till omplacering", s2_not_5:"Modellerar inte sammansatta fördelar", s2_not_6:"Ersätter inte en fullständig affärsanalys",
+        s3_title:"Parameterreferens", s3_sub:"Alla reglage och indata förklarade",
+        tag_slider:"Reglage", tag_fixed:"Hårdkodat antagande", tag_derived:"Härledd / beräknad",
+        pt_param:"Parameter", pt_type:"Typ", pt_default:"Standard", pt_range:"Intervall", pt_why:"Varför den finns", pt_effect:"Om ökad",
+        p_muni:"Kommuner", p_muni_why:"KOMBIT betjänar 98 kommuner. Besparingar skalas linjärt.", p_muni_effect:"Linjär ökning av vinst",
+        p_hours:"Manuella timmar/Release", p_hours_why:"Basinsats per release före automatisering.", p_hours_effect:"Alla besparingar ökar proportionellt",
+        p_releases:"Releases/år", p_releases_why:"Antal releases per år.", p_releases_effect:"Årsiffror ökar",
+        p_cx:"Release-komplexitet", p_cx_why:"Olika releases kräver olika testinsats.", p_cx_effect:"Enkel: ×0,7. Komplex: ×1,5",
+        p_eff:"Automatiseringsvinst %", p_eff_why:"Andel av testinsats eliminerad av automatisering.", p_eff_effect:"Alla besparingar ökar",
+        p_workday:"Arbetstimmar/dag", p_workday_why:"Används för konvertering till dagar.", p_workday_effect:"Färre dagar visas",
+        p_rate_m:"Manuell testare-sats", p_rate_m_why:"Timpris för manuell testare.", p_rate_m_effect:"Manuell besparingskomponent ökar",
+        p_rate_a:"Automationsingenjör-sats", p_rate_a_why:"Timpris för automationsingenjör.", p_rate_a_effect:"Automationsbesparingskomponent ökar",
+        p_rate_mg:"Testledningssats", p_rate_mg_why:"Timpris för testledare.", p_rate_mg_effect:"Minimal påverkan",
+        p_hc_m:"Antal manuella testare", p_hc_m_why:"Antal per kommun. Påverkar endast per-person-uppdelning.", p_hc_m_effect:"Per-person besparingar minskar",
+        p_hc_a:"Antal automationsingenjörer", p_hc_a_why:"Antal per kommun.", p_hc_a_effect:"Per-person besparingar minskar",
+        p_hc_mg:"Antal testledare", p_hc_mg_why:"Antal per kommun.", p_hc_mg_effect:"Per-ledare besparingar minskar",
+        p_cost:"Automatiseringskostnad/år", p_cost_why:"Årlig kostnad per kommun.", p_cost_effect:"Nettobesparingar minskar",
+        s4_title:"Formel — Klarspråk", s4_sub:"Steg för steg utan tekniska förkunskaper",
+        s4_s1_title:"Börja med bastimmar.", s4_s1:"Du anger manuella testtimmar per release.",
+        s4_s2_title:"Justera för komplexitet.", s4_s2:"Enkel ×0,7, Medium ×1,0, Komplex ×1,5.",
+        s4_s3_title:"Fördela timmar på tre roller.", s4_s3:"65% manuell, 25% automatisering, 10% ledning.",
+        s4_s4_title:"Tillämpa automatiseringsvinst per roll.", s4_s4:"100% för manuella testare, 30% för ingenjörer, 5% för ledare.",
+        s4_s5_title:"Multiplicera med releases och kommuner.", s4_s5:"Besparingar per release × releases × kommuner.",
+        s4_s6_title:"Konvertera till pengar.", s4_s6:"Sparade timmar × timpris = bruttovinst.",
+        s4_s7_title:"Dra av automatiseringskostnader.", s4_s7:"Kostnaden dras av från bruttovinsten. Kan bli negativ.",
+        s4_s8_title:"Konvertera till dagar och veckor.", s4_s8:"Timmar ÷ arbetstimmar/dag = persondagar.",
+        s5_title:"Formel — Matematisk notation", s5_sub:"För tekniska målgrupper",
+        s6_title:"Beräknat exempel", s6_sub:"Fullständig steg-för-steg-beräkning",
+        s6_inputs:"Exempelindata", s6_i_muni:"Kommuner", s6_i_hrs:"Manuella timmar/release", s6_i_rel:"Releases/år", s6_i_cx:"Komplexitet", s6_i_eff:"Automatiseringsvinst", s6_i_rm:"Manuell sats", s6_i_ra:"Auto-sats", s6_i_cost:"Automatiseringskostnad/kommun",
+        s6_step1_t:"Komplexitetsjustering", s6_step2_t:"Rollfördelning", s6_step3_t:"Återvunna timmar per roll", s6_step4_t:"Totala årliga timmar", s6_step5_t:"Bruttofinansiell vinst", s6_step6_t:"Nettobesparingar", s6_step7_t:"Leveranscykelminskning",
+        s6_negative_note:"⚠ Negativ eftersom automatiseringskostnaden är hög i förhållande till testvolymen.",
+        s7_title:"Hårdkodade antaganden", s7_sub:"Alla fasta värden förklarade",
+        s7_rd_title:"Rollfördelning", s7_manual_label:"Manuell testare-andel", s7_manual_why:"Typisk QE-teamsammansättning. 60–70% vid tidig automatiseringsmognad.", s7_auto_label:"Automationsingenjör-andel", s7_auto_why:"Bygger frameworks, skriver skript.", s7_mgmt_label:"Testledningsandel", s7_mgmt_why:"Planering, koordinering, rapportering. Typiskt 8–12%.",
+        s7_arf_title:"Automatiseringsreduktionsfaktorer per roll", s7_red_manual:"Manuell testare", s7_red_manual_why:"Full vinst gäller.", s7_red_auto:"Automationsingenjör", s7_red_auto_why:"Bara 30% frigjord — underhåll fortsätter.", s7_red_mgmt:"Testledare", s7_red_mgmt_why:"Bara 5% minskar — styrning kvarstår.",
+        s7_cx_title:"Komplexitetsmultiplikatorer", s7_cx_simple:"Enkel", s7_cx_simple_why:"Ca 70% av medelinsats.", s7_cx_medium:"Medium", s7_cx_medium_why:"Baslinjen — ingen justering.", s7_cx_complex:"Komplex", s7_cx_complex_why:"50% mer än medium.",
+        s7_other_title:"Andra fasta värden", s7_damp_label:"Cykeldämpning", s7_damp_why:"50% automatisering = 20% cykelminskning.", s7_sprint_label:"Sprintlängd", s7_sprint_why:"10 arbetsdagar per sprint.", s7_util_label:"Nyttjande", s7_util_why:"100% antas. Giltigt för TaaS-modellen.",
+        s8_title:"Timmar vs dagar — Varför båda spelar roll", s8_sub:"Samma siffra, berättad i varje intressents språk",
+        s8_intro:"Timmar är finansberäkningens enhet. Dagar är operativ planerings enhet.",
+        s8_audience1:"För CFO:er", s8_desc1:"Konverteras till pengar.", s8_audience2:"För projektledare", s8_desc2:"Kapacitet frigjord.", s8_audience3:"För Scrum-team", s8_desc3:"Ekvivalent kapacitet återvunnen.",
+        s8_conversion:"Konverteringskedja",
+        s9_title:"Tolkning av resultat", s9_sub:"Vad varje output betyder",
+        s9_pos_title:"Positiv nettobesparelse", s9_pos:"Investeringen betalar sig. Använd i affärsfallet.",
+        s9_neg_title:"Negativ nettobesparelse", s9_neg:"Inte ett misslyckande — kalibrering behövs:",
+        s9_neg_1:"Automatiseringskostnad per kommun är för hög", s9_neg_2:"Testvolym är för låg", s9_neg_3:"Automatiseringsvinst är för konservativ", s9_neg_4:"Antal kommuner är lågt",
+        s9_pb_title:"Per-person-uppdelning", s9_pb:"Ändrar inte totaler. Kommunicerar per-roll påverkan.",
+        s9_cycle_title:"Leveranscykelminskning", s9_cycle:"Dämpad med 0,4 för realistisk reflektion.",
+        s10_title:"Vad kalkylatorn inte mäter", s10_sub:"Finansmodellen fångar bara kostnadsbesparingar",
+        s10_intro:"Dessa siffror är en konservativ undre gräns av det totala värdet.",
+        s10_1_t:"Kvalitetsförbättringar", s10_1:"Färre defekter — inte inkluderat.", s10_2_t:"Riskminskning", s10_2:"Undvikna incidentkostnader inte modellerade.", s10_3_t:"Efterlevnadsvärde", s10_3:"Revisionsloggar inte inkluderade.", s10_4_t:"Omplacering av personal", s10_4:"Frigjord kapacitet inte modellerad.", s10_5_t:"Sammansatt releasevärde", s10_5:"Snabbare releases inte modellerade.", s10_6_t:"Kunskapsbevarande", s10_6:"Levande dokumentation inte inkluderad.", s10_7_t:"Aviator AI-multiplikator", s10_7:"Aviator AI sparar ytterligare 45 min–2 timmar per uppgift.",
+        s11_title:"Ordlista", s11_sub:"Alla termer definierade",
+        g_taas:"Testing as a Service. Testexpertis som managed service.", g_ve:"Core Software Delivery Platform. OpenTexts enhetliga plattform.", g_ag:"Andel testinsats eliminerad av automatisering.", g_gg:"Total besparing före kostnadsavdrag.", g_ns:"Bruttovinst minus automatiseringskostnad.", g_rd:"Fördelning: 65% / 25% / 10%.", g_rf:"Per-roll multiplikator: 1,0 / 0,3 / 0,05.", g_cm:"Faktor: Enkel ×0,7, Medium ×1,0, Komplex ×1,5.", g_cd:"Fast faktor 0,4 för cykelminskning.", g_pd:"Totala timmar ÷ arbetstimmar per dag.", g_se:"Persondagar ÷ 10.", g_be:"Punkt där bruttovinst = total automatiseringskostnad.", g_fu:"Alla testare på 100% kapacitet.",
+        s12_title:"Version och författare", s12_sub:"Dokumentproveniens och kontaktinformation",
+        s12_role:"Testarkitekt · Kvalitetsteknik", s12_version:"Dokumentversion", s12_year:"År", s12_context:"Kontext", s12_location:"Plats", s12_languages:"Språk",
+        s12_print_note:"Ladda ner eller skriv ut som PDF för delning.", s12_print_btn:"Ladda ner / Skriv ut PDF"
+    },
+    lv: {
+        flag:'https://flagcdn.com/w20/lv.png', code:'LV',
+        nav_subtitle:"Metodoloģijas dokuments", nav_back:"← Atpakaļ uz kalkulatoru", nav_print:"⬇ Lejupielādēt / Drukāt",
+        hero_badge:"Metodoloģijas dokuments",
+        hero_title:"Vērtības realizācijas\nkalkulatora metodoloģija",
+        hero_desc:"Pilnīgs atsauces dokuments, kas izskaidro visus parametrus, pieņēmumus un formulas soļus KOMBIT TaaS vērtības kalkulatorā.",
+        hero_tag1:"Visi parametri dokumentēti", hero_tag2:"Aprēķina piemērs iekļauts", hero_tag3:"Visi pieņēmumi izskaidroti", hero_tag4:"EN / DA / SV / LV",
+        toc_title:"Satura rādītājs", toc_1:"Kopsavilkums", toc_2:"Mērķis un apjoms", toc_3:"Parametru atsauce", toc_4:"Formula — Vienkārša valoda", toc_5:"Formula — Matemātiska", toc_6:"Aprēķina piemērs", toc_7:"Fiksēti pieņēmumi", toc_8:"Stundas pret dienām", toc_9:"Rezultātu interpretācija", toc_10:"Ko kalkulators nemēra", toc_11:"Vārdnīca", toc_12:"Versija un autors",
+        s1_title:"Kopsavilkums", s1_sub:"Kas ir kalkulators un kam tas paredzēts",
+        s1_p1:"KOMBIT vērtības realizācijas kalkulators ir interaktīvs finanšu modelis, kas novērtē ikgadējos ietaupījumus no TaaS un testēšanas automatizācijas.",
+        s1_p2:"Tas paredzēts trim auditorijām: vadībai, testēšanas vadītājiem un ārējiem ieinteresētajiem.",
+        s1_card1:"Finansiālais ieguvums", s1_card1_sub:"Bruto gada ietaupījumi", s1_card2:"Atgūtais laiks", s1_card2_sub:"Stundas, dienas, sprinti gadā", s1_card3:"Ātrāka piegāde", s1_card3_sub:"Cikla samazinājums uz laidienu",
+        s2_title:"Mērķis un apjoms", s2_sub:"Ko kalkulators dara un ko ne",
+        s2_does:"Ko tas DARA", s2_not:"Ko tas NEDARA",
+        s2_does_1:"Novērtē bruto finansiālo ieguvumu", s2_does_2:"Aprēķina ietaupījumus pa lomām un personām", s2_does_3:"Pārveido ietaupītās stundas dienās un sprintos", s2_does_4:"Rāda neto ietaupījumus pēc automatizācijas izmaksām", s2_does_5:"Sniedz nulles punkta norādījumus", s2_does_6:"Pieņem 100% testētāju noslogojumu",
+        s2_not_1:"Nemēra kvalitātes uzlabojumus", s2_not_2:"Neņem vērā riska samazināšanu", s2_not_3:"Nemodelē daļēju noslogojumu", s2_not_4:"Neņem vērā darbinieku pārvietošanu", s2_not_5:"Nemodelē kumulatīvās priekšrocības", s2_not_6:"Neaizstāj pilnīgu biznesa analīzi",
+        s3_title:"Parametru atsauce", s3_sub:"Visi slīdņi un ievades izskaidroti",
+        tag_slider:"Slīdnis", tag_fixed:"Fiksēts pieņēmums", tag_derived:"Iegūts / aprēķināts",
+        pt_param:"Parametrs", pt_type:"Tips", pt_default:"Noklusējums", pt_range:"Diapazons", pt_why:"Kāpēc tas pastāv", pt_effect:"Ja palielināts",
+        p_muni:"Pašvaldības", p_muni_why:"KOMBIT apkalpo 98 pašvaldības. Ietaupījumi skalas lineāri.", p_muni_effect:"Lineārs ieguvuma pieaugums",
+        p_hours:"Manuālās stundas/laidiens", p_hours_why:"Bāzes piepūle uz laidienu pirms automatizācijas.", p_hours_effect:"Visi ietaupījumi pieaug proporcionāli",
+        p_releases:"Laidieni/gadā", p_releases_why:"Gada laidieni.", p_releases_effect:"Gada skaitļi pieaug",
+        p_cx:"Laidiena sarežģītība", p_cx_why:"Dažādi laidieni prasa dažādu testēšanas piepūli.", p_cx_effect:"Vienkāršs: ×0,7. Sarežģīts: ×1,5",
+        p_eff:"Automatizācijas ieguvums %", p_eff_why:"Testēšanas piepūles daļa, ko novērš automatizācija.", p_eff_effect:"Visi ietaupījumi pieaug",
+        p_workday:"Darba stundas/dienā", p_workday_why:"Izmanto konvertēšanai uz dienām.", p_workday_effect:"Rāda mazāk dienu",
+        p_rate_m:"Manuālā testētāja likme", p_rate_m_why:"Stundas cena manuālajam testētājam.", p_rate_m_effect:"Manuālā ietaupījuma komponente pieaug",
+        p_rate_a:"Automatizācijas inženiera likme", p_rate_a_why:"Stundas cena automatizācijas inženierim.", p_rate_a_effect:"Automatizācijas ietaupījuma komponente pieaug",
+        p_rate_mg:"Testu vadības likme", p_rate_mg_why:"Stundas cena testu vadītājam.", p_rate_mg_effect:"Minimāla ietekme",
+        p_hc_m:"Manuālo testētāju skaits", p_hc_m_why:"Skaits katrai pašvaldībai. Ietekmē tikai sadalījumu pa personām.", p_hc_m_effect:"Ietaupījumi uz personu samazinās",
+        p_hc_a:"Automatizācijas inženieru skaits", p_hc_a_why:"Skaits katrai pašvaldībai.", p_hc_a_effect:"Ietaupījumi uz personu samazinās",
+        p_hc_mg:"Testu vadītāju skaits", p_hc_mg_why:"Skaits katrai pašvaldībai.", p_hc_mg_effect:"Ietaupījumi uz vadītāju samazinās",
+        p_cost:"Automatizācijas izmaksas/gadā", p_cost_why:"Gada izmaksas katrai pašvaldībai.", p_cost_effect:"Neto ietaupījumi samazinās",
+        s4_title:"Formula — Vienkārša valoda", s4_sub:"Soli pa solim vienkāršā valodā",
+        s4_s1_title:"Sāciet ar bāzes stundām.", s4_s1:"Ievadiet manuālās testēšanas stundas uz laidienu.",
+        s4_s2_title:"Pielāgojiet sarežģītībai.", s4_s2:"Vienkāršs ×0,7, Vidējs ×1,0, Sarežģīts ×1,5.",
+        s4_s3_title:"Sadaliet stundas pa trim lomām.", s4_s3:"65% manuālie testētāji, 25% inženieri, 10% vadītāji.",
+        s4_s4_title:"Piemērojiet automatizācijas ieguvumu pa lomām.", s4_s4:"100% manuālajiem, 30% inženieriem, 5% vadītājiem.",
+        s4_s5_title:"Reiziniet ar laidieniem un pašvaldībām.", s4_s5:"Ietaupījumi × laidieni × pašvaldības.",
+        s4_s6_title:"Pārveidojiet naudā.", s4_s6:"Ietaupītās stundas × stundas likme = bruto ieguvums.",
+        s4_s7_title:"Atņemiet automatizācijas izmaksas.", s4_s7:"Var būt negatīvs — parādīts godīgi.",
+        s4_s8_title:"Pārveidojiet dienās un nedēļās.", s4_s8:"Stundas ÷ darba stundas/dienā = personu dienas.",
+        s5_title:"Formula — Matemātiskā notācija", s5_sub:"Tehniskai auditorijai",
+        s6_title:"Aprēķina piemērs", s6_sub:"Pilnīgs soli pa solim aprēķins",
+        s6_inputs:"Piemēra ievades", s6_i_muni:"Pašvaldības", s6_i_hrs:"Manuālās stundas/laidiens", s6_i_rel:"Laidieni/gadā", s6_i_cx:"Sarežģītība", s6_i_eff:"Automatizācijas ieguvums", s6_i_rm:"Manuālā likme", s6_i_ra:"Auto likme", s6_i_cost:"Auto izmaksas/pašvaldībai",
+        s6_step1_t:"Sarežģītības korekcija", s6_step2_t:"Lomu stundu sadalījums", s6_step3_t:"Atgūtās stundas pa lomām", s6_step4_t:"Kopējās gada stundas", s6_step5_t:"Bruto finansiālais ieguvums", s6_step6_t:"Neto ietaupījums", s6_step7_t:"Piegādes cikla samazinājums",
+        s6_negative_note:"⚠ Negatīvs, jo automatizācijas izmaksas ir augstas attiecībā pret testēšanas apjomu.",
+        s7_title:"Fiksēti pieņēmumi", s7_sub:"Visi fiksētie vērtības izskaidroti",
+        s7_rd_title:"Lomu stundu sadalījums", s7_manual_label:"Manuālo testētāju daļa", s7_manual_why:"Tipiski QE komandas sastāvs. 60–70% pie agrīnas automatizācijas brieduma.", s7_auto_label:"Automatizācijas inženieru daļa", s7_auto_why:"Veido ietvarus, raksta skriptus.", s7_mgmt_label:"Testu vadības daļa", s7_mgmt_why:"Plānošana, koordinācija. Parasti 8–12%.",
+        s7_arf_title:"Automatizācijas samazinājuma faktori pa lomām", s7_red_manual:"Manuālais testētājs", s7_red_manual_why:"Pilns ieguvums tiek piemērots.", s7_red_auto:"Automatizācijas inženieris", s7_red_auto_why:"Tikai 30% atbrīvots — uzturēšana turpinās.", s7_red_mgmt:"Testu vadītājs", s7_red_mgmt_why:"Tikai 5% samazinās — pārvaldība paliek.",
+        s7_cx_title:"Sarežģītības koeficienti", s7_cx_simple:"Vienkāršs", s7_cx_simple_why:"Ap 70% no vidējās piepūles.", s7_cx_medium:"Vidējs", s7_cx_medium_why:"Bāzlīnija — bez korekcijas.", s7_cx_complex:"Sarežģīts", s7_cx_complex_why:"50% vairāk nekā vidējs.",
+        s7_other_title:"Citi fiksētie vērtības", s7_damp_label:"Cikla dampings", s7_damp_why:"50% automatizācija = 20% cikla samazinājums.", s7_sprint_label:"Sprinta garums", s7_sprint_why:"10 darba dienas uz sprintu.", s7_util_label:"Noslogojums", s7_util_why:"100% pieņemts. Derīgs TaaS modelim.",
+        s8_title:"Stundas pret dienām — Kāpēc abi ir svarīgi", s8_sub:"Viens un tas pats skaitlis katras ieinteresētās puses valodā",
+        s8_intro:"Stundas ir finanšu aprēķina vienība. Dienas ir operatīvās plānošanas vienība.",
+        s8_audience1:"CFO", s8_desc1:"Tiek konvertēts naudā.", s8_audience2:"Projektu vadītāji", s8_desc2:"Atbrīvota kapacitāte.", s8_audience3:"Scrum komandas", s8_desc3:"Ekvivalenta kapacitāte atgūta.",
+        s8_conversion:"Konversijas ķēde",
+        s9_title:"Rezultātu interpretācija", s9_sub:"Ko katrs rezultāts nozīmē",
+        s9_pos_title:"Pozitīvs neto ietaupījums", s9_pos:"Investīcija atmaksājas. Izmantojiet biznesa gadījumā.",
+        s9_neg_title:"Negatīvs neto ietaupījums", s9_neg:"Nav neveiksmes pazīme — nepieciešama kalibrēšana:",
+        s9_neg_1:"Automatizācijas izmaksas katrai pašvaldībai ir pārāk augstas", s9_neg_2:"Testēšanas apjoms ir pārāk mazs", s9_neg_3:"Automatizācijas ieguvums ir pārāk konservatīvs", s9_neg_4:"Pašvaldību skaits ir mazs",
+        s9_pb_title:"Sadalījums pa personām", s9_pb:"Nemaina kopējos skaitļus. Izmantojiet lomu ietekmes paziņošanai.",
+        s9_cycle_title:"Piegādes cikla samazinājums", s9_cycle:"Noslāpēts ar 0,4, lai atspoguļotu reālos ierobežojumus.",
+        s10_title:"Ko šis kalkulators nemēra", s10_sub:"Finanšu modelis uztver tikai izmaksu ietaupījumus",
+        s10_intro:"Šie skaitļi ir konservatīva zemākā robeža no kopējās vērtības.",
+        s10_1_t:"Kvalitātes uzlabojumi", s10_1:"Mazāk defektu — nav iekļauts.", s10_2_t:"Riska samazināšana", s10_2:"Novērstās incidentu izmaksas nav modelētas.", s10_3_t:"Atbilstības vērtība", s10_3:"Automatizētas revīzijas pēdas nav iekļautas.", s10_4_t:"Darbinieku pārvietošana", s10_4:"Atbrīvotā kapacitāte nav modelēta.", s10_5_t:"Kumulatīvā laidienu vērtība", s10_5:"Ātrāki laidieni nav modelēti.", s10_6_t:"Zināšanu saglabāšana", s10_6:"Dzīvā dokumentācija nav iekļauta.", s10_7_t:"Aviator AI reizinātājs", s10_7:"Aviator AI ietaupa papildu 45 min–2 stundas uz uzdevumu.",
+        s11_title:"Vārdnīca", s11_sub:"Visi termini definēti",
+        g_taas:"Testing as a Service. Testēšanas ekspertīze kā pārvaldīts pakalpojums.", g_ve:"Core Software Delivery Platform. OpenText vienotā platforma.", g_ag:"Testēšanas piepūles daļa, ko novērš automatizācija.", g_gg:"Kopējais ietaupījums pirms izmaksu atskaitīšanas.", g_ns:"Bruto ieguvums mīnus automatizācijas izmaksas.", g_rd:"Sadalījums: 65% / 25% / 10%.", g_rf:"Uz lomu multiplikators: 1,0 / 0,3 / 0,05.", g_cm:"Faktors: Vienkāršs ×0,7, Vidējs ×1,0, Sarežģīts ×1,5.", g_cd:"Fiksēts faktors 0,4 cikla samazinājumam.", g_pd:"Kopējās stundas ÷ darba stundas dienā.", g_se:"Personu dienas ÷ 10.", g_be:"Punkts, kur bruto ieguvums = kopējās automatizācijas izmaksas.", g_fu:"Visi testētāji pie 100% noslogojuma.",
+        s12_title:"Versija un autors", s12_sub:"Dokumenta izcelsme un kontaktinformācija",
+        s12_role:"Testēšanas arhitekts · Kvalitātes inženierija", s12_version:"Dokumenta versija", s12_year:"Gads", s12_context:"Konteksts", s12_location:"Atrašanās vieta", s12_languages:"Valodas",
+        s12_print_note:"Lejupielādējiet vai izdrukājiet kā PDF, lai kopīgotu ar ieinteresētajiem.", s12_print_btn:"Lejupielādēt / Drukāt PDF"
+    }
+};
+
+function setLanguageM(lang) {
+    localStorage.setItem('preferred-lang', lang);
+    const d = i18nM[lang];
+    document.getElementById('current-lang-flag-m').src = d.flag;
+    document.getElementById('current-lang-code-m').innerText = d.code;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (d[key] !== undefined) el.innerHTML = d[key];
+    });
+    document.getElementById('lang-dropdown-m').classList.remove('show');
+}
+
+// Load saved language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('preferred-lang') || 'en';
+    setLanguageM(savedLang);
+});
+</script>
+</body>
+</html>
