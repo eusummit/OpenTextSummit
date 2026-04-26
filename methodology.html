@@ -28,7 +28,7 @@
         }
 
         /* ── FIX 2: PRINT STYLES — full color retention ── */
-       @media print {
+       @media print { [data-aos] { opacity: 1 !important; transform: none !important; visibility: visible !important; }
             /* ── PAGE SETUP ── */
             @page {
                 margin: 15mm 12mm 15mm 12mm;
@@ -1124,7 +1124,7 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-AOS.init({ once:true, offset:50, duration:700 });
+AOS.init({ once:true, offset:50, duration:700 });  // Force all AOS elements visible before print window.addEventListener('beforeprint', function() {     document.querySelectorAll('[data-aos]').forEach(function(el) {         el.style.opacity = '1';         el.style.transform = 'none';         el.style.visibility = 'visible';         el.removeAttribute('data-aos');     }); });
 
 window.addEventListener('scroll', () => {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
