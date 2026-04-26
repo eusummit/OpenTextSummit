@@ -28,48 +28,253 @@
         }
 
         /* ── FIX 2: PRINT STYLES — full color retention ── */
-        @media print {
-            .no-print { display: none !important; }
-            .print-break { page-break-before: always; }
-            body { background: white; font-size: 11px; }
-            nav { display: none; }
-            .section-card { box-shadow: none !important; border: 1px solid #ddd !important; }
-            #scroll-progress { display: none; }
-            .bottom-ticker { display: none; }
-            a { color: inherit; text-decoration: none; }
+       @media print {
+            /* ── PAGE SETUP ── */
+            @page {
+                margin: 15mm 12mm 15mm 12mm;
+                size: A4;
+            }
 
-            /* Force all colors in print */
+            /* ── FORCE COLOR ENGINE ON ── */
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 color-adjust: exact !important;
             }
+
+            /* ── HIDE ALL INTERACTIVE / FIXED ELEMENTS ── */
+            .no-print,
+            .top-nav,
+            nav,
+            #scroll-progress,
+            .bottom-ticker,
+            .toc-item,
+            [data-aos] { display: none !important; }
+
+            /* ── ALSO HIDE TABLE OF CONTENTS CARD ENTIRELY ── */
+            .section-card:first-of-type { display: none !important; }
+
+            /* ── BODY & PAGE FLOW ── */
+            html, body {
+                background: white !important;
+                font-size: 10px !important;
+                color: #1F2937 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                width: 100% !important;
+            }
+
+            main {
+                padding: 0 !important;
+                margin: 0 auto !important;
+                max-width: 100% !important;
+            }
+
+            /* ── HERO — compact in print ── */
+            .hero {
+                background: #0B1B3D !important;
+                padding: 20px 16px !important;
+                margin-bottom: 8px !important;
+                page-break-after: avoid !important;
+            }
+            .hero-grid { display: none !important; }
+            .hero h1 { font-size: 18px !important; margin-bottom: 6px !important; }
+            .hero p  { font-size: 10px !important; margin-bottom: 8px !important; }
+            .version-badge {
+                background: rgba(227,0,15,0.15) !important;
+                color: #E3000F !important;
+                border-color: rgba(227,0,15,0.3) !important;
+            }
+
+            /* ── HERO STAT BADGES ── */
+            .hero .flex.flex-wrap { gap: 6px !important; }
+            .hero .flex.flex-wrap > div {
+                padding: 3px 8px !important;
+                font-size: 9px !important;
+                background: rgba(255,255,255,0.08) !important;
+                border: 1px solid rgba(255,255,255,0.15) !important;
+                color: rgba(255,255,255,0.8) !important;
+            }
+
+            /* ── SECTION CARDS ── */
+            .section-card {
+                box-shadow: none !important;
+                border: 1px solid #D1D5DB !important;
+                border-radius: 8px !important;
+                margin-bottom: 12px !important;
+                page-break-inside: avoid !important;
+                overflow: visible !important;
+            }
+            .card-header {
+                padding: 10px 14px !important;
+                border-bottom: 1px solid #F3F4F6 !important;
+            }
+            .card-body {
+                padding: 14px !important;
+            }
+            .card-num {
+                background: #E3000F !important;
+                color: white !important;
+                width: 24px !important;
+                height: 24px !important;
+                font-size: 9px !important;
+            }
+
+            /* ── ALLOW LONG SECTIONS TO BREAK ACROSS PAGES ── */
+            #s3 .section-card,
+            #s5 .section-card,
+            #s7 .section-card,
+            #s11 .section-card { page-break-inside: auto !important; }
+
+            /* ── FORMULA BOXES — key fix: no overflow clipping, wrap long lines ── */
             .formula-box {
                 background: #0B1B3D !important;
                 color: #e2e8f0 !important;
                 border: 1px solid #334155 !important;
+                border-radius: 0 0 6px 6px !important;
+                padding: 10px 14px !important;
+                font-size: 9.5px !important;
+                line-height: 1.8 !important;
+                overflow: visible !important;
+                overflow-x: visible !important;
+                white-space: pre-wrap !important;
+                word-break: break-word !important;
+                page-break-inside: avoid !important;
             }
-            .formula-box .comment   { color: #64748b !important; }
+            .formula-box .comment   { color: #94a3b8 !important; }
             .formula-box .highlight { color: #4ade80 !important; }
-            .formula-box .var       { color: #60a5fa !important; }
-            .formula-box .operator  { color: #f472b6 !important; }
+            .formula-box .var       { color: #93c5fd !important; }
+            .formula-box .operator  { color: #f9a8d4 !important; }
             .formula-box .result    { color: #fbbf24 !important; }
-            .hero { background: linear-gradient(135deg, #0B1B3D 0%, #1a3a6b 100%) !important; }
-            .card-num { background: #E3000F !important; color: white !important; }
-            .param-table th { background: #0B1B3D !important; color: white !important; }
-            .assumption-value { color: #E3000F !important; }
+
+            /* ── STEP LABELS ── */
+            .step-label {
+                background: #F1F5F9 !important;
+                color: #475569 !important;
+                border: 1px solid #CBD5E1 !important;
+                border-bottom: none !important;
+                border-radius: 4px 4px 0 0 !important;
+                font-size: 8.5px !important;
+                padding: 4px 10px !important;
+                display: block !important;
+            }
+
+            /* ── PARAMETER TABLE ── */
+            .param-table {
+                font-size: 8.5px !important;
+                width: 100% !important;
+                table-layout: fixed !important;
+            }
+            .param-table th {
+                background: #0B1B3D !important;
+                color: white !important;
+                padding: 6px 8px !important;
+                font-size: 8px !important;
+            }
+            .param-table td {
+                padding: 6px 8px !important;
+                border-bottom: 1px solid #F3F4F6 !important;
+                vertical-align: top !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+            .param-table tr { page-break-inside: avoid !important; }
+
+            /* ── PARAM TAGS ── */
+            .tag-slider  { background: #EEF2FF !important; color: #4F46E5 !important; font-size: 8px !important; }
+            .tag-fixed   { background: #FEF3C7 !important; color: #D97706 !important; font-size: 8px !important; }
+            .tag-derived { background: #ECFDF5 !important; color: #059669 !important; font-size: 8px !important; }
+
+            /* ── ASSUMPTION ROWS ── */
+            .assumption-row {
+                grid-template-columns: 130px 70px 1fr !important;
+                padding: 8px 0 !important;
+                page-break-inside: avoid !important;
+            }
+            .assumption-value {
+                color: #E3000F !important;
+                font-size: 14px !important;
+            }
+
+            /* ── WORKED EXAMPLE ── */
+            .step-box {
+                padding: 10px 14px !important;
+                margin-bottom: 8px !important;
+                page-break-inside: avoid !important;
+            }
+            .step-num {
+                background: #0052CC !important;
+                color: white !important;
+                width: 18px !important;
+                height: 18px !important;
+                font-size: 9px !important;
+            }
+            .calc-line {
+                font-size: 9px !important;
+                padding: 8px 10px !important;
+                white-space: pre-wrap !important;
+                word-break: break-word !important;
+                page-break-inside: avoid !important;
+            }
             .calc-equals { color: #E3000F !important; }
             .calc-result { color: #059669 !important; }
-            .step-num { background: #0052CC !important; color: white !important; }
-            .tag-slider  { background: #EEF2FF !important; color: #4F46E5 !important; }
-            .tag-fixed   { background: #FEF3C7 !important; color: #D97706 !important; }
-            .tag-derived { background: #ECFDF5 !important; color: #059669 !important; }
-            .glossary-term { background: #EFF6FF !important; color: #0B1B3D !important; }
-            .version-badge { background: rgba(227,0,15,0.08) !important; color: #E3000F !important; }
-            .toc-num { background: #E3000F !important; color: white !important; }
-            .step-label { background: #F8FAFC !important; border: 1px solid #E2E8F0 !important; }
-        }
 
+            /* ── GLOSSARY ── */
+            .glossary-item {
+                grid-template-columns: 150px 1fr !important;
+                padding: 8px 0 !important;
+                page-break-inside: avoid !important;
+            }
+            .glossary-term {
+                background: #EFF6FF !important;
+                color: #0B1B3D !important;
+                font-size: 9px !important;
+            }
+
+            /* ── LIMIT ITEMS ── */
+            .limit-item { page-break-inside: avoid !important; }
+            .limit-icon {
+                background: #FEF3C7 !important;
+                flex-shrink: 0 !important;
+            }
+
+            /* ── RESULT CARDS (s1) ── */
+            .bg-green-50  { background: #F0FDF4 !important; }
+            .bg-blue-50   { background: #EFF6FF !important; }
+            .bg-red-50    { background: #FEF2F2 !important; }
+
+            /* ── RESULT INTERPRETATION BOXES (s9) ── */
+            .border-green-200 { background: #F0FDF4 !important; }
+            .border-red-200   { background: #FEF2F2 !important; }
+            .border-blue-200  { background: #EFF6FF !important; }
+
+            /* ── HARDCODED ROW BACKGROUNDS ── */
+            tr[style*="background:#FFFBEB"] td { background: #FFFBEB !important; }
+            tr[style*="background:#F0FDF4"] td { background: #F0FDF4 !important; }
+
+            /* ── TOC NUM (if somehow visible) ── */
+            .toc-num { background: #E3000F !important; color: white !important; }
+
+            /* ── REMOVE TRAILING BLANK PAGE ── */
+            main { padding-bottom: 0 !important; }
+            body { padding-bottom: 0 !important; }
+
+            /* ── LINKS ── */
+            a { color: inherit !important; text-decoration: none !important; }
+
+            /* ── AOS FIX — ensure all elements visible regardless of animation state ── */
+            [data-aos] {
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+
+            /* ── PAGE BREAK CONTROL ── */
+            .print-break { page-break-before: always !important; }
+            h2, h3, h4 { page-break-after: avoid !important; }
+            p { orphans: 3; widows: 3; }
+        }
         /* ── SCROLL PROGRESS ── */
         #scroll-progress {
             position: fixed; top: 0; left: 0; height: 3px;
