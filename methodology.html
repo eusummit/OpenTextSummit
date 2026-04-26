@@ -1,44 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>body { visibility: hidden; }</style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const SB_URL = 'process.env.SUPABASE_URL';
-        const SB_KEY = 'process.env.SUPABASE_KEY';
-        let _sbClient;
-        function getSB() {
-            if (!_sbClient) _sbClient = window.supabase.createClient(SB_URL, SB_KEY);
-            return _sbClient;
-        }
-
-        // ── Initial auth check on page load ──
-        (async function() {
-            try {
-                const { data: { user }, error } = await getSB().auth.getUser();
-                if (!user || error) {
-                    window.location.replace('login.html');
-                } else {
-                    // User is valid — reveal the page
-                    document.body.style.visibility = 'visible';
-                }
-            } catch (err) {
-                window.location.replace('login.html');
-            }
-        })();
-
-       // ── Listen for ANY auth change across the app ──
-        // Catches: sign out from index.html,
-        // inactivity timeout, token expiry — anything
-        // Note: only act on SIGNED_OUT — not on null session during init
-        (async function() {
-            getSB().auth.onAuthStateChange((event, session) => {
-                if (event === 'SIGNED_OUT') {
-                    window.location.replace('login.html');
-                }
-            });
-        })();
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Value Realization Methodology | KOMBIT</title>
