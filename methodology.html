@@ -1,6 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>body{visibility:hidden;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SB_URL = 'process.env.SUPABASE_URL';
+        const SB_KEY = 'process.env.SUPABASE_KEY';
+        let _sbClient;
+        function getSB() {
+            if (!_sbClient) _sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+            return _sbClient;
+        }
+        // Auth check on load
+        (async function() {
+            try {
+                const { data: { user }, error } = await getSB().auth.getUser();
+                if (!user || error) {
+                    window.location.replace('login.html');
+                } else {
+                    document.body.style.visibility = 'visible';
+                }
+            } catch(err) {
+                window.location.replace('login.html');
+            }
+        })();
+        // React to sign out ONLY — never on init
+        getSB().auth.onAuthStateChange((event) => {
+            if (event === 'SIGNED_OUT') {
+                window.location.replace('login.html');
+            }
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Value Realization Methodology | KOMBIT</title>
