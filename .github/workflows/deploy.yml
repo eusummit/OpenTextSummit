@@ -20,6 +20,8 @@ jobs:
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" index.html
           sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" login.html
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" login.html
+          sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" methodology.html
+          sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" methodology.html
 
       - name: Install Minifier
         run: npm install -g html-minifier-terser
@@ -38,6 +40,12 @@ jobs:
             --minify-js true \
             --minify-css true \
             -o login.html
+          html-minifier-terser methodology.html \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-js true \
+            --minify-css true \
+            -o methodology.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
