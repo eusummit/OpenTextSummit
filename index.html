@@ -1048,7 +1048,11 @@ const i18n = {
                 s3_intro: "Operācijas", s3_title: "Darbs ar ValueEdge",
                 s3_p1: "Testēšanas vadītājiem uzņēmumā KOMBIT praktisks ikdienas darbs prasa sarežģītu darbplūsmu vadīšanu, nepazūdot administratīvajos slogos.",
                 s3_p2: "ValueEdge nodrošina izolētas <strong>Darbvietas (Workspaces)</strong> dažādiem pašvaldību domēniem, nodrošinot datu privātumu, vienlaikus ļaujot veikt augsta līmeņa testēšanas pārvaldību. TaaS speciālisti izmanto šīs darbvietas, lai efektīvi izpildītu ciklus, ziņotu par kļūdām un apstiprinātu labojumus.",
-        s4_intro:"Nākotne", s4_title:"OpenText Aviator AI izmantošana", s4_desc:"Ģeneratīvais AI pārveido mūsu pieeju programmatūras testēšanai.", s4_c1_title:"1. fāze: Veiksmīgs POC", s4_c1_desc:"Ceļojums sākās ar POC, lai apstiprinātu Aviator iespējas.", s4_c2_title:"2. fāze: Tagad ražošanā", s4_c2_desc:"Aviator AI tagad ir integrēts ražošanas darbplūsmā.",
+        s4_intro: "Nākotne", s4_title: "OpenText Aviator AI izmantošana",
+                s4_desc: "Ģeneratīvais AI pārveido mūsu pieeju programmatūras testēšanai. Uzņēmumā KOMBIT Aviator AI ieviešana atspoguļo pāreju no manuālas testu rakstīšanas uz inteliģentu, automatizētu ģenerēšanu.",
+                s4_c1_title: "1. fāze: Veiksmīgs POC", s4_c1_desc: "Ceļojums sākās ar koncepcijas pierādījumu (POC), lai apstiprinātu Aviator iespējas. Mēs pārbaudījām tā spēju automātiski ģenerēt manuālus testa gadījumus, BDD un lietotāju stāstus no neapstrādāta apraksta, attēliem un teksta, kā arī optimizējām esošās darba vienības. Rezultāti uzrādīja krasu testu sagatavošanas un izpildes laika samazināšanos.",
+                s4_c2_title: "2. fāze: Tagad ražošanā", s4_c2_desc: "Pārsniedzot POC, Aviator AI tagad ir integrēts ražošanas darbplūsmā. Testēšanas vadītāji to izmanto, lai paātrinātu testu plānošanu, apkopotu defektu tendences un iegūtu AI virzītus ieskatus par pašvaldību programmatūras laidienu kopējo riska profilu.",
+
         ft_success:"Veiksmes stāsts", ft_title:"ValueEdge ceļojums", ft_desc:"Dānijas pašvaldību iespējināšana, izmantojot TaaS un centralizētu kvalitātes pārvaldību.", ft_cph:"KL, Kopenhāgena",
         eco_title: "Tiltu veidošana starp <br><span class='text-red-600'>Piegādātājiem un Pārvaldību</span>",
                 eco_desc: "ValueEdge izveido nevainojamu 'vienoto patiesības avotu', tieši integrējoties ar izstrādes rīkiem, ko jūsu piegādātāji jau izmanto. Tas ļauj KOMBIT uzturēt augsta līmeņa pārvaldību, netraucējot ārējās izstrādes darba plūsmas.", eco_sync:"Avotu Integrācija", eco_sync_sub:"DevOps un projektu vadības sinhronizācija", eco_quality:"Kvalitātes Plūsmas", eco_quality_sub:"Automatizēti testa rezultāti un cauruļvadi", eco_status_label:"Integrācijas Statuss", eco_status_1:"Piegādātāju prioritāšu sinhronizācija", eco_status_2:"Automatizācijas plūsma (98 pašvaldības)", eco_status_3:"TaaS ietvara validācija", eco_uptime:"SISTĒMAS DARBĪBAS LAIKS",
@@ -1066,8 +1070,19 @@ const i18n = {
         calc_total_team:"Kopējā komanda visās pašvaldībās",
         calc_days_total:"Personu dienas", calc_sprints:"Sprinta ekv.", calc_cycle:"Piegādes cikla samazinājums", calc_days_release:"Dienas / laidiens", calc_weeks_earlier:"Nedēļas agrāk",calc_time_note:"Stundas atgūtas neatkarīgi no neto finansiālās pozīcijas",
         calc_sim_title:"Interaktīvs simulators", calc_sim_subtitle:"Pavelciet slīdņus, lai aprēķinātu biznesa ietekmi",
-        s4_usecases_title:"Ikdienas ietekme uz testēšanas vadītājiem", s4_uc1_title:"1. Testa gadījumu ģenerēšana", s4_uc1_desc:"Aviator analizē pieņemšanas kritērijus un ģenerē testēšanas skriptu.", s4_uc2_title:"2. Defektu žurnālu kopsavilkums", s4_uc2_desc:"Aviator nolasa kļūdu žurnālus un izvada lasāmu kopsavilkumu.", s4_uc3_title:"3. Prasību un attēlu analīze", s4_uc3_desc:"Aviator var apstrādāt saskarnes maketus vai neapstrādātas prasības.", s4_uc4_title:"4. BDD Gherkin specifikācijas", s4_uc4_desc:"Automātiski konvertējiet biznesa prasības uz Gherkin sintaksi.",
-        s4_vid_title:"Aviator darbībā veido nevainojamus darba uzdevumus", s4_vid_badge:"IERAKSTĪTS AVIATOR DEMO", s4_vid_c1_title:"ValueEdge Aviator", s4_vid_c1_desc:"Aviator arhitektūras reāllaika apstrādes slāņa vizualizēšana.", s4_vid_c2_title:"Sistēmu integrācija", s4_vid_c2_desc:"Nevainojamas integrācijas starp biznesa loģiku un darba vienībām novērošana."
+        s4_usecases_title:"Ikdienas ietekme uz testēšanas vadītājiem", s4_uc1_title: "1. Testa gadījumu ģenerēšana",
+                s4_uc1_desc: "Tā vietā, lai manuāli rakstītu 15 testēšanas soļus no neapstrādāta Jira lietotāja stāsta, Aviator analizē pieņemšanas kritērijus un ģenerē pilnīgu, izpildei gatavu manuālā testa skriptu.",
+                s4_uc2_title: "2. Defektu žurnālu kopsavilkums",
+                s4_uc2_desc: "Tā vietā, lai raktos cauri simtiem neizdevušos automatizēto testu žurnālu rindiņu, lai atrastu galveno cēloni, Aviator uzreiz nolasa kļūdu žurnālus un izvada cilvēkam lasāmu kopsavilkumu.",
+                s4_uc3_title: "3. Prasību un attēlu analīze",
+                s4_uc3_desc: "Aviator var apstrādāt saskarnes maketus (PNG/JPG) vai neapstrādātas teksta prasības, lai automātiski izstrādātu visaptverošus lietotāju stāstus ar pilnu funkcionālo kontekstu.",
+                s4_uc4_title: "4. BDD Gherkin specifikācijas",
+                s4_uc4_desc: "Automātiski konvertējiet biznesa prasības uz 'Given-When-Then' Gherkin sintaksi, mazinot plaisu starp biznesa analītiķiem un automatizēto testēšanu.",
+        s4_vid_title:"Aviator darbībā veido nevainojamus darba uzdevumus", s4_vid_badge:"IERAKSTĪTS AVIATOR DEMO", s4_vid_c1_title: "ValueEdge Aviator",
+                s4_vid_c1_desc: "Aviator arhitektūras reāllaika apstrādes slāņa vizualizēšana, parādot, kā tas interpretē attēlu un teksta prasības lietošanai gatavos lietotāju stāstos no funkcijas.",
+                s4_vid_c2_title: "Sistēmu integrācija",
+                s4_vid_c2_desc: "Novērojiet nevainojamu integrāciju starp biznesa loģiku un automatizētu darba vienību izveidi, nodrošinot TaaS ietvara misijas panākumus.",
+
     }
 };
 
