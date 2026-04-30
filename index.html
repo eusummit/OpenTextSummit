@@ -47,7 +47,12 @@ async function handleSignOut() {
         warningBanner = document.createElement('div');
         warningBanner.id = 'inactivity-warning';
         warningBanner.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:99999;background:#E3000F;color:white;padding:12px 20px;text-align:center;font-family:Inter,sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:16px;box-shadow:0 4px 20px rgba(227,0,15,0.4);`;
-        warningBanner.innerHTML = `<span>⚠️ You've been inactive. You will be logged out in <span id="inactivity-countdown">1:00</span>.</span><button onclick="document.getElementById('inactivity-warning').remove();resetInactivityTimer();" style="background:white;color:#E3000F;border:none;padding:6px 14px;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px;">Stay Logged In</button>`;
+        warningBanner.innerHTML = `<span>⚠️ You've been inactive. You will be logged out in <span id="inactivity-countdown">1:00</span>.</span>`;
+        const stayBtn = document.createElement('button');
+        stayBtn.textContent = 'Stay Logged In';
+        stayBtn.style.cssText = 'background:white;color:#E3000F;border:none;padding:6px 14px;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px;';
+        stayBtn.addEventListener('click', () => { document.getElementById('inactivity-warning').remove(); resetInactivityTimer(); });
+        warningBanner.appendChild(stayBtn);
         document.body.prepend(warningBanner);
         let secondsLeft = WARNING_BEFORE / 1000;
         const countdownEl = document.getElementById('inactivity-countdown');
@@ -1169,7 +1174,11 @@ function initMaintenance() {
     const banner = document.getElementById('maintenance-banner');
     if (maintenanceConfig.enabled) {
         banner.style.display='flex'; banner.style.backgroundColor=maintenanceConfig.bgColor; banner.style.color=maintenanceConfig.textColor;
-        banner.innerHTML = `<span>${maintenanceConfig.icon}</span> ${maintenanceConfig.message}`;
+        const iconEl = document.createElement('span');
+        iconEl.textContent = maintenanceConfig.icon;
+        const msgEl = document.createElement('span');
+        msgEl.textContent = maintenanceConfig.message;
+        banner.replaceChildren(iconEl, document.createTextNode(' '), msgEl);
         document.body.classList.add('maintenance-active');
         if (maintenanceConfig.showPulse) banner.style.animation="pulse-bg 2s infinite";
     }
