@@ -533,19 +533,21 @@
         });
 
         // Google Login
-        async function handleGoogleLogin() {
+        aasync function handleGoogleLogin() {
+            const redirectTo = window.location.origin + window.location.pathname;
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: 'https://eusummit.github.io/OpenTextSummit/login.html' }
+                options: { redirectTo }
             });
             if (error) showToast('⚠️ ' + error.message, true);
         }
 
         // GitHub Login
         async function handleGithubLogin() {
+            const redirectTo = window.location.origin + window.location.pathname;
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: 'github',
-                options: { redirectTo: 'https://eusummit.github.io/OpenTextSummit/login.html' }
+                options: { redirectTo }
             });
             if (error) showToast('⚠️ ' + error.message, true);
         }
