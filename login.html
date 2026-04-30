@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src * data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <title>KOMBIT | Secure Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -370,7 +371,9 @@
 
     </div>
 
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js"
+           integrity="sha384-pNDx8ebKKncqRMS1aZKjmB1T1jdd6psogvE0+sPrwW/Sy94M6geGuQpYXQnLCdRq"
+           crossorigin="anonymous"></script>
     <script>
         // DO NOT change these strings; GitHub Actions will replace them
         const SUPABASE_URL = 'process.env.SUPABASE_URL';
@@ -386,6 +389,7 @@
             return supabaseClient;
         }
         let otpEmail = '';
+        let _pendingSignUp = null;
 
         // Handle OAuth + confirmation redirects
         (async function() {
@@ -577,7 +581,7 @@
             const confirm   = document.getElementById('su-confirm').value.trim();
             if (!firstName || !lastName) return showToast('⚠️ Please enter your full name.', true);
             if (!email)                   return showToast('⚠️ Please enter your email.', true);
-            if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (password.length < 8)      return showToast('⚠️ Password must be at least 8 characters.', true);
             if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
 
             const { data, error: signUpError } = await getClient().auth.signUp({
@@ -599,7 +603,7 @@
 
             if (otpError) return showToast('⚠️ ' + otpError.message, true);
 
-            window._signUpData = { firstName, lastName, email, password };
+            _pendingSignUp = { firstName, lastName, email, password };
             showToast('✅ Code sent! Check your email.');
             show('formSignUpOTP');
             // ─────────────────────────────────────────────────────────────
@@ -627,23 +631,23 @@
                 .map(id => document.getElementById(id).value).join('');
             if (code.length !== 8) return showToast('⚠️ Please enter the full 8-digit code.', true);
             const { error } = await getClient().auth.verifyOtp({
-                email: window._signUpData.email, token: code, type: 'email'
+                email: _pendingSignUp.email, token: code, type: 'email'
             });
             if (error) return showToast('⚠️ Invalid or expired code. Try again.', true);
             await getClient().auth.updateUser({
-                password: window._signUpData.password,
-                data: { first_name: window._signUpData.firstName, last_name: window._signUpData.lastName }
+                password: _pendingSignUp.password,
+                data: { first_name: _pendingSignUp.firstName, last_name: _pendingSignUp.lastName }
             });
-            window._signUpData = null;
+            _pendingSignUp = null;
             showToast('✅ Email verified! Your account is ready.');
             showSuccess();
         }
 
         // Resend Signup OTP
         async function resendSignUpOTP() {
-            if (!window._signUpData?.email) return;
+            if (!_pendingSignUp?.email) return;
             const { error } = await getClient().auth.signInWithOtp({
-                email: window._signUpData.email, options: { shouldCreateUser: true }
+                email: _pendingSignUp.email, options: { shouldCreateUser: true }
             });
             if (error) showToast('⚠️ ' + error.message, true);
             else showToast('✅ Code resent!');
@@ -679,7 +683,7 @@
         async function handleSetNewPassword() {
             const newPassword     = document.getElementById('fp-newpassword').value.trim();
             const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
-            if (newPassword.length < 6)         return showToast('⚠️ Password must be at least 6 characters.', true);
+            if (newPassword.length < 8)         return showToast('⚠️ Password must be at least 8 characters.', true);
             if (newPassword !== confirmPassword) return showToast('⚠️ Passwords do not match.', true);
             const { error } = await getClient().auth.updateUser({ password: newPassword });
             if (error) return showToast('⚠️ ' + error.message, true);
