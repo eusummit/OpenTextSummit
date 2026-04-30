@@ -370,17 +370,21 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // DO NOT change these strings; GitHub Actions will replace them
         const SUPABASE_URL = 'process.env.SUPABASE_URL';
         const SUPABASE_KEY = 'process.env.SUPABASE_KEY';
 
         let supabaseClient;
-        try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        } catch (e) { console.error("Supabase failed to initialise:", e); }
-
+        function getClient() {
+            if (!supabaseClient) {
+                try {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                } catch(e) { console.error("Supabase init failed:", e); }
+            }
+            return supabaseClient;
+        }
         let otpEmail = '';
 
         // Handle OAuth + confirmation redirects
@@ -400,18 +404,18 @@
                 return;
             }
 
-            if (hash && hash.includes('access_token')) {
+           if (hash && hash.includes('access_token')) {
                 const hashParams = new URLSearchParams(hash.substring(1));
                 const type = hashParams.get('type');
 
                 if (type === 'recovery') {
                     const accessToken  = hashParams.get('access_token');
                     const refreshToken = hashParams.get('refresh_token');
-                    await supabaseClient.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+                    await getClient().auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
                     history.replaceState(null, '', window.location.pathname);
                     showNewPasswordScreen();
                 } else {
-                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    const { data: { session } } = await getClient().auth.getSession();
                     if (session) {
                         window.location.replace('index.html');
                     } else {
@@ -425,7 +429,7 @@
         // Skip login if already logged in
         (async function() {
             try {
-                const { data: { user } } = await supabaseClient.auth.getUser();
+                const { data: { user } } = await getClient().auth.getUser();
                 if (user) window.location.replace('index.html');
             } catch(e) {}
         })();
@@ -535,7 +539,7 @@
         // Google Login
         async function handleGoogleLogin() {
             const redirectTo = window.location.origin + window.location.pathname;
-            const { error } = await supabaseClient.auth.signInWithOAuth({
+           const { error } = await getClient().auth.signInWithOAuth({
                 provider: 'google',
                 options: { redirectTo }
             });
@@ -545,7 +549,7 @@
         // GitHub Login
         async function handleGithubLogin() {
             const redirectTo = window.location.origin + window.location.pathname;
-            const { error } = await supabaseClient.auth.signInWithOAuth({
+            const { error } = await getClient().auth.signInWithOAuth({
                 provider: 'github',
                 options: { redirectTo }
             });
@@ -557,7 +561,7 @@
             const email    = document.getElementById('si-email').value.trim();
             const password = document.getElementById('si-password').value.trim();
             if (!email || !password) return showToast('⚠️ Please enter your email and password.', true);
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            const { error } = await getClient().auth.signInWithPassword({ email, password });
             if (error) showToast('⚠️ ' + error.message, true);
             else window.location.href = 'index.html';
         }
@@ -576,7 +580,7 @@
             if (password.length < 6)      return showToast('⚠️ Password must be at least 6 characters.', true);
             if (password !== confirm)     return showToast('⚠️ Passwords do not match.', true);
 
-            const { data, error: signUpError } = await supabaseClient.auth.signUp({
+            const { data, error: signUpError } = await getClient().auth.signUp({
                 email,
                 password,
                 options: { data: { first_name: firstName, last_name: lastName } }
@@ -588,7 +592,7 @@
 
             if (signUpError) return showToast('⚠️ ' + signUpError.message, true);
 
-            const { error: otpError } = await supabaseClient.auth.signInWithOtp({
+            const { error: otpError } = await getClient().auth.signInWithOtp({
                 email,
                 options: { shouldCreateUser: false }
             });
@@ -622,11 +626,11 @@
             const code = ['sotp1','sotp2','sotp3','sotp4','sotp5','sotp6','sotp7','sotp8']
                 .map(id => document.getElementById(id).value).join('');
             if (code.length !== 8) return showToast('⚠️ Please enter the full 8-digit code.', true);
-            const { error } = await supabaseClient.auth.verifyOtp({
+            const { error } = await getClient().auth.verifyOtp({
                 email: window._signUpData.email, token: code, type: 'email'
             });
             if (error) return showToast('⚠️ Invalid or expired code. Try again.', true);
-            await supabaseClient.auth.updateUser({
+            await getClient().auth.updateUser({
                 password: window._signUpData.password,
                 data: { first_name: window._signUpData.firstName, last_name: window._signUpData.lastName }
             });
@@ -638,7 +642,7 @@
         // Resend Signup OTP
         async function resendSignUpOTP() {
             if (!window._signUpData?.email) return;
-            const { error } = await supabaseClient.auth.signInWithOtp({
+            const { error } = await getClient().auth.signInWithOtp({
                 email: window._signUpData.email, options: { shouldCreateUser: true }
             });
             if (error) showToast('⚠️ ' + error.message, true);
@@ -649,7 +653,7 @@
         async function handleSendOTP(isResend = false) {
             const email = document.getElementById('fp-email').value.trim();
             if (!email) return showToast('⚠️ Please enter your email address.', true);
-            const { error } = await supabaseClient.auth.signInWithOtp({
+            const { error } = await getClient().auth.signInWithOtp({
                 email, options: { shouldCreateUser: false }
             });
             if (error) return showToast('⚠️ ' + error.message, true);
@@ -663,7 +667,7 @@
             const code = ['otp1','otp2','otp3','otp4','otp5','otp6','otp7','otp8']
                 .map(id => document.getElementById(id).value).join('');
             if (code.length !== 8) return showToast('⚠️ Please enter the full 8-digit code.', true);
-            const { error } = await supabaseClient.auth.verifyOtp({
+            const { error } = await getClient().auth.verifyOtp({
                 email: otpEmail, token: code, type: 'email'
             });
             if (error) return showToast('⚠️ Invalid or expired code. Try again.', true);
@@ -677,7 +681,7 @@
             const confirmPassword = document.getElementById('fp-confirmpassword').value.trim();
             if (newPassword.length < 6)         return showToast('⚠️ Password must be at least 6 characters.', true);
             if (newPassword !== confirmPassword) return showToast('⚠️ Passwords do not match.', true);
-            const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+            const { error } = await getClient().auth.updateUser({ password: newPassword });
             if (error) return showToast('⚠️ ' + error.message, true);
             showToast('✅ Password updated! Please sign in.');
             setTimeout(() => showSignIn(), 2000);
