@@ -32,6 +32,16 @@ jobs:
           fi
           echo "All secrets injected successfully."
 
+      - name: Verify Secrets Are Non-Empty
+        run: |
+          for file in index.html login.html methodology.html; do
+            if grep -Eq "(SB_URL|SB_KEY|SUPABASE_URL|SUPABASE_KEY) = ''" "$file"; then
+              echo "FATAL: Secrets resolved to empty strings in $file."
+              exit 1
+            fi
+          done
+          echo "Secrets are non-empty in all files."
+
       - name: Install Minifier
         run: npm install -g html-minifier-terser
 
