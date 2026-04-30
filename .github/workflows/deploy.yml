@@ -23,6 +23,15 @@ jobs:
           sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" methodology.html
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" methodology.html
 
+      - name: Verify Secrets Were Injected
+        run: |
+          if grep -rl "process.env.SUPABASE" index.html login.html methodology.html; then
+            echo "FATAL: One or more files still contain unsubstituted placeholders."
+            echo "Check that SUPABASE_URL and SUPABASE_KEY are set in repo Settings > Secrets."
+            exit 1
+          fi
+          echo "All secrets injected successfully."
+
       - name: Install Minifier
         run: npm install -g html-minifier-terser
 
