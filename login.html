@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>KOMBIT | Secure Access</title>
@@ -157,13 +157,14 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-        .link { 
-            color: #ff4d4d; 
-            cursor: pointer; 
+        .link {
+            color: #ff4d4d;
+            cursor: pointer;
             font-weight: 600;
             transition: opacity 0.2s;
         }
         .link:hover { opacity: 0.8; text-decoration: underline; }
+        #privacy-toggle:hover { border-color: rgba(227,0,15,0.3) !important; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
@@ -192,11 +193,11 @@
             <input type="email" id="si-email" placeholder="Email address" class="input-field">
             <input type="password" id="si-password" placeholder="Password" class="input-field">
             <div class="text-right">
-                <span onclick="showForgotPassword()" class="link text-xs">Forgot password?</span>
+                <span id="forgot-pwd-link" class="link text-xs">Forgot password?</span>
             </div>
-            <button onclick="handleLogin()" class="btn-primary mt-2">Sign In →</button>
+            <button id="login-btn" class="btn-primary mt-2">Sign In →</button>
             <div class="divider mt-2">or</div>
-            <button onclick="handleGoogleLogin()" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+            <button id="si-google-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -205,13 +206,13 @@
                 </svg>
                 Continue with Google
             </button>
-            <button onclick="handleGithubLogin()" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+            <button id="si-github-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
                 Continue with GitHub
             </button>
-            <button onclick="showSignUp()" class="btn-secondary">Create new account</button>
+            <button id="create-account-btn" class="btn-secondary">Create new account</button>
         </div>
 
         <!-- CREATE ACCOUNT -->
@@ -227,26 +228,24 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
-            <div id="privacy-toggle" onclick="togglePrivacy()"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;cursor:pointer;transition:all 0.2s;margin-top:4px;"
-                onmouseover="this.style.borderColor='rgba(227,0,15,0.3)'"
-                onmouseout="this.style.borderColor=document.getElementById('privacy-check').checked?'rgba(227,0,15,0.5)':'rgba(255,255,255,0.08)'">
+            <div id="privacy-toggle"
+                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;cursor:pointer;transition:all 0.2s;margin-top:4px;">
                 <div id="privacy-box"
                     style="width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,0.2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;">
                 </div>
                 <input type="checkbox" id="privacy-check" style="display:none;">
                 <span style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;user-select:none;">
-                    I agree to the 
-                    <a href="privacy.html" target="_blank" onclick="event.stopPropagation()" 
+                    I agree to the
+                    <a id="privacy-policy-link" href="privacy.html" target="_blank"
                         style="color:#E3000F;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,0,15,0.3);">Privacy Policy</a>
                     &amp;
-                    <a href="terms.html" target="_blank" onclick="event.stopPropagation()"
+                    <a id="terms-of-service-link" href="terms.html" target="_blank"
                         style="color:#E3000F;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,0,15,0.3);">Terms of Service</a>
                 </span>
             </div>
-            <button onclick="handleSignUp()" class="btn-primary mt-2">Create Account →</button>
+            <button id="signup-btn" class="btn-primary mt-2">Create Account →</button>
             <div class="divider">or</div>
-            <button onclick="handleGoogleLogin()" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+            <button id="su-google-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -255,14 +254,14 @@
                 </svg>
                 Continue with Google
             </button>
-            <button onclick="handleGithubLogin()" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+            <button id="su-github-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
                 Continue with GitHub
             </button>
             <p class="text-center text-gray-500 text-sm">
-                Already have an account? <span onclick="showSignIn()" class="link">Sign in</span>
+                Already have an account? <span id="back-to-signin-link" class="link">Sign in</span>
             </p>
         </div>
 
@@ -286,12 +285,12 @@
                 <input class="otp-input" id="sotp7" maxlength="1" type="text" inputmode="numeric">
                 <input class="otp-input" id="sotp8" maxlength="1" type="text" inputmode="numeric">
             </div>
-            <button onclick="handleVerifySignUpOTP()" class="btn-primary">Verify & Activate →</button>
+            <button id="verify-signup-otp-btn" class="btn-primary">Verify & Activate →</button>
             <p class="text-center text-gray-500 text-xs">
-                Didn't get it? <span onclick="resendSignUpOTP()" class="link">Resend code</span>
+                Didn't get it? <span id="resend-signup-otp-link" class="link">Resend code</span>
             </p>
             <p class="text-center text-gray-500 text-sm">
-                <span onclick="showSignUp()" class="link">← Back</span>
+                <span id="back-to-signup-link" class="link">← Back</span>
             </p>
         </div>
 
@@ -302,7 +301,7 @@
             <p class="text-gray-400 text-sm leading-relaxed mb-6">
                 Your account has been verified and created successfully.<br>You can now sign in.
             </p>
-            <button onclick="showSignIn()" class="btn-primary">Sign In Now →</button>
+            <button id="success-signin-btn" class="btn-primary">Sign In Now →</button>
         </div>
 
         <!-- FORGOT PASSWORD STEP 1 -->
@@ -317,9 +316,9 @@
                 <p class="text-gray-500 text-sm mt-1">We'll send an 8-digit code to your email</p>
             </div>
             <input type="email" id="fp-email" placeholder="Email address" class="input-field">
-            <button onclick="handleSendOTP()" class="btn-primary">Send Code →</button>
+            <button id="send-otp-btn" class="btn-primary">Send Code →</button>
             <p class="text-center text-gray-500 text-sm">
-                <span onclick="showSignIn()" class="link">← Back to Sign In</span>
+                <span id="fp-back-to-signin-link" class="link">← Back to Sign In</span>
             </p>
         </div>
 
@@ -344,12 +343,12 @@
                 <input class="otp-input" id="otp7" maxlength="1" type="text" inputmode="numeric">
                 <input class="otp-input" id="otp8" maxlength="1" type="text" inputmode="numeric">
             </div>
-            <button onclick="handleVerifyOTP()" class="btn-primary">Verify Code →</button>
+            <button id="verify-otp-btn" class="btn-primary">Verify Code →</button>
             <p class="text-center text-gray-500 text-xs">
-                Didn't get it? <span onclick="handleSendOTP(true)" class="link">Resend code</span>
+                Didn't get it? <span id="resend-otp-link" class="link">Resend code</span>
             </p>
             <p class="text-center text-gray-500 text-sm">
-                <span onclick="showForgotPassword()" class="link">← Back</span>
+                <span id="back-to-forgot-link" class="link">← Back</span>
             </p>
         </div>
 
@@ -366,7 +365,7 @@
             </div>
             <input type="password" id="fp-newpassword" placeholder="New password (min. 8 chars)" class="input-field">
             <input type="password" id="fp-confirmpassword" placeholder="Confirm new password" class="input-field">
-            <button onclick="handleSetNewPassword()" class="btn-primary">Set New Password →</button>
+            <button id="set-new-password-btn" class="btn-primary">Set New Password →</button>
         </div>
 
     </div>
@@ -726,6 +725,39 @@
             if (!document.getElementById('formSignUp').classList.contains('hidden'))            handleSignUp();
             if (!document.getElementById('formForgotEmail').classList.contains('hidden'))       handleSendOTP();
             if (!document.getElementById('formForgotNewPassword').classList.contains('hidden')) handleSetNewPassword();
+        });
+
+        // Wire all event handlers via addEventListener (replaces inline on* attributes)
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('forgot-pwd-link').addEventListener('click', showForgotPassword);
+            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            document.getElementById('si-google-btn').addEventListener('click', handleGoogleLogin);
+            document.getElementById('si-github-btn').addEventListener('click', handleGithubLogin);
+            document.getElementById('create-account-btn').addEventListener('click', showSignUp);
+
+            document.getElementById('privacy-toggle').addEventListener('click', togglePrivacy);
+            document.getElementById('privacy-policy-link').addEventListener('click', function(e) { e.stopPropagation(); });
+            document.getElementById('terms-of-service-link').addEventListener('click', function(e) { e.stopPropagation(); });
+
+            document.getElementById('signup-btn').addEventListener('click', handleSignUp);
+            document.getElementById('su-google-btn').addEventListener('click', handleGoogleLogin);
+            document.getElementById('su-github-btn').addEventListener('click', handleGithubLogin);
+            document.getElementById('back-to-signin-link').addEventListener('click', showSignIn);
+
+            document.getElementById('verify-signup-otp-btn').addEventListener('click', handleVerifySignUpOTP);
+            document.getElementById('resend-signup-otp-link').addEventListener('click', resendSignUpOTP);
+            document.getElementById('back-to-signup-link').addEventListener('click', showSignUp);
+
+            document.getElementById('success-signin-btn').addEventListener('click', showSignIn);
+
+            document.getElementById('send-otp-btn').addEventListener('click', function() { handleSendOTP(); });
+            document.getElementById('fp-back-to-signin-link').addEventListener('click', showSignIn);
+
+            document.getElementById('verify-otp-btn').addEventListener('click', handleVerifyOTP);
+            document.getElementById('resend-otp-link').addEventListener('click', function() { handleSendOTP(true); });
+            document.getElementById('back-to-forgot-link').addEventListener('click', showForgotPassword);
+
+            document.getElementById('set-new-password-btn').addEventListener('click', handleSetNewPassword);
         });
     </script>
 </body>

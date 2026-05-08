@@ -236,7 +236,7 @@ async function handleSignOut() {
         .time-stat-unit { font-size: 9px; color: rgba(255,255,255,0.4); margin-left: 2px; }
     </style>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com https://images.unsplash.com https://cloud.umami.is; connect-src 'self' https://*.supabase.co https://cloud.umami.is; frame-ancestors 'none';">     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com https://images.unsplash.com https://cloud.umami.is; connect-src 'self' https://*.supabase.co https://cloud.umami.is; frame-ancestors 'none';">     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>KOMBIT Quality Engineering | TaaS & ValueEdge</title>
@@ -327,21 +327,21 @@ async function handleSignOut() {
             <a href="#ai" data-i18n="nav_ai" class="whitespace-nowrap hover:text-[#E3000F] transition-colors">Aviator AI</a>
         </div>
         <div class="relative inline-block text-left">
-            <button id="lang-menu-button" onclick="toggleLangMenu(event)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
+            <button id="lang-menu-button" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 transition-all text-xs font-bold uppercase text-white tracking-widest">
                 <img id="current-lang-flag" src="https://flagcdn.com/w20/gb.png" width="20" alt="flag">
                 <span id="current-lang-code">EN</span>
                 <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-32 origin-top-right rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-[100] border border-gray-100">
                 <div class="py-1">
-                    <button onclick="setLanguage('en')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/gb.png" width="20" alt="EN"> English</button>
-                    <button onclick="setLanguage('da')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/dk.png" width="20" alt="DA"> Dansk</button>
-                    <button onclick="setLanguage('sv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/se.png" width="20" alt="SV"> Svenska</button>
-                    <button onclick="setLanguage('lv')" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/lv.png" width="20" alt="LV"> Latviešu</button>
+                    <button id="lang-btn-en" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/gb.png" width="20" alt="EN"> English</button>
+                    <button id="lang-btn-da" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/dk.png" width="20" alt="DA"> Dansk</button>
+                    <button id="lang-btn-sv" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/se.png" width="20" alt="SV"> Svenska</button>
+                    <button id="lang-btn-lv" class="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"><img src="https://flagcdn.com/w20/lv.png" width="20" alt="LV"> Latviešu</button>
                 </div>
             </div>
         </div>
-        <button id="auth-signout-btn" style="display:none;" onclick="handleSignOut()" class="auth-signout-btn ml-4 px-3 py-1.5 border rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm border-white/60 text-white hover:bg-white hover:text-[#E3000F]">Sign Out</button>
+        <button id="auth-signout-btn" style="display:none;" class="auth-signout-btn ml-4 px-3 py-1.5 border rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm border-white/60 text-white hover:bg-white hover:text-[#E3000F]">Sign Out</button>
     </div>
 </nav>
 
@@ -1380,6 +1380,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const savedLang = localStorage.getItem('preferred-lang') || 'en';
     setLanguage(savedLang);
+
+    document.getElementById('lang-menu-button').addEventListener('click', function(e) { toggleLangMenu(e); });
+    document.getElementById('lang-btn-en').addEventListener('click', function() { setLanguage('en'); });
+    document.getElementById('lang-btn-da').addEventListener('click', function() { setLanguage('da'); });
+    document.getElementById('lang-btn-sv').addEventListener('click', function() { setLanguage('sv'); });
+    document.getElementById('lang-btn-lv').addEventListener('click', function() { setLanguage('lv'); });
+    document.getElementById('auth-signout-btn').addEventListener('click', handleSignOut);
 
     const triggerElement = el('muni-counter');
     if (triggerElement) counterObserver.observe(triggerElement);

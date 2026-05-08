@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <style>body{visibility:hidden;}</style>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <style>body{visibility:hidden;}</style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js"
             integrity="sha384-pNDx8ebKKncqRMS1aZKjmB1T1jdd6psogvE0+sPrwW/Sy94M6geGuQpYXQnLCdRq"
             crossorigin="anonymous"></script>
@@ -596,19 +596,19 @@
     <div class="flex items-center gap-3">
         <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all no-print" data-i18n="nav_back">← Back to Calculator</a>
         <div class="relative">
-            <button onclick="toggleLangMenuM(event)" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-200 transition-all">
+            <button id="lang-menu-btn-m" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-200 transition-all">
                 <img id="current-lang-flag-m" src="https://flagcdn.com/w20/gb.png" width="18" alt="flag">
                 <span id="current-lang-code-m">EN</span>
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div id="lang-dropdown-m">
-                <button onclick="setLanguageM('en')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN"> English</button>
-                <button onclick="setLanguageM('da')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/dk.png" width="16" alt="DA"> Dansk</button>
-                <button onclick="setLanguageM('sv')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/se.png" width="16" alt="SV"> Svenska</button>
-                <button onclick="setLanguageM('lv')" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/lv.png" width="16" alt="LV"> Latviešu</button>
+                <button id="lang-btn-m-en" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/gb.png" width="16" alt="EN"> English</button>
+                <button id="lang-btn-m-da" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/dk.png" width="16" alt="DA"> Dansk</button>
+                <button id="lang-btn-m-sv" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/se.png" width="16" alt="SV"> Svenska</button>
+                <button id="lang-btn-m-lv" class="flex items-center gap-3 w-full px-4 py-2.5 text-xs text-gray-700 hover:bg-gray-50 transition-colors font-semibold"><img src="https://flagcdn.com/w20/lv.png" width="16" alt="LV"> Latviešu</button>
             </div>
         </div>
-        <button onclick="window.print()" class="print-btn no-print" data-i18n="nav_print">⬇ Download / Print</button>
+        <button id="print-btn" class="print-btn no-print" data-i18n="nav_print">⬇ Download / Print</button>
     </div>
 </nav>
 
@@ -1137,7 +1137,7 @@
             </div>
             <div class="mt-8 pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 no-print">
                 <p class="text-xs text-gray-500" data-i18n="s12_print_note">Download or print this document as a PDF to share with stakeholders who do not have access to the web application.</p>
-                <button onclick="window.print()" class="print-btn flex-shrink-0">⬇ <span data-i18n="s12_print_btn">Download / Print PDF</span></button>
+                <button id="print-btn-2" class="print-btn flex-shrink-0">⬇ <span data-i18n="s12_print_btn">Download / Print PDF</span></button>
             </div>
         </div>
     </div>
@@ -1470,6 +1470,14 @@ function setLanguageM(lang) {
 document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('preferred-lang') || 'en';
     setLanguageM(savedLang);
+
+    document.getElementById('lang-menu-btn-m').addEventListener('click', function(e) { toggleLangMenuM(e); });
+    document.getElementById('lang-btn-m-en').addEventListener('click', function() { setLanguageM('en'); });
+    document.getElementById('lang-btn-m-da').addEventListener('click', function() { setLanguageM('da'); });
+    document.getElementById('lang-btn-m-sv').addEventListener('click', function() { setLanguageM('sv'); });
+    document.getElementById('lang-btn-m-lv').addEventListener('click', function() { setLanguageM('lv'); });
+    document.getElementById('print-btn').addEventListener('click', function() { window.print(); });
+    document.getElementById('print-btn-2').addEventListener('click', function() { window.print(); });
 });
 </script>
 </body>
