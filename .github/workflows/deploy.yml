@@ -65,6 +65,21 @@ jobs:
             --minify-js true \
             --minify-css true \
             -o methodology.html
+          html-minifier-terser privacy.html \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-js true \
+            --minify-css true \
+            -o privacy.html
+          html-minifier-terser terms.html \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-js true \
+            --minify-css true \
+            -o terms.html
+
+      - name: Compute and Inject CSP Script Hashes
+        run: node scripts/inject-csp-hashes.js
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
