@@ -47,7 +47,14 @@ async function handleSignOut() {
         warningBanner = document.createElement('div');
         warningBanner.id = 'inactivity-warning';
         warningBanner.style.cssText = `position:fixed;top:0;left:0;right:0;z-index:99999;background:#E3000F;color:white;padding:12px 20px;text-align:center;font-family:Inter,sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:16px;box-shadow:0 4px 20px rgba(227,0,15,0.4);`;
-        warningBanner.innerHTML = `<span>⚠️ You've been inactive. You will be logged out in <span id="inactivity-countdown">1:00</span>.</span>`;
+        const msgSpan = document.createElement('span');
+        msgSpan.textContent = "⚠️ You've been inactive. You will be logged out in ";
+        const countdown = document.createElement('span');
+        countdown.id = 'inactivity-countdown';
+        countdown.textContent = '1:00';
+        msgSpan.appendChild(countdown);
+        msgSpan.appendChild(document.createTextNode('.'));
+        warningBanner.appendChild(msgSpan);
         const stayBtn = document.createElement('button');
         stayBtn.textContent = 'Stay Logged In';
         stayBtn.style.cssText = 'background:white;color:#E3000F;border:none;padding:6px 14px;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px;';
@@ -496,7 +503,7 @@ async function handleSignOut() {
             <h3 data-i18n="calc_title" class="text-4xl font-extrabold text-brand-dark mb-4">Value Realization Calculator</h3>
             <!-- FIX 18/19: Methodology Button -->
             <div class="flex items-center justify-center gap-3 mt-4">
-                <a href="methodology.html" target="_blank" class="methodology-btn">
+                <a href="methodology.html" target="_blank" rel="noopener noreferrer" class="methodology-btn">
                     <span class="formula-icon">∑</span>
                     <span data-i18n="calc_methodology_btn">How is this calculated? View Full Methodology</span>
                 </a>
@@ -887,9 +894,9 @@ async function handleSignOut() {
     </div>
     <div class="max-w-7xl mx-auto px-10 mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest">
         <div class="flex space-x-6 mb-4 md:mb-0">
-            <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="hover:text-white transition">LinkedIn</a>
-            <a href="https://www.kombit.dk/" target="_blank" class="hover:text-white transition">Kombit Denmark</a>
-            <a data-i18n="ft_cph" href="https://www.kl.dk/english/" target="_blank" class="hover:text-white transition">KL, Copenhagen</a>
+            <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">LinkedIn</a>
+            <a href="https://www.kombit.dk/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">Kombit Denmark</a>
+            <a data-i18n="ft_cph" href="https://www.kl.dk/english/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">KL, Copenhagen</a>
         </div>
         <div class="flex flex-col items-center text-center">
             <div class="flex gap-1 mb-2"><div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse"></div><div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.2s]"></div><div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.4s]"></div><div class="w-1.5 h-1.5 rounded-full bg-[#E3000F] animate-pulse [animation-delay:0.6s]"></div><div class="w-1.5 h-1.5 rounded-full bg-[#0052CC] animate-pulse [animation-delay:0.8s]"></div></div>
@@ -1096,10 +1103,14 @@ const i18n = {
 function setLanguage(lang) {
     localStorage.setItem('preferred-lang', lang);
     const data = i18n[lang];
-    document.getElementById('current-lang-flag').src = data.flag;
+    const flagUrl = data.flag;
+    if (typeof flagUrl === 'string' && flagUrl.startsWith('https://flagcdn.com/')) {
+        document.getElementById('current-lang-flag').src = flagUrl;
+    }
     document.getElementById('current-lang-code').innerText = data.code;
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
+        // DOMPurify is intentional: i18n strings may contain <strong>, <br>, etc.
         if (data[key]) el.innerHTML = DOMPurify.sanitize(data[key]);
     });
     document.getElementById('lang-dropdown').classList.add('hidden');
@@ -1121,9 +1132,9 @@ const animateValue = (id, target, duration) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const current = progress * target;
-        obj.innerHTML = target % 1 === 0 ? Math.floor(current) : current.toFixed(1);
+        obj.textContent = target % 1 === 0 ? Math.floor(current) : current.toFixed(1);
         if (progress < 1) window.requestAnimationFrame(step);
-        else obj.innerHTML = target;
+        else obj.textContent = target;
     };
     window.requestAnimationFrame(step);
 };
@@ -1309,10 +1320,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const neededEff      = Math.min(((totalAutoCost / (m * totalHrsPerRelease / eff * r)) * 100), 95);
             const neededCostK    = Math.round(grossSavings / m / 1000);
             const neededMunis    = Math.ceil(totalAutoCost / (grossSavings / m));
-            el('breakeven-text').innerHTML =
-                `To break even: reduce automation cost to <strong>€${neededCostK}K/muni</strong>, ` +
-                `OR increase municipalities to <strong>${neededMunis}</strong>, ` +
-                `OR increase automation gain significantly.`;
+            const bt = el('breakeven-text');
+            bt.textContent = '';
+            bt.appendChild(document.createTextNode('To break even: reduce automation cost to '));
+            const s1 = document.createElement('strong');
+            s1.textContent = `€${neededCostK}K/muni`;
+            bt.appendChild(s1);
+            bt.appendChild(document.createTextNode(', OR increase municipalities to '));
+            const s2 = document.createElement('strong');
+            s2.textContent = String(neededMunis);
+            bt.appendChild(s2);
+            bt.appendChild(document.createTextNode(', OR increase automation gain significantly.'));
         } else {
             breakevenHint.classList.remove('show');
             caveatBox.classList.remove('show');

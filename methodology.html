@@ -1144,7 +1144,7 @@
                             <div class="flex flex-wrap gap-2 mt-3">
                                 <a href="mailto:qxmbg@kombit.dk" class="text-[10px] font-bold text-blue-600 hover:underline">qxmbg@kombit.dk</a>
                                 <span class="text-gray-300">·</span>
-                                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" class="text-[10px] font-bold text-blue-600 hover:underline">LinkedIn</a>
+                                <a href="https://www.linkedin.com/in/monty-bagati-90454626/" target="_blank" rel="noopener noreferrer" class="text-[10px] font-bold text-blue-600 hover:underline">LinkedIn</a>
                             </div>
                         </div>
                     </div>
@@ -1480,10 +1480,14 @@ const i18nM = {
 function setLanguageM(lang) {
     localStorage.setItem('preferred-lang', lang);
     const d = i18nM[lang];
-    document.getElementById('current-lang-flag-m').src = d.flag;
+    const flagUrlM = d.flag;
+    if (typeof flagUrlM === 'string' && flagUrlM.startsWith('https://flagcdn.com/')) {
+        document.getElementById('current-lang-flag-m').src = flagUrlM;
+    }
     document.getElementById('current-lang-code-m').innerText = d.code;
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
+        // DOMPurify is intentional: i18n strings may contain <strong>, <br>, etc.
         if (d[key] !== undefined) el.innerHTML = DOMPurify.sanitize(d[key]);
     });
     document.getElementById('lang-dropdown-m').classList.remove('show');
