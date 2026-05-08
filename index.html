@@ -234,35 +234,26 @@ async function handleSignOut() {
         .time-stat-label { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
         .time-stat-value { font-size: 16px; font-weight: 900; color: white; }
         .time-stat-unit { font-size: 9px; color: rgba(255,255,255,0.4); margin-left: 2px; }
+        @keyframes slideHint{0%{left:-4px;opacity:0}20%{opacity:1}80%{opacity:1}100%{left:22px;opacity:0}}
+        .hidden { display: none; }
+        .font-arial { font-family: Arial, sans-serif; }
+        .w-auto-nowrap { width: auto; white-space: nowrap; }
+        .slide-hint-box { position:relative;height:20px;width:36px;overflow:hidden;border-radius:4px;background:rgba(227,0,15,0.08); }
+        .slide-hint-icon { position:absolute;top:50%;transform:translateY(-50%);width:18px;height:18px;display:flex;align-items:center;justify-content:center;animation:slideHint 1.6s ease-in-out infinite; }
+        .slider-spacing { margin-top: 8px; margin-bottom: 12px; }
+        .calc-time-note { margin-top:6px;font-size:9px;color:rgba(245,158,11,0.4);text-align:center;letter-spacing:0.05em; }
+        .tracking-pixel { position:absolute;bottom:0;left:0;width:1px;height:1px;opacity:0; }
     </style>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com https://images.unsplash.com https://cloud.umami.is; connect-src 'self' https://*.supabase.co https://cloud.umami.is; frame-ancestors 'none';">     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://unpkg.com https://cloud.umami.is; style-src 'self' CSP_STYLE_HASHES https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com https://images.unsplash.com https://cloud.umami.is; connect-src 'self' https://*.supabase.co https://cloud.umami.is; frame-ancestors 'none';">     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>KOMBIT Quality Engineering | TaaS & ValueEdge</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"
           integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9"
           crossorigin="anonymous">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter','sans-serif'] },
-                    colors: {
-                        brand: {
-                            dark: '#0B1B3D',
-                            primary: '#0052CC',
-                            light: '#F4F7F9',
-                            accent: '#00B8D9'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 
     <style>
         html { overflow-x:hidden; }
@@ -292,11 +283,11 @@ async function handleSignOut() {
 
 <body class="antialiased">
 <div id="maintenance-banner"></div>
-<div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75" style="width:0%"></div>
+<div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-brand-primary z-[100] transition-all duration-75"></div>
 
 <nav id="navbar" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-10 py-5 bg-transparent transition-all duration-300">
     <div class="flex items-center gap-4">
-        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none" style="font-family:Arial,sans-serif;">
+        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-2xl leading-none font-arial">
             <span class="flex-shrink-0">KOMB</span>
             <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] flex-shrink-0 justify-between translate-y-[1.5px]">
                 <div class="w-full h-[4px] bg-[#E3000F]"></div>
@@ -310,7 +301,7 @@ async function handleSignOut() {
             <div class="w-7 h-7 bg-gradient-to-br from-[#2e5bff] to-[#0028a5] rounded-lg flex items-center justify-center flex-shrink-0">
                 <span class="text-white text-[10px] font-bold">ot</span>
             </div>
-            <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300" style="font-family:Arial,sans-serif;">opentext</span>
+            <span id="opentext-word" class="text-white text-xl font-bold tracking-tight lowercase flex-shrink-0 transition-colors duration-300 font-arial">opentext</span>
         </div>
     </div>
     <div class="flex items-center gap-6">
@@ -341,7 +332,7 @@ async function handleSignOut() {
                 </div>
             </div>
         </div>
-        <button id="auth-signout-btn" style="display:none;" class="auth-signout-btn ml-4 px-3 py-1.5 border rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm border-white/60 text-white hover:bg-white hover:text-[#E3000F]">Sign Out</button>
+        <button id="auth-signout-btn" class="hidden auth-signout-btn ml-4 px-3 py-1.5 border rounded-lg transition-all text-[10px] font-black uppercase tracking-widest backdrop-blur-sm border-white/60 text-white hover:bg-white hover:text-[#E3000F]">Sign Out</button>
     </div>
 </nav>
 
@@ -353,7 +344,7 @@ async function handleSignOut() {
             <span data-i18n="hero_badge" class="text-white/90 uppercase">Enterprise Quality Engineering</span>
         </div>
         <h1 class="text-5xl md:text-7xl font-black mb-6">
-            <span class="typing-effect" style="width:auto;white-space:nowrap;">
+            <span class="typing-effect w-auto-nowrap">
                 <span id="hero-typing-text" data-i18n="hero_title">Modernising testing at </span><span class="text-[#E3000F]">KOMBIT</span>&nbsp;
             </span>
         </h1>
@@ -518,13 +509,13 @@ async function handleSignOut() {
             <div class="lg:col-span-2 flex flex-col justify-start pr-0 lg:pr-8 border-r-0 lg:border-r border-gray-100">
 
                 <div class="flex items-start gap-4 mb-8 bg-red-50 p-5 rounded-xl border border-red-100 shadow-sm">
-                    <div class="flex-shrink-0 mt-0.5" style="width:36px;">
-                        <div style="position:relative;height:20px;width:36px;overflow:hidden;border-radius:4px;background:rgba(227,0,15,0.08);">
-                            <div style="position:absolute;top:50%;transform:translateY(-50%);width:18px;height:18px;display:flex;align-items:center;justify-content:center;animation:slideHint 1.6s ease-in-out infinite;">
+                    <div class="flex-shrink-0 mt-0.5 w-9">
+                        <div class="slide-hint-box">
+                            <div class="slide-hint-icon">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E3000F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M15 8l4 4-4 4"/></svg>
                             </div>
                         </div>
-                        <style>@keyframes slideHint{0%{left:-4px;opacity:0}20%{opacity:1}80%{opacity:1}100%{left:22px;opacity:0}}</style>
+
                     </div>
                     <div>
                         <span data-i18n="calc_sim_title" class="block text-xs font-black text-[#0B1B3D] uppercase tracking-widest mb-1.5">Interactive Simulator</span>
@@ -594,15 +585,15 @@ async function handleSignOut() {
                     <div class="space-y-3">
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_rate_manual" class="text-[10px] font-bold text-gray-400 uppercase">Manual Tester</label><span id="disp-rate-manual" class="text-sm font-black text-brand-primary">85</span></div>
-                            <input type="range" id="input-rate-manual" class="value-slider" min="40" max="200" value="85" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-rate-manual" class="value-slider slider-spacing" min="40" max="200" value="85" step="5">
                         </div>
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_rate_auto" class="text-[10px] font-bold text-gray-400 uppercase">Automation Engineer</label><span id="disp-rate-auto" class="text-sm font-black text-brand-primary">130</span></div>
-                            <input type="range" id="input-rate-auto" class="value-slider" min="60" max="300" value="130" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-rate-auto" class="value-slider slider-spacing" min="60" max="300" value="130" step="5">
                         </div>
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_rate_mgmt" class="text-[10px] font-bold text-gray-400 uppercase">Test Management</label><span id="disp-rate-mgmt" class="text-sm font-black text-brand-primary">150</span></div>
-                            <input type="range" id="input-rate-mgmt" class="value-slider" min="80" max="350" value="150" step="5" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-rate-mgmt" class="value-slider slider-spacing" min="80" max="350" value="150" step="5">
                         </div>
                     </div>
                 </div>
@@ -614,15 +605,15 @@ async function handleSignOut() {
                     <div class="space-y-3">
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_hc_manual" class="text-[10px] font-bold text-gray-400 uppercase">Manual Testers</label><span id="disp-hc-manual" class="text-sm font-black text-brand-primary">5</span></div>
-                            <input type="range" id="input-hc-manual" class="value-slider" min="1" max="20" value="5" step="1" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-hc-manual" class="value-slider slider-spacing" min="1" max="20" value="5" step="1">
                         </div>
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_hc_auto" class="text-[10px] font-bold text-gray-400 uppercase">Automation Engineers</label><span id="disp-hc-auto" class="text-sm font-black text-brand-primary">2</span></div>
-                            <input type="range" id="input-hc-auto" class="value-slider" min="1" max="20" value="2" step="1" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-hc-auto" class="value-slider slider-spacing" min="1" max="20" value="2" step="1">
                         </div>
                         <div>
                             <div class="flex justify-between items-end mb-0.5"><label data-i18n="calc_hc_mgmt" class="text-[10px] font-bold text-gray-400 uppercase">Test Managers</label><span id="disp-hc-mgmt" class="text-sm font-black text-brand-primary">1</span></div>
-                            <input type="range" id="input-hc-mgmt" class="value-slider" min="1" max="10" value="1" step="1" style="margin-top:8px;margin-bottom:12px;">
+                            <input type="range" id="input-hc-mgmt" class="value-slider slider-spacing" min="1" max="10" value="1" step="1">
                         </div>
                     </div>
                 </div>
@@ -650,7 +641,7 @@ async function handleSignOut() {
                             <span class="text-6xl md:text-8xl font-black text-white tracking-tighter drop-shadow-md">€<span id="res-cost">0</span></span>
                             <div class="w-fit"><span data-i18n="calc_annually_long" class="inline-block text-[11px] text-green-300 font-bold uppercase tracking-widest bg-white/5 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">Annually across selected Municipalities</span></div>
                             <div class="mt-6 w-full bg-black/30 h-2.5 rounded-full p-[2px] border border-white/5">
-                                <div id="bar-financial" class="bg-gradient-to-r from-green-500 to-emerald-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(52,211,153,0.3)]" style="width:0%"></div>
+                                <div id="bar-financial" class="bg-gradient-to-r from-green-500 to-emerald-400 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(52,211,153,0.3)]"></div>
                             </div>
                         </div>
 
@@ -699,7 +690,7 @@ async function handleSignOut() {
                                     <div class="mini-stat-lbl" data-i18n="calc_weeks_earlier">Weeks Earlier</div>
                                 </div>
                             </div>
-                            <div style="margin-top:6px;font-size:9px;color:rgba(245,158,11,0.4);text-align:center;letter-spacing:0.05em;" data-i18n="calc_time_note">Hours recovered regardless of net financial position</div>
+                            <div class="calc-time-note" data-i18n="calc_time_note">Hours recovered regardless of net financial position</div>
                         
                         <!-- FIX 8/9/10: Per-Person Breakdown -->
                         <div class="person-breakdown" id="person-breakdown">
@@ -767,7 +758,7 @@ async function handleSignOut() {
                             </div>
                         </div>
                         <div class="relative z-10 mt-4 w-full bg-black/20 h-2 rounded-full overflow-hidden">
-                            <div id="bar-hours" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)]" style="width:0%"></div>
+                            <div id="bar-hours" class="bg-gradient-to-r from-blue-600 to-blue-400 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.4)]"></div>
                         </div>
                     </div>
 
@@ -791,7 +782,7 @@ async function handleSignOut() {
                             <span class="text-[9px] text-gray-500 mt-2 block" id="dampening-note">Dampened from automation gain</span>
                         </div>
                         <div class="relative z-10 mt-4 w-full bg-black/20 h-2 rounded-full overflow-hidden">
-                            <div id="bar-cycle" class="bg-gradient-to-r from-[#E3000F] to-red-400 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(227,0,15,0.4)]" style="width:0%"></div>
+                            <div id="bar-cycle" class="bg-gradient-to-r from-[#E3000F] to-red-400 h-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(227,0,15,0.4)]"></div>
                         </div>
                     </div>
                 </div>
@@ -868,7 +859,7 @@ async function handleSignOut() {
     <div class="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-start gap-8">
         <div class="text-left">
             <div class="flex items-center gap-4 mb-5">
-                <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none" style="font-family:Arial,sans-serif;">
+                <div class="flex items-center text-white font-black tracking-tighter text-2xl leading-none font-arial">
                     <span class="flex-shrink-0">KOMB</span>
                     <div class="flex flex-col w-[6px] h-[16px] mx-[3.5px] mt-[2px] flex-shrink-0 justify-between"><div class="w-full h-[4px] bg-[#E3000F]"></div><div class="w-full h-[4px] bg-[#E3000F]"></div><div class="w-full h-[4px] bg-[#E3000F]"></div></div>
                     <span class="flex-shrink-0">T</span>
@@ -1418,6 +1409,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </div>
 
-<img src="https://cloud.umami.is/p/O69iZhcEV" style="position:absolute;bottom:0;left:0;width:1px;height:1px;opacity:0;" alt=""/>
+<img src="https://cloud.umami.is/p/O69iZhcEV" class="tracking-pixel" alt=""/>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES; style-src 'self' CSP_STYLE_HASHES https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOMBIT | Privacy Policy</title>
@@ -353,6 +353,8 @@
             .section-content { padding-left: 28px; }
             .contact-card { flex-direction: column; }
         }
+        .contact-label { color: white; display: block; margin-bottom: 4px; }
+        .contact-extra-top { margin-top: 16px; }
     </style>
 </head>
 <body>
@@ -488,7 +490,7 @@
                     <div class="right-card"><strong>Right to Portability</strong><p>Receive data in portable format</p></div>
                     <div class="right-card"><strong>Right to Object</strong><p>Object to data processing</p></div>
                 </div>
-                <p style="margin-top:16px;">To exercise any right, contact <a href="mailto:qxmbg@kombit.dk">qxmbg@kombit.dk</a>.</p>
+                <p class="contact-extra-top">To exercise any right, contact <a href="mailto:qxmbg@kombit.dk">qxmbg@kombit.dk</a>.</p>
             </div>
         </div>
     </div>
@@ -539,7 +541,7 @@
     <!-- Contact Card -->
     <div class="contact-card">
         <div>
-            <p><strong style="color:white; display:block; margin-bottom:4px;">Have a privacy question?</strong>
+            <p><strong class="contact-label">Have a privacy question?</strong>
             We're committed to transparency. Reach out and we'll respond promptly.</p>
         </div>
         <a href="mailto:qxmbg@kombit.dk" class="contact-btn">

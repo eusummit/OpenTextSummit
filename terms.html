@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES; style-src 'self' CSP_STYLE_HASHES https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOMBIT | Terms of Service</title>
@@ -278,6 +278,7 @@
             .section-content { padding-left: 28px; }
             .contact-card { flex-direction: column; }
         }
+        .contact-label { color: white; display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -452,7 +453,7 @@
 
     <div class="contact-card">
         <div>
-            <p><strong style="color:white; display:block; margin-bottom:4px;">Questions about these terms?</strong>
+            <p><strong class="contact-label">Questions about these terms?</strong>
             We're happy to clarify anything. Get in touch and we'll respond promptly.</p>
         </div>
         <a href="mailto:qxmbg@kombit.dk" class="contact-btn">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <style>body{visibility:hidden;}</style>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' CSP_STYLE_HASHES https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://flagcdn.com; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <style>body{visibility:hidden;}</style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js"
             integrity="sha384-pNDx8ebKKncqRMS1aZKjmB1T1jdd6psogvE0+sPrwW/Sy94M6geGuQpYXQnLCdRq"
             crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>Value Realization Methodology | KOMBIT</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"
           integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9"
@@ -572,25 +572,47 @@
         /* ── LANG TOGGLE ── */
         #lang-dropdown-m { display: none; position: absolute; right: 0; top: 100%; margin-top: 8px; background: white; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid #E5E7EB; z-index: 200; min-width: 130px; overflow: hidden; }
         #lang-dropdown-m.show { display: block; }
+        .hidden { display: none; }
+        .font-arial { font-family: Arial, sans-serif; }
+        .menu-bar-col { display:flex;flex-direction:column;width:5px;height:14px;margin:0 3px;justify-content:space-between;transform:translateY(1px); }
+        .red-bar { width:100%;height:3.5px;background:#E3000F; }
+        .divider-v { width:1px;height:20px;background:rgba(0,0,0,0.1); }
+        .text-brand-red { color: #E3000F; }
+        .metric-green { color:#4ade80;font-weight:900;font-size:15px; }
+        .metric-blue { color:#60a5fa;font-weight:900;font-size:15px; }
+        .metric-pink { color:#f472b6;font-weight:900;font-size:15px; }
+        .metric-yellow { color:#fbbf24;font-weight:900;font-size:15px; }
+        .metric-amber { color: #D97706; }
+        .metric-green-output { color: #059669; }
+        .row-warm { background: #FFFBEB; }
+        .row-cool { background: #F0FDF4; }
+        .overflow-x-auto { overflow-x: auto; }
+        .step-box-accent { border-left-color: #E3000F; }
+        .step-num-accent { background: #E3000F; }
+        .inline-divider { border-top:1px solid #E2E8F0;display:block;margin-top:6px;padding-top:6px; }
+        .calc-result-lg { font-size: 15px; }
+        .neg-savings { color:#E3000F;font-weight:900; }
+        .indicator-bar-green { width:3px;height:16px;background:#059669;border-radius:2px; }
+        .indicator-bar-red { width:3px;height:16px;background:#E3000F;border-radius:2px; }
     </style>
 </head>
 <body>
 
-<div id="scroll-progress" style="width:0%"></div>
+<div id="scroll-progress"></div>
 
 <!-- ══════════════ TOP NAV ══════════════ -->
 <nav class="top-nav no-print">
     <div class="flex items-center gap-4">
-        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-xl leading-none" style="font-family:Arial,sans-serif;">
+        <div class="flex items-center text-[#E3000F] font-black tracking-tighter text-xl leading-none font-arial">
             <span>KOMB</span>
-            <div style="display:flex;flex-direction:column;width:5px;height:14px;margin:0 3px;justify-content:space-between;transform:translateY(1px);">
-                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
-                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
-                <div style="width:100%;height:3.5px;background:#E3000F;"></div>
+            <div class="menu-bar-col">
+                <div class="red-bar"></div>
+                <div class="red-bar"></div>
+                <div class="red-bar"></div>
             </div>
             <span>T</span>
         </div>
-        <div style="width:1px;height:20px;background:rgba(0,0,0,0.1);"></div>
+        <div class="divider-v"></div>
         <span class="text-xs font-bold text-gray-400 uppercase tracking-widest" data-i18n="nav_subtitle">Value Realization Methodology</span>
     </div>
     <div class="flex items-center gap-3">
@@ -621,7 +643,7 @@
             <span class="text-white/30 text-xs font-mono">v1.0</span>
         </div>
         <h1 class="text-4xl md:text-6xl font-black text-white mb-4 leading-tight" data-i18n="hero_title">
-            Value Realization<br><span style="color:#E3000F;">Calculator Methodology</span>
+            Value Realization<br><span class="text-brand-red">Calculator Methodology</span>
         </h1>
         <p class="text-gray-300 text-lg max-w-3xl mb-8 font-light leading-relaxed" data-i18n="hero_desc">
             A complete reference document explaining every parameter, assumption, formula step, and interpretation guideline behind the KOMBIT TaaS Value Realization Calculator.
@@ -629,19 +651,19 @@
         <!-- FIX 5: Meaningful stat badges -->
         <div class="flex flex-wrap gap-3">
             <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
-                <span style="color:#4ade80;font-weight:900;font-size:15px;">13</span>
+                <span class="metric-green">13</span>
                 <span data-i18n="hero_tag1">Parameters</span>
             </div>
             <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
-                <span style="color:#60a5fa;font-weight:900;font-size:15px;">8</span>
+                <span class="metric-blue">8</span>
                 <span data-i18n="hero_tag2">Hardcoded Assumptions</span>
             </div>
             <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
-                <span style="color:#f472b6;font-weight:900;font-size:15px;">9</span>
+                <span class="metric-pink">9</span>
                 <span data-i18n="hero_tag3">Formula Steps</span>
             </div>
             <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white/70 font-semibold">
-                <span style="color:#fbbf24;font-weight:900;font-size:15px;">13</span>
+                <span class="metric-yellow">13</span>
                 <span data-i18n="hero_tag4">Glossary Terms</span>
             </div>
             
@@ -700,8 +722,8 @@
                     <div class="text-[10px] text-gray-500 mt-1" data-i18n="s1_card2_sub">Hours, days, sprints saved per year</div>
                 </div>
                 <div class="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-black mb-1" style="color:#E3000F;">⚡</div>
-                    <div class="text-xs font-bold uppercase tracking-wider" style="color:#E3000F;" data-i18n="s1_card3">Faster Delivery</div>
+                    <div class="text-2xl font-black mb-1 text-brand-red">⚡</div>
+                    <div class="text-xs font-bold uppercase tracking-wider text-brand-red" data-i18n="s1_card3">Faster Delivery</div>
                     <div class="text-[10px] text-gray-500 mt-1" data-i18n="s1_card3_sub">Cycle reduction per release</div>
                 </div>
             </div>
@@ -720,7 +742,7 @@
         <div class="card-body">
             <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                    <div class="flex items-center gap-2 mb-3"><div style="width:3px;height:16px;background:#059669;border-radius:2px;"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_does">What it DOES</span></div>
+                    <div class="flex items-center gap-2 mb-3"><div class="indicator-bar-green"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_does">What it DOES</span></div>
                     <ul class="space-y-2 text-sm text-gray-600">
                         <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_1">Estimates gross financial gain from automation across municipalities</span></li>
                         <li class="flex gap-2"><span class="text-green-500 mt-0.5 flex-shrink-0">✓</span><span data-i18n="s2_does_2">Calculates per-role, per-person, per-release savings</span></li>
@@ -731,14 +753,14 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2 mb-3"><div style="width:3px;height:16px;background:#E3000F;border-radius:2px;"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_not">What it DOES NOT do</span></div>
+                    <div class="flex items-center gap-2 mb-3"><div class="indicator-bar-red"></div><span class="text-xs font-black text-gray-700 uppercase tracking-wider" data-i18n="s2_not">What it DOES NOT do</span></div>
                     <ul class="space-y-2 text-sm text-gray-600">
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_1">Does not measure quality improvements or defect prevention value</span></li>
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_2">Does not account for risk reduction or compliance benefits</span></li>
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_3">Does not model partial utilisation or over-capacity scenarios</span></li>
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_4">Does not account for staff redeployment value</span></li>
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_5">Does not model the compounding value of faster releases</span></li>
-                        <li class="flex gap-2"><span style="color:#E3000F;" class="mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_6">Does not replace a full business case analysis</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_1">Does not measure quality improvements or defect prevention value</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_2">Does not account for risk reduction or compliance benefits</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_3">Does not model partial utilisation or over-capacity scenarios</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_4">Does not account for staff redeployment value</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_5">Does not model the compounding value of faster releases</span></li>
+                        <li class="flex gap-2"><span class="text-brand-red mt-0.5 flex-shrink-0">✗</span><span data-i18n="s2_not_6">Does not replace a full business case analysis</span></li>
                     </ul>
                 </div>
             </div>
@@ -760,7 +782,7 @@
                 <span class="param-tag tag-fixed" data-i18n="tag_fixed">Hardcoded Assumption</span>
                 <span class="param-tag tag-derived" data-i18n="tag_derived">Derived / Calculated Output</span>
             </div>
-            <div style="overflow-x:auto;">
+            <div class="overflow-x-auto">
                 <table class="param-table">
                     <thead>
                         <tr>
@@ -789,21 +811,21 @@
                         <tr><td class="font-bold text-gray-800" data-i18n="p_cost">Automation Cost/yr</td><td><span class="param-tag tag-slider">Slider</span></td><td class="font-mono text-sm font-bold">€50K</td><td class="text-xs text-gray-500">€0–500K</td><td class="text-xs text-gray-600" data-i18n="p_cost_why">Annual cost of automation tooling, infrastructure, and script maintenance per municipality. Key lever for breakeven.</td><td class="text-xs text-gray-600" data-i18n="p_cost_effect">Net savings decrease; may flip to negative</td></tr>
 
                         <!-- HARDCODED ROWS -->
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Manual Tester Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">65%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Typical QE team composition in public sector IT. Manual execution dominates at early-to-mid automation maturity.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7 for full rationale</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Auto Engineer Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">25%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Framework building, script writing, pipeline maintenance. Approximately one quarter of total effort.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Test Manager Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">10%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Planning, governance, reporting. Constant regardless of automation level, typically 8–12%.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Manual Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">1.0×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Automation directly replaces manual execution. Full automation gain applies to this role.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Auto Eng. Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">0.3×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Engineers still build and maintain scripts. Only 30% of their effort is freed by automation — ignoring this overstates savings.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Mgmt Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">0.05×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Management oversight is largely independent of automation. Only 5% reduces — a conservative, intentional choice.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Cycle Dampening Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">0.4×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Automation gain does not translate 1:1 to delivery cycle reduction. Planning, reviews, and deployment gates remain unchanged.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
-                        <tr style="background:#FFFBEB;"><td class="font-bold text-gray-700">Sprint Length</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold" style="color:#D97706;">10 days</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Standard two-week sprint = 10 working days. Used to convert person-days to sprint equivalents for agile teams.</td><td class="text-xs text-gray-600">Not adjustable — affects sprint equiv. display only</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Manual Tester Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">65%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Typical QE team composition in public sector IT. Manual execution dominates at early-to-mid automation maturity.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7 for full rationale</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Auto Engineer Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">25%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Framework building, script writing, pipeline maintenance. Approximately one quarter of total effort.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Test Manager Share</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">10%</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Planning, governance, reporting. Constant regardless of automation level, typically 8–12%.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Manual Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">1.0×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Automation directly replaces manual execution. Full automation gain applies to this role.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Auto Eng. Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">0.3×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Engineers still build and maintain scripts. Only 30% of their effort is freed by automation — ignoring this overstates savings.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Mgmt Reduction Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">0.05×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Management oversight is largely independent of automation. Only 5% reduces — a conservative, intentional choice.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Cycle Dampening Factor</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">0.4×</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Automation gain does not translate 1:1 to delivery cycle reduction. Planning, reviews, and deployment gates remain unchanged.</td><td class="text-xs text-gray-600">Not adjustable — see Section 7</td></tr>
+                        <tr class="row-warm"><td class="font-bold text-gray-700">Sprint Length</td><td><span class="param-tag tag-fixed">Hardcoded</span></td><td class="font-mono text-sm font-bold metric-amber">10 days</td><td class="text-xs text-gray-500">Fixed</td><td class="text-xs text-gray-600">Standard two-week sprint = 10 working days. Used to convert person-days to sprint equivalents for agile teams.</td><td class="text-xs text-gray-600">Not adjustable — affects sprint equiv. display only</td></tr>
 
                         <!-- DERIVED ROWS -->
-                        <tr style="background:#F0FDF4;"><td class="font-bold text-gray-700">Gross Financial Gain</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold" style="color:#059669;">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Sum of all role savings × municipalities × releases. Total benefit before automation costs are deducted.</td><td class="text-xs text-gray-600">—</td></tr>
-                        <tr style="background:#F0FDF4;"><td class="font-bold text-gray-700">Net Savings</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold" style="color:#059669;">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Gross Gain minus Total Automation Cost. Can be negative — shown honestly without a zero floor.</td><td class="text-xs text-gray-600">—</td></tr>
-                        <tr style="background:#F0FDF4;"><td class="font-bold text-gray-700">Person-Days</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold" style="color:#059669;">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Total hours recovered ÷ working hours per day. Operational planning unit.</td><td class="text-xs text-gray-600">—</td></tr>
-                        <tr style="background:#F0FDF4;"><td class="font-bold text-gray-700">Sprint Equivalents</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold" style="color:#059669;">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Person-days ÷ 10. Expresses recovered capacity in agile sprint terms.</td><td class="text-xs text-gray-600">—</td></tr>
-                        <tr style="background:#F0FDF4;"><td class="font-bold text-gray-700">Weeks Earlier</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold" style="color:#059669;">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Days saved per release ÷ 5. Shows how many weeks earlier each release ships.</td><td class="text-xs text-gray-600">—</td></tr>
+                        <tr class="row-cool"><td class="font-bold text-gray-700">Gross Financial Gain</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold metric-green-output">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Sum of all role savings × municipalities × releases. Total benefit before automation costs are deducted.</td><td class="text-xs text-gray-600">—</td></tr>
+                        <tr class="row-cool"><td class="font-bold text-gray-700">Net Savings</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold metric-green-output">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Gross Gain minus Total Automation Cost. Can be negative — shown honestly without a zero floor.</td><td class="text-xs text-gray-600">—</td></tr>
+                        <tr class="row-cool"><td class="font-bold text-gray-700">Person-Days</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold metric-green-output">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Total hours recovered ÷ working hours per day. Operational planning unit.</td><td class="text-xs text-gray-600">—</td></tr>
+                        <tr class="row-cool"><td class="font-bold text-gray-700">Sprint Equivalents</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold metric-green-output">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Person-days ÷ 10. Expresses recovered capacity in agile sprint terms.</td><td class="text-xs text-gray-600">—</td></tr>
+                        <tr class="row-cool"><td class="font-bold text-gray-700">Weeks Earlier</td><td><span class="param-tag tag-derived">Derived</span></td><td class="font-mono text-sm font-bold metric-green-output">Output</td><td class="text-xs text-gray-500">—</td><td class="text-xs text-gray-600">Days saved per release ÷ 5. Shows how many weeks earlier each release ships.</td><td class="text-xs text-gray-600">—</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -827,7 +849,7 @@
             <div class="step-box"><span class="step-num">5</span><strong data-i18n="s4_s5_title">Multiply across releases and municipalities.</strong> <span data-i18n="s4_s5">The savings per release are multiplied by releases per year and the number of municipalities to give the annual total.</span></div>
             <div class="step-box"><span class="step-num">6</span><strong data-i18n="s4_s6_title">Convert hours to money.</strong> <span data-i18n="s4_s6">Each role's saved hours are multiplied by that role's hourly rate. The three totals are summed to produce the Gross Financial Gain.</span></div>
             <div class="step-box"><span class="step-num">7</span><strong data-i18n="s4_s7_title">Subtract automation costs to get net savings.</strong> <span data-i18n="s4_s7">The annual automation cost per municipality is multiplied by municipalities and subtracted from gross gain. The result can be positive or negative — both shown honestly.</span></div>
-            <div class="step-box" style="border-left-color:#E3000F;"><span class="step-num" style="background:#E3000F;">8</span><strong data-i18n="s4_s8_title">Convert hours to days and weeks for operational context.</strong> <span data-i18n="s4_s8">Total hours ÷ working hours per day = person-days. Days per release ÷ 5 = weeks earlier. Person-days ÷ 10 = sprint equivalents recovered.</span></div>
+            <div class="step-box step-box-accent"><span class="step-num step-num-accent">8</span><strong data-i18n="s4_s8_title">Convert hours to days and weeks for operational context.</strong> <span data-i18n="s4_s8">Total hours ÷ working hours per day = person-days. Days per release ÷ 5 = weeks earlier. Person-days ÷ 10 = sprint equivalents recovered.</span></div>
         </div>
     </div>
 
@@ -966,11 +988,11 @@
             <div class="space-y-4">
                 <div><div class="flex items-center gap-2 mb-2"><span class="step-num">1</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step1_t">Complexity Adjustment</span></div><div class="calc-line">120 hrs <span class="calc-equals">×</span> 1.0 (Medium) <span class="calc-equals">=</span> <span class="calc-result">120 adjusted hrs / release</span></div></div>
                 <div><div class="flex items-center gap-2 mb-2"><span class="step-num">2</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step2_t">Role Hour Split</span></div><div class="calc-line">Manual: 120 <span class="calc-equals">×</span> 0.65 <span class="calc-equals">=</span> <span class="calc-result">78 hrs</span><br>Auto:   120 <span class="calc-equals">×</span> 0.25 <span class="calc-equals">=</span> <span class="calc-result">30 hrs</span><br>Mgmt:   120 <span class="calc-equals">×</span> 0.10 <span class="calc-equals">=</span> <span class="calc-result">12 hrs</span></div></div>
-                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">3</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step3_t">Hours Recovered Per Role (per release, per muni)</span></div><div class="calc-line">Manual: 78 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 1.0  <span class="calc-equals">=</span> <span class="calc-result">39.0 hrs</span><br>Auto:   30 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.3  <span class="calc-equals">=</span> <span class="calc-result"> 4.5 hrs</span><br>Mgmt:   12 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.05 <span class="calc-equals">=</span> <span class="calc-result"> 0.3 hrs</span><br><span style="border-top:1px solid #E2E8F0;display:block;margin-top:6px;padding-top:6px;">Total per release per muni <span class="calc-equals">=</span> <span class="calc-result">43.8 hrs</span></span></div></div>
+                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">3</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step3_t">Hours Recovered Per Role (per release, per muni)</span></div><div class="calc-line">Manual: 78 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 1.0  <span class="calc-equals">=</span> <span class="calc-result">39.0 hrs</span><br>Auto:   30 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.3  <span class="calc-equals">=</span> <span class="calc-result"> 4.5 hrs</span><br>Mgmt:   12 <span class="calc-equals">×</span> 50% <span class="calc-equals">×</span> 0.05 <span class="calc-equals">=</span> <span class="calc-result"> 0.3 hrs</span><br><span class="inline-divider">Total per release per muni <span class="calc-equals">=</span> <span class="calc-result">43.8 hrs</span></span></div></div>
                 <div><div class="flex items-center gap-2 mb-2"><span class="step-num">4</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step4_t">Annual Total Hours</span></div><div class="calc-line">43.8 hrs <span class="calc-equals">×</span> 4 releases <span class="calc-equals">×</span> 10 munis <span class="calc-equals">=</span> <span class="calc-result">1,752 hrs / year</span><br>1,752 <span class="calc-equals">÷</span> 8 hrs/day <span class="calc-equals">=</span> <span class="calc-result">219 person-days</span><br>219 <span class="calc-equals">÷</span> 10 <span class="calc-equals">=</span> <span class="calc-result">21.9 sprint equivalents</span></div></div>
-                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">5</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step5_t">Gross Financial Gain</span></div><div class="calc-line">Manual: 39.0 <span class="calc-equals">×</span> €85  <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">€132,600</span><br>Auto:    4.5 <span class="calc-equals">×</span> €130 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result"> €23,400</span><br>Mgmt:    0.3 <span class="calc-equals">×</span> €150 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">  €1,800</span><br><span style="border-top:1px solid #E2E8F0;display:block;margin-top:6px;padding-top:6px;"><strong>GROSS GAIN</strong> <span class="calc-equals">=</span> <span class="calc-result" style="font-size:15px;">€157,800</span></span></div></div>
-                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">6</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step6_t">Net Savings</span></div><div class="calc-line">Automation Cost: €50,000 <span class="calc-equals">×</span> 10 munis <span class="calc-equals">=</span> €500,000<br>Net Savings: €157,800 <span class="calc-equals">-</span> €500,000 <span class="calc-equals">=</span> <span style="color:#E3000F;font-weight:900;">-€342,200</span><br><span class="text-gray-400 text-xs" data-i18n="s6_negative_note">⚠ Negative because automation cost exceeds gross gain at these settings. Reduce cost slider or increase hours/municipalities to reach breakeven.</span></div></div>
-                <div><div class="flex items-center gap-2 mb-2"><span class="step-num" style="background:#E3000F;">7</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step7_t">Delivery Cycle Reduction</span></div><div class="calc-line">50% automation <span class="calc-equals">×</span> 0.4 dampening <span class="calc-equals">=</span> <span class="calc-result">20% cycle reduction</span><br>43.8 hrs <span class="calc-equals">÷</span> 8 hrs/day <span class="calc-equals">=</span> <span class="calc-result">5.5 days earlier per release per muni</span><br>5.5 days <span class="calc-equals">÷</span> 5 <span class="calc-equals">=</span> <span class="calc-result">1.1 weeks earlier delivery</span></div></div>
+                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">5</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step5_t">Gross Financial Gain</span></div><div class="calc-line">Manual: 39.0 <span class="calc-equals">×</span> €85  <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">€132,600</span><br>Auto:    4.5 <span class="calc-equals">×</span> €130 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result"> €23,400</span><br>Mgmt:    0.3 <span class="calc-equals">×</span> €150 <span class="calc-equals">×</span> 4 <span class="calc-equals">×</span> 10 <span class="calc-equals">=</span> <span class="calc-result">  €1,800</span><br><span class="inline-divider"><strong>GROSS GAIN</strong> <span class="calc-equals">=</span> <span class="calc-result calc-result-lg">€157,800</span></span></div></div>
+                <div><div class="flex items-center gap-2 mb-2"><span class="step-num">6</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step6_t">Net Savings</span></div><div class="calc-line">Automation Cost: €50,000 <span class="calc-equals">×</span> 10 munis <span class="calc-equals">=</span> €500,000<br>Net Savings: €157,800 <span class="calc-equals">-</span> €500,000 <span class="calc-equals">=</span> <span class="neg-savings">-€342,200</span><br><span class="text-gray-400 text-xs" data-i18n="s6_negative_note">⚠ Negative because automation cost exceeds gross gain at these settings. Reduce cost slider or increase hours/municipalities to reach breakeven.</span></div></div>
+                <div><div class="flex items-center gap-2 mb-2"><span class="step-num step-num-accent">7</span><span class="font-bold text-gray-800 text-sm" data-i18n="s6_step7_t">Delivery Cycle Reduction</span></div><div class="calc-line">50% automation <span class="calc-equals">×</span> 0.4 dampening <span class="calc-equals">=</span> <span class="calc-result">20% cycle reduction</span><br>43.8 hrs <span class="calc-equals">÷</span> 8 hrs/day <span class="calc-equals">=</span> <span class="calc-result">5.5 days earlier per release per muni</span><br>5.5 days <span class="calc-equals">÷</span> 5 <span class="calc-equals">=</span> <span class="calc-result">1.1 weeks earlier delivery</span></div></div>
             </div>
         </div>
     </div>
@@ -1026,7 +1048,7 @@
             <div class="grid md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-blue-50 border border-blue-100 rounded-xl p-4"><div class="text-xs font-black text-blue-600 uppercase tracking-wider mb-2" data-i18n="s8_audience1">For CFOs</div><div class="text-2xl font-black text-blue-700 mb-1">1,752 hrs</div><div class="text-xs text-blue-600" data-i18n="s8_desc1">Converts to money. This is what gets signed off.</div></div>
                 <div class="bg-green-50 border border-green-100 rounded-xl p-4"><div class="text-xs font-black text-green-600 uppercase tracking-wider mb-2" data-i18n="s8_audience2">For Project Managers</div><div class="text-2xl font-black text-green-700 mb-1">219 days</div><div class="text-xs text-green-600" data-i18n="s8_desc2">Capacity freed for higher-value work. This is what gets planned.</div></div>
-                <div class="bg-red-50 border border-red-100 rounded-xl p-4"><div class="text-xs font-black uppercase tracking-wider mb-2" style="color:#E3000F;" data-i18n="s8_audience3">For Scrum Teams</div><div class="text-2xl font-black mb-1" style="color:#E3000F;">21.9 sprints</div><div class="text-xs" style="color:#E3000F;" data-i18n="s8_desc3">Equivalent capacity recovered. This is what feels real.</div></div>
+                <div class="bg-red-50 border border-red-100 rounded-xl p-4"><div class="text-xs font-black uppercase tracking-wider mb-2 text-brand-red" data-i18n="s8_audience3">For Scrum Teams</div><div class="text-2xl font-black mb-1 text-brand-red">21.9 sprints</div><div class="text-xs text-brand-red" data-i18n="s8_desc3">Equivalent capacity recovered. This is what feels real.</div></div>
             </div>
             <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
                 <div class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3" data-i18n="s8_conversion">Conversion Chain</div>
@@ -1046,7 +1068,7 @@
         </div>
         <div class="card-body space-y-5">
             <div class="border border-green-200 bg-green-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-2"><span class="text-green-600 font-black text-lg">✓</span><span class="font-black text-green-700 text-sm" data-i18n="s9_pos_title">Positive Net Savings</span></div><p class="text-sm text-green-700" data-i18n="s9_pos">The automation investment pays for itself from cost savings alone. Use directly in a business case for investment approval.</p></div>
-            <div class="border border-red-200 bg-red-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-2"><span style="color:#E3000F;" class="font-black text-lg">−</span><span class="font-black text-sm" style="color:#E3000F;" data-i18n="s9_neg_title">Negative Net Savings</span></div><p class="text-sm text-gray-700 mb-3" data-i18n="s9_neg">Does NOT mean ValueEdge has no value. It means current slider configuration needs calibration:</p><ul class="space-y-1 text-sm text-gray-700"><li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_1">Automation cost per municipality is set too high — reduce to reflect shared infrastructure</span></li><li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_2">Testing volume is set too low — increase to reflect actual effort</span></li><li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_3">Automation gain is too conservative — mature frameworks achieve 70–85%</span></li><li class="flex gap-2"><span style="color:#E3000F;">→</span><span data-i18n="s9_neg_4">Number of municipalities is low — more municipalities spread the automation cost</span></li></ul></div>
+            <div class="border border-red-200 bg-red-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-2"><span class="text-brand-red font-black text-lg">−</span><span class="font-black text-sm text-brand-red" data-i18n="s9_neg_title">Negative Net Savings</span></div><p class="text-sm text-gray-700 mb-3" data-i18n="s9_neg">Does NOT mean ValueEdge has no value. It means current slider configuration needs calibration:</p><ul class="space-y-1 text-sm text-gray-700"><li class="flex gap-2"><span class="text-brand-red">→</span><span data-i18n="s9_neg_1">Automation cost per municipality is set too high — reduce to reflect shared infrastructure</span></li><li class="flex gap-2"><span class="text-brand-red">→</span><span data-i18n="s9_neg_2">Testing volume is set too low — increase to reflect actual effort</span></li><li class="flex gap-2"><span class="text-brand-red">→</span><span data-i18n="s9_neg_3">Automation gain is too conservative — mature frameworks achieve 70–85%</span></li><li class="flex gap-2"><span class="text-brand-red">→</span><span data-i18n="s9_neg_4">Number of municipalities is low — more municipalities spread the automation cost</span></li></ul></div>
             <div class="border border-gray-200 bg-gray-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-2"><span class="text-gray-500 font-black text-lg">i</span><span class="font-black text-gray-700 text-sm" data-i18n="s9_pb_title">Per-Person Breakdown</span></div><p class="text-sm text-gray-600" data-i18n="s9_pb">Does not change the total numbers — redistributes the total across the team for auditability and role-level communication.</p></div>
             <div class="border border-blue-200 bg-blue-50 rounded-xl p-5"><div class="flex items-center gap-2 mb-2"><span class="text-blue-600 font-black text-lg">⚡</span><span class="font-black text-blue-700 text-sm" data-i18n="s9_cycle_title">Delivery Cycle Reduction</span></div><p class="text-sm text-blue-700" data-i18n="s9_cycle">Dampened by 0.4 to reflect real-world constraints. Days and weeks translate the percentage into operational language.</p></div>
         </div>
