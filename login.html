@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' CSP_SCRIPT_HASHES https://cdn.jsdelivr.net; style-src 'self' CSP_STYLE_HASHES https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';">     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer-when-downgrade">
     <title>KOMBIT | Secure Access</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
         * { font-family: 'Inter', sans-serif; }
@@ -165,6 +165,14 @@
         }
         .link:hover { opacity: 0.8; text-decoration: underline; }
         #privacy-toggle:hover { border-color: rgba(227,0,15,0.3) !important; }
+        .hidden { display: none; }
+        .pulse-dot { width:6px;height:6px;background:#E3000F;border-radius:50%;display:inline-block;animation:pulse 2s infinite; }
+        .social-btn-inner { display:flex;align-items:center;justify-content:center;gap:10px; }
+        .icon-shrink { flex-shrink: 0; }
+        .privacy-container { display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;cursor:pointer;transition:all 0.2s;margin-top:4px; }
+        .checkbox-box { width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,0.2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s; }
+        .privacy-text { font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;user-select:none; }
+        .policy-link { color:#E3000F;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,0,15,0.3); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
@@ -179,7 +187,7 @@
                 KOMB<span class="text-[#E3000F]">I</span>T
             </div>
             <div class="tag">
-                <span style="width:6px;height:6px;background:#E3000F;border-radius:50%;display:inline-block;animation:pulse 2s infinite"></span>
+                <span class="pulse-dot"></span>
                 Secure Portal
             </div>
         </div>
@@ -197,8 +205,8 @@
             </div>
             <button id="login-btn" class="btn-primary mt-2">Sign In →</button>
             <div class="divider mt-2">or</div>
-            <button id="si-google-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+            <button id="si-google-btn" class="btn-secondary social-btn-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-shrink">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
@@ -206,8 +214,8 @@
                 </svg>
                 Continue with Google
             </button>
-            <button id="si-github-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+            <button id="si-github-btn" class="btn-secondary social-btn-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" class="icon-shrink">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
                 Continue with GitHub
@@ -228,25 +236,21 @@
             <input type="email" id="su-email" placeholder="Email address" class="input-field">
             <input type="password" id="su-password" placeholder="Password" class="input-field">
             <input type="password" id="su-confirm" placeholder="Confirm password" class="input-field">
-            <div id="privacy-toggle"
-                style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;cursor:pointer;transition:all 0.2s;margin-top:4px;">
-                <div id="privacy-box"
-                    style="width:22px;height:22px;border-radius:7px;border:2px solid rgba(255,255,255,0.2);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;">
+            <div id="privacy-toggle" class="privacy-container">
+                <div id="privacy-box" class="checkbox-box">
                 </div>
-                <input type="checkbox" id="privacy-check" style="display:none;">
-                <span style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;user-select:none;">
+                <input type="checkbox" id="privacy-check" class="hidden">
+                <span class="privacy-text">
                     I agree to the
-                    <a id="privacy-policy-link" href="privacy.html" target="_blank"
-                        style="color:#E3000F;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,0,15,0.3);">Privacy Policy</a>
+                    <a id="privacy-policy-link" href="privacy.html" target="_blank" class="policy-link">Privacy Policy</a>
                     &amp;
-                    <a id="terms-of-service-link" href="terms.html" target="_blank"
-                        style="color:#E3000F;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(227,0,15,0.3);">Terms of Service</a>
+                    <a id="terms-of-service-link" href="terms.html" target="_blank" class="policy-link">Terms of Service</a>
                 </span>
             </div>
             <button id="signup-btn" class="btn-primary mt-2">Create Account →</button>
             <div class="divider">or</div>
-            <button id="su-google-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+            <button id="su-google-btn" class="btn-secondary social-btn-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="icon-shrink">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
@@ -254,8 +258,8 @@
                 </svg>
                 Continue with Google
             </button>
-            <button id="su-github-btn" class="btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+            <button id="su-github-btn" class="btn-secondary social-btn-inner">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" class="icon-shrink">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
                 Continue with GitHub

@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build Tailwind CSS
+        run: npx --yes tailwindcss@3 -c tailwind.config.js --content "*.html" -o tailwind.css --minify
+
       - name: Inject Secrets
         run: |
           # We use '@' as a separator in case your URL has '/' characters

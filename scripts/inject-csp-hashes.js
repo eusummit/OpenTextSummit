@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Computes SHA-256 hashes of all inline <script> blocks in each HTML file
-// and replaces the CSP_SCRIPT_HASHES placeholder in the CSP meta tag.
+// Computes SHA-256 hashes of all inline <script> and <style> blocks in each HTML file
+// and replaces the CSP_SCRIPT_HASHES / CSP_STYLE_HASHES placeholders in the CSP meta tag.
 // Must run AFTER minification so hashes match the minified content.
 
 const fs = require('fs');
@@ -15,12 +15,26 @@ const HTML_FILES = [
     'terms.html',
 ];
 
-const CSP_PLACEHOLDER = 'CSP_SCRIPT_HASHES';
+const SCRIPT_PLACEHOLDER = 'CSP_SCRIPT_HASHES';
+const STYLE_PLACEHOLDER = 'CSP_STYLE_HASHES';
 
 function extractInlineScripts(html) {
     const blocks = [];
     // Match <script> blocks without a src= attribute
     const re = /<script(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script>/gi;
+    let match;
+    while ((match = re.exec(html)) !== null) {
+        const content = match[1];
+        if (content.trim().length > 0) {
+            blocks.push(content);
+        }
+    }
+    return blocks;
+}
+
+function extractInlineStyles(html) {
+    const blocks = [];
+    const re = /<style[^>]*>([\s\S]*?)<\/style>/gi;
     let match;
     while ((match = re.exec(html)) !== null) {
         const content = match[1];
@@ -37,8 +51,6 @@ function sha256(content) {
 
 const rootDir = path.resolve(__dirname, '..');
 
-let allOk = true;
-
 for (const file of HTML_FILES) {
     const filePath = path.join(rootDir, file);
 
@@ -49,26 +61,37 @@ for (const file of HTML_FILES) {
 
     let html = fs.readFileSync(filePath, 'utf8');
 
-    if (!html.includes(CSP_PLACEHOLDER)) {
-        console.warn(`SKIP: ${file} has no ${CSP_PLACEHOLDER} placeholder`);
-        continue;
+    // --- Script hashes ---
+    if (!html.includes(SCRIPT_PLACEHOLDER)) {
+        console.warn(`SKIP scripts: ${file} has no ${SCRIPT_PLACEHOLDER} placeholder`);
+    } else {
+        const scripts = extractInlineScripts(html);
+        if (scripts.length === 0) {
+            console.warn(`WARN: ${file} has CSP script placeholder but no inline scripts`);
+            html = html.replace(SCRIPT_PLACEHOLDER, '');
+        } else {
+            const hashes = scripts.map(s => `'sha256-${sha256(s)}'`).join(' ');
+            console.log(`${file}: ${scripts.length} script block(s) → ${hashes}`);
+            html = html.replace(SCRIPT_PLACEHOLDER, hashes);
+        }
     }
 
-    const scripts = extractInlineScripts(html);
-
-    if (scripts.length === 0) {
-        console.warn(`WARN: ${file} has CSP placeholder but no inline scripts`);
-        const updated = html.replace(CSP_PLACEHOLDER, '');
-        fs.writeFileSync(filePath, updated, 'utf8');
-        continue;
+    // --- Style hashes ---
+    if (!html.includes(STYLE_PLACEHOLDER)) {
+        console.warn(`SKIP styles: ${file} has no ${STYLE_PLACEHOLDER} placeholder`);
+    } else {
+        const styles = extractInlineStyles(html);
+        if (styles.length === 0) {
+            console.warn(`WARN: ${file} has CSP style placeholder but no inline styles`);
+            html = html.replace(STYLE_PLACEHOLDER, '');
+        } else {
+            const hashes = styles.map(s => `'sha256-${sha256(s)}'`).join(' ');
+            console.log(`${file}: ${styles.length} style block(s) → ${hashes}`);
+            html = html.replace(STYLE_PLACEHOLDER, hashes);
+        }
     }
 
-    const hashes = scripts.map(s => `'sha256-${sha256(s)}'`).join(' ');
-    console.log(`${file}: ${scripts.length} script block(s) → ${hashes}`);
-
-    const updated = html.replace(CSP_PLACEHOLDER, hashes);
-    fs.writeFileSync(filePath, updated, 'utf8');
+    fs.writeFileSync(filePath, html, 'utf8');
 }
 
-if (!allOk) process.exit(1);
-console.log('CSP script hashes injected successfully.');
+console.log('CSP script and style hashes injected successfully.');
