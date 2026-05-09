@@ -1,6 +1,6 @@
-# OpenTextSummit — Technical Handover Document
+# OpenTextSummit — Technical Handover Document by QXMBG - Monty Bagati
 
-> **Prepared for:** Company technical team
+> **Prepared for:** KOMBIT A/S
 > **Project:** OpenTextSummit (EU Summit conference website)
 > **How the code was delivered:** ZIP archive of the repository
 
