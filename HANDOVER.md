@@ -8,6 +8,7 @@
 
 ## Table of Contents
 
+0. [Before You Deploy — Replace These Values](#0-before-you-deploy--replace-these-values)
 1. [Project Overview](#1-project-overview)
 2. [Repository Structure](#2-repository-structure)
 3. [Architecture](#3-architecture)
@@ -24,6 +25,53 @@
 14. [Verification Checklist](#14-verification-checklist)
 15. [Local Development Setup](#15-local-development-setup)
 16. [Ongoing Maintenance Notes](#16-ongoing-maintenance-notes)
+
+---
+
+## 0. Before You Deploy — Replace These Values
+
+> **Read this before doing anything else.**
+
+The ZIP contains two values that are hardcoded to the original developer's personal Umami Analytics account. If you deploy without replacing them, your site's analytics data will be sent to the wrong account.
+
+### What needs replacing
+
+| File | What to find | What it is | Action |
+|---|---|---|---|
+| `index.html` line 5 | `data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"` | Personal Umami website ID | Replace with your own (see below) |
+| `index.html` line 1433 | `src="https://cloud.umami.is/p/O69iZhcEV"` | Personal Umami tracking pixel | Replace with your own (see below) |
+
+### How to get your own Umami values
+
+1. Sign up for a free account at [cloud.umami.is](https://cloud.umami.is)
+2. Add a new website — enter your GitHub Pages URL as the domain
+3. Umami will give you a tracking script tag. Copy:
+   - The `data-website-id` value (a UUID like `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+   - The pixel URL from the script tag (looks like `https://cloud.umami.is/p/XXXXXXXXX`)
+4. Open `index.html` and replace both values
+
+### If you don't want analytics
+
+Remove these two lines from `index.html` entirely:
+
+```html
+<!-- Line 3-6: delete the entire Umami script tag -->
+<script defer src="https://cloud.umami.is/script.js"
+        data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"
+        crossorigin="anonymous"></script>
+
+<!-- Line 1433: delete the tracking pixel -->
+<img src="https://cloud.umami.is/p/O69iZhcEV" class="tracking-pixel" alt=""/>
+```
+
+### What you do NOT need to change
+
+The following strings in the source files look like placeholders but are **not** hardcoded credentials — they are substituted automatically by the GitHub Actions pipeline using the secrets you add in Step 7:
+
+- `process.env.SUPABASE_URL` — in `index.html`, `login.html`, `methodology.html`
+- `process.env.SUPABASE_KEY` — in `index.html`, `login.html`, `methodology.html`
+
+Do not edit these manually.
 
 ---
 
