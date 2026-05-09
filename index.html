@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<script defer src="https://cloud.umami.is/script.js" data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"></script>
+<!-- SRI omitted: cloud.umami.is/script.js is dynamically versioned by Umami SaaS; allowed via CSP script-src -->
+<script defer src="https://cloud.umami.is/script.js"
+        data-website-id="4146a71b-3238-4a74-be59-c9a8d300212b"
+        crossorigin="anonymous"></script>
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js"
@@ -886,7 +889,7 @@ async function handleSignOut() {
         </div>
         <div class="flex flex-col md:items-end gap-4 text-sm font-semibold tracking-wider text-gray-300 mt-2 md:mt-0">
             <div class="flex flex-col md:flex-row items-center gap-6">
-                <a href="mailto:qxmbg@kombit.dk" class="hover:text-brand-accent transition">qxmbg@kombit.dk</a>
+                <a href="#" class="hover:text-brand-accent transition email-link" data-u="qxmbg" data-d="kombit.dk">qxmbg@kombit.dk</a>
                 <span class="hidden md:block opacity-20">|</span>
                 <a href="tel:+37125657827" class="hover:text-brand-accent transition">+371 25657827</a>
             </div>
@@ -1428,5 +1431,8 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <img src="https://cloud.umami.is/p/O69iZhcEV" class="tracking-pixel" alt=""/>
+<script>
+document.querySelectorAll('a.email-link').forEach(function(el){var e=el.dataset.u+'@'+el.dataset.d;el.href='mailto:'+e;});
+</script>
 </body>
 </html>

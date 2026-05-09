@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af68 # v4
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
         with:
           node-version: '20'
 
       - name: Build Tailwind CSS
-        run: npx --yes tailwindcss@3 -c tailwind.config.js --content "*.html" -o tailwind.css --minify
+        run: npx --yes tailwindcss@3.4.17 -c tailwind.config.js --content "*.html" -o tailwind.css --minify
 
       - name: Inject Secrets
         run: |
@@ -30,6 +30,13 @@ jobs:
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" login.html
           sed -i "s@process.env.SUPABASE_URL@${{ secrets.SUPABASE_URL }}@g" methodology.html
           sed -i "s@process.env.SUPABASE_KEY@${{ secrets.SUPABASE_KEY }}@g" methodology.html
+
+      - name: Narrow Supabase CSP wildcard to exact project domain
+        run: |
+          # Replace *.supabase.co wildcard with the actual project host extracted from SUPABASE_URL
+          SUPABASE_HOST=$(echo "${{ secrets.SUPABASE_URL }}" | sed 's|https://||' | sed 's|/.*||')
+          echo "Narrowing CSP connect-src wildcard to: https://$SUPABASE_HOST"
+          sed -i "s|https://\*\.supabase\.co|https://$SUPABASE_HOST|g" index.html login.html methodology.html
 
       - name: Verify Secrets Were Injected
         run: |
@@ -51,7 +58,7 @@ jobs:
           echo "Secrets are non-empty in all files."
 
       - name: Install Minifier
-        run: npm install -g html-minifier-terser
+        run: npm install -g html-minifier-terser@7.2.0
 
       - name: Minify Files
         run: |
@@ -90,7 +97,7 @@ jobs:
         run: node scripts/inject-csp-hashes.js
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: "."
 
@@ -103,4 +110,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
