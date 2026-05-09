@@ -377,7 +377,7 @@
         <div class="section-body">
             <div class="section-content">
                 <p>You are solely responsible for all activity that occurs under your account.</p>
-                <p>If you believe your account has been compromised, contact us immediately at <a href="mailto:qxmbg@kombit.dk">qxmbg@kombit.dk</a>.</p>
+                <p>If you believe your account has been compromised, contact us immediately at <a href="#" class="email-link" data-u="qxmbg" data-d="kombit.dk">qxmbg@kombit.dk</a>.</p>
             </div>
         </div>
     </div>
@@ -457,7 +457,7 @@
             <p><strong class="contact-label">Questions about these terms?</strong>
             We're happy to clarify anything. Get in touch and we'll respond promptly.</p>
         </div>
-        <a href="mailto:qxmbg@kombit.dk" class="contact-btn">
+        <a href="#" class="email-link" data-u="qxmbg" data-d="kombit.dk" class="contact-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             qxmbg@kombit.dk
         </a>
@@ -479,6 +479,7 @@
         document.querySelectorAll('.section').forEach(function(el) {
             el.addEventListener('click', function() { toggle(this); });
         });
+        document.querySelectorAll('a.email-link').forEach(function(el){var e=el.dataset.u+'@'+el.dataset.d;el.href='mailto:'+e;});
     });
 </script>
 </body>
