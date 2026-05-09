@@ -1,8 +1,8 @@
 # OpenTextSummit — Technical Handover Document
 
-> **Prepared for:** Company technical team  
-> **Project:** OpenTextSummit (EU Summit conference website)  
-> **Date:** May 2026
+> **Prepared for:** Company technical team
+> **Project:** OpenTextSummit (EU Summit conference website)
+> **How the code was delivered:** ZIP archive of the repository
 
 ---
 
@@ -11,46 +11,47 @@
 1. [Project Overview](#1-project-overview)
 2. [Repository Structure](#2-repository-structure)
 3. [Architecture](#3-architecture)
-4. [Build & Deploy Pipeline](#4-build--deploy-pipeline)
-5. [Local Development Setup](#5-local-development-setup)
-6. [GitHub Repository Handover Options](#6-github-repository-handover-options)
-7. [Supabase Handover Options](#7-supabase-handover-options)
-8. [Step-by-Step Handover Procedure (Recommended Path)](#8-step-by-step-handover-procedure-recommended-path)
-9. [GitHub Actions Secrets Reference](#9-github-actions-secrets-reference)
-10. [OAuth Provider Configuration](#10-oauth-provider-configuration)
-11. [Post-Transfer Verification Checklist](#11-post-transfer-verification-checklist)
-12. [Ongoing Maintenance Notes](#12-ongoing-maintenance-notes)
+4. [How the Build Pipeline Works](#4-how-the-build-pipeline-works)
+5. [Step 1 — Create a GitHub Repository](#5-step-1--create-a-github-repository)
+6. [Step 2 — Enable GitHub Pages](#6-step-2--enable-github-pages)
+7. [Step 3 — Create a Supabase Project](#7-step-3--create-a-supabase-project)
+8. [Step 4 — Configure Supabase Auth](#8-step-4--configure-supabase-auth)
+9. [Step 5 — Set Up Google OAuth](#9-step-5--set-up-google-oauth)
+10. [Step 6 — Set Up GitHub OAuth](#10-step-6--set-up-github-oauth)
+11. [Step 7 — Add GitHub Actions Secrets](#11-step-7--add-github-actions-secrets)
+12. [Step 8 — Deploy](#12-step-8--deploy)
+13. [Secrets Reference](#13-secrets-reference)
+14. [Verification Checklist](#14-verification-checklist)
+15. [Local Development Setup](#15-local-development-setup)
+16. [Ongoing Maintenance Notes](#16-ongoing-maintenance-notes)
 
 ---
 
 ## 1. Project Overview
 
-OpenTextSummit is a static website for the EU Summit conference. It provides:
-
-- A public-facing landing page with summit information and video demo
-- User authentication (sign-up, sign-in, OAuth, magic link)
-- A gated methodology page with QA cost estimation documentation
-- Privacy policy and terms of service pages
-
-| Item | Detail |
-|---|---|
-| **Live URL** | Hosted on GitHub Pages (visible in repo Settings → Pages) |
-| **Hosting** | GitHub Pages (free, served directly from the repository) |
-| **Auth backend** | Supabase (cloud-hosted, personal account — see handover sections below) |
-| **Analytics** | Umami (cloud.umami.is — cookieless, GDPR-friendly) |
-| **Languages** | HTML, vanilla JavaScript, CSS |
-| **CSS framework** | Tailwind CSS v3.4.17 |
-| **Supabase SDK** | @supabase/supabase-js v2.105.1 |
+OpenTextSummit is a static website for the EU Summit conference. It is login-gated: visitors must create an account or sign in before they can access the main content.
 
 ### Pages
 
 | File | Access | Purpose |
 |---|---|---|
-| `index.html` | Authenticated users only | Main landing page; redirects to login if not signed in |
 | `login.html` | Public | Sign-in, sign-up, password recovery, OAuth |
+| `index.html` | Authenticated users only | Main landing page; redirects to login if not signed in |
 | `methodology.html` | Authenticated users only | QA cost estimation methodology |
 | `privacy.html` | Public | GDPR privacy policy |
 | `terms.html` | Public | Terms of service |
+
+### Tech Stack
+
+| Component | Detail |
+|---|---|
+| Hosting | GitHub Pages (free, via GitHub Actions) |
+| Auth backend | Supabase Auth (your own account — see steps below) |
+| Auth methods | Email/password, Google OAuth, GitHub OAuth, Magic Link |
+| Analytics | Umami (cloud.umami.is — cookieless, GDPR-friendly) |
+| Languages | HTML, vanilla JavaScript, CSS |
+| CSS framework | Tailwind CSS v3.4.17 |
+| Supabase JS SDK | @supabase/supabase-js v2.105.1 |
 
 ---
 
@@ -59,16 +60,16 @@ OpenTextSummit is a static website for the EU Summit conference. It provides:
 ```
 OpenTextSummit/
 ├── index.html                  # Main landing page (auth-gated)
-├── login.html                  # Authentication UI
+├── login.html                  # Authentication UI (public)
 ├── methodology.html            # Methodology page (auth-gated)
-├── privacy.html                # Privacy policy
-├── terms.html                  # Terms of service
+├── privacy.html                # Privacy policy (public)
+├── terms.html                  # Terms of service (public)
 ├── tailwind.config.js          # Tailwind CSS theme (brand colours)
-├── tailwind.css                # Generated CSS (not committed; built in CI)
-├── _headers                    # HTTP security headers per page (CSP, HSTS, etc.)
+├── tailwind.css                # Generated CSS — built by CI, not edited manually
+├── _headers                    # Per-page HTTP security headers (CSP, HSTS, etc.)
 ├── scripts/
 │   └── inject-csp-hashes.js   # Computes SHA-256 hashes of inline scripts/styles
-│                               # and writes them into _headers (runs after minification)
+│                               # and writes them into _headers — runs after minification
 └── .github/
     └── workflows/
         └── deploy.yml          # GitHub Actions build and deploy pipeline
@@ -88,11 +89,11 @@ OpenTextSummit/
                     │    GitHub Pages      │
                     │  (static HTML/CSS/JS)│
                     └──────────┬───────────┘
-                               │ Supabase JS SDK (CDN)
+                               │ Supabase JS SDK (loaded from CDN)
                                ▼
                     ┌──────────────────────┐
                     │   Supabase Auth      │
-                    │  (personal account)  │
+                    │  (your company acct) │
                     └──────────┬───────────┘
                                │ OAuth redirect
                     ┌──────────┴───────────┐
@@ -102,350 +103,232 @@ OpenTextSummit/
              └─────────────┘       └──────────────┘
 ```
 
-**Key design decisions:**
+**Key facts:**
 
-- There is **no server** — all logic runs in the browser via the Supabase JS client.
-- Supabase is used **for auth only**; there are no custom database tables.
-- Supabase credentials (`SUPABASE_URL` and `SUPABASE_KEY`) are injected into the HTML at build time by GitHub Actions — they are never committed to the repository.
-- Content Security Policy (CSP) is computed at build time with SHA-256 hashes of every inline script/style block to prevent XSS.
+- There is **no server** — all logic runs in the browser using the Supabase JS client.
+- Supabase is used **for authentication only**. There are no custom database tables.
+- The two Supabase credentials (`SUPABASE_URL` and `SUPABASE_KEY`) are stored as GitHub Actions secrets and are injected into the HTML files at build time. They are never committed to the repository — the source files contain placeholder strings.
+- A Content Security Policy (CSP) with per-file SHA-256 hashes is computed automatically on every deployment to prevent XSS attacks.
 
 ---
 
-## 4. Build & Deploy Pipeline
+## 4. How the Build Pipeline Works
 
 The pipeline is defined in `.github/workflows/deploy.yml` and runs automatically on every push to the `main` branch.
-
-### Pipeline Steps (in order)
 
 | Step | What it does |
 |---|---|
 | **1. Checkout** | Fetches the source code |
-| **2. Build Tailwind CSS** | Runs `tailwindcss` CLI to generate `tailwind.css` from all HTML files |
-| **3. Inject secrets** | Replaces `process.env.SUPABASE_URL` and `process.env.SUPABASE_KEY` placeholders in HTML with real values from GitHub Actions secrets |
-| **4. Narrow CSP** | Extracts the exact Supabase project hostname from `SUPABASE_URL` and replaces the wildcard `*.supabase.co` in CSP `connect-src` directives |
-| **5. Verify secrets** | Fails the build if any placeholder was not replaced (catches missing secrets early) |
-| **6. Minify HTML** | Uses `html-minifier-terser` to minify all 5 HTML files including inline JS and CSS |
-| **7. Compute CSP hashes** | Runs `scripts/inject-csp-hashes.js` to compute SHA-256 hashes of all inline `<script>` and `<style>` blocks and write them into `_headers` |
-| **8. Deploy to Pages** | Uploads the build artifact and deploys to GitHub Pages |
+| **2. Build Tailwind CSS** | Generates `tailwind.css` from all HTML files |
+| **3. Inject secrets** | Replaces `process.env.SUPABASE_URL` and `process.env.SUPABASE_KEY` in HTML with real values from GitHub Actions secrets |
+| **4. Narrow CSP** | Replaces the wildcard `*.supabase.co` in CSP directives with your exact Supabase project hostname |
+| **5. Verify secrets** | Fails the build immediately if any placeholder was not replaced — catches missing secrets early |
+| **6. Minify HTML** | Minifies all 5 HTML files including their inline JS and CSS |
+| **7. Compute CSP hashes** | Runs `scripts/inject-csp-hashes.js` to SHA-256 hash every inline `<script>` and `<style>` block and write them into `_headers` |
+| **8. Deploy to Pages** | Uploads the build artifact and publishes to GitHub Pages |
 
-> **Why this order matters:** CSP hashes must be computed *after* minification because minification changes the content of inline scripts/styles.
-
-### Required GitHub Actions Secrets
-
-Two secrets must be set in the repository before the pipeline will succeed:
-
-| Secret name | Description |
-|---|---|
-| `SUPABASE_URL` | The Supabase project URL (e.g. `https://abcdefghij.supabase.co`) |
-| `SUPABASE_KEY` | The Supabase anon/public API key |
-
-Set these at: **Repository → Settings → Secrets and variables → Actions → New repository secret**
+> **Important:** Step 7 must run after Step 6. Minification changes the content of inline scripts and styles, so hashes must be computed on the minified output.
 
 ---
 
-## 5. Local Development Setup
+## 5. Step 1 — Create a GitHub Repository
 
-There is no local server required — the site is static HTML. However, you need to substitute the Supabase credentials manually for local testing.
+1. In your company's GitHub organisation, create a new repository named `OpenTextSummit` (public or private — your choice).
+2. Clone it to your local machine:
+   ```bash
+   git clone https://github.com/<your-org>/OpenTextSummit.git
+   cd OpenTextSummit
+   ```
+3. Extract the contents of the ZIP archive into this folder (all files should sit at the root, not inside a subfolder).
+4. Stage and push all files:
+   ```bash
+   git add .
+   git commit -m "chore: initial commit from ZIP handover"
+   git push origin main
+   ```
 
-### Prerequisites
+---
 
-- Node.js 20+
-- A Supabase project (see [supabase.com](https://supabase.com))
+## 6. Step 2 — Enable GitHub Pages
 
-### Steps
+1. Go to your repository on GitHub.
+2. Navigate to **Settings → Pages**.
+3. Under **Source**, select **GitHub Actions**.
+4. Save.
+
+Your site will be published at: `https://<your-org>.github.io/OpenTextSummit/`
+
+Note this URL — you will need it in the next steps.
+
+---
+
+## 7. Step 3 — Create a Supabase Project
+
+1. Sign up for a free account at [supabase.com](https://supabase.com).
+2. Click **New project** and fill in a name and password (the password is for direct database access; it is not used by this application).
+3. Wait for the project to finish provisioning (~2 minutes).
+4. Go to **Project Settings → API** and note down:
+   - **Project URL** — this is your `SUPABASE_URL` (e.g. `https://abcdefghij.supabase.co`)
+   - **anon public** key — this is your `SUPABASE_KEY`
+
+> The anon key is designed to be used in browser-side JavaScript. It is not a secret in the traditional sense — it is scoped to public read-only access and is safe to expose. Do **not** use the `service_role` key here.
+
+---
+
+## 8. Step 4 — Configure Supabase Auth
+
+1. In the Supabase dashboard, go to **Authentication → Providers**.
+2. Enable **Email** (toggle on). Leave the defaults unless you want to disable email confirmations for testing.
+3. Go to **Authentication → URL Configuration**.
+4. Set **Site URL** to your GitHub Pages URL from Step 2 (e.g. `https://<your-org>.github.io/OpenTextSummit/`).
+5. Under **Redirect URLs**, add your GitHub Pages URL.
+
+---
+
+## 9. Step 5 — Set Up Google OAuth
+
+You need a Google Cloud project with an OAuth 2.0 credential.
+
+**In the Supabase dashboard:**
+1. Go to **Authentication → Providers → Google**.
+2. Note the **Callback URL** shown on this page — it looks like:
+   ```
+   https://<your-supabase-project-id>.supabase.co/auth/v1/callback
+   ```
+
+**In Google Cloud Console ([console.cloud.google.com](https://console.cloud.google.com)):**
+1. Create a project (or use an existing one).
+2. Go to **APIs & Services → OAuth consent screen** — configure it (External, fill in app name and email).
+3. Go to **APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID**.
+4. Application type: **Web application**.
+5. Under **Authorised redirect URIs**, add the Supabase Callback URL from above.
+6. Click **Create** and copy the **Client ID** and **Client Secret**.
+
+**Back in Supabase:**
+1. Paste the Client ID and Client Secret into the Google provider settings.
+2. Toggle Google **on** and save.
+
+---
+
+## 10. Step 6 — Set Up GitHub OAuth
+
+You need a GitHub OAuth App registered under your company's GitHub organisation.
+
+**In the Supabase dashboard:**
+1. Go to **Authentication → Providers → GitHub**.
+2. Note the **Callback URL** shown on this page (same format as Google: `https://<project-id>.supabase.co/auth/v1/callback`).
+
+**In GitHub:**
+1. Go to your organisation's **Settings → Developer settings → OAuth Apps → New OAuth App**.
+2. Fill in:
+   - **Application name:** OpenTextSummit (or any name)
+   - **Homepage URL:** your GitHub Pages URL
+   - **Authorization callback URL:** the Supabase Callback URL from above
+3. Click **Register application**.
+4. On the next screen, copy the **Client ID**.
+5. Click **Generate a new client secret** and copy the **Client Secret**.
+
+**Back in Supabase:**
+1. Paste the Client ID and Client Secret into the GitHub provider settings.
+2. Toggle GitHub **on** and save.
+
+---
+
+## 11. Step 7 — Add GitHub Actions Secrets
+
+The build pipeline reads two secrets at deploy time. Without these, the build will fail.
+
+1. In your repository, go to **Settings → Secrets and variables → Actions**.
+2. Click **New repository secret** and add:
+
+| Secret name | Value |
+|---|---|
+| `SUPABASE_URL` | The Project URL from Supabase (e.g. `https://abcdefghij.supabase.co`) |
+| `SUPABASE_KEY` | The anon public key from Supabase |
+
+---
+
+## 12. Step 8 — Deploy
+
+1. Push a commit to `main` to trigger the pipeline — or go to the **Actions** tab and click **Run workflow** manually.
+2. Watch the workflow run; all steps should go green. If any step fails, the error message will tell you which secret or configuration is missing.
+3. Once the workflow completes, open your GitHub Pages URL to confirm the site is live.
+
+---
+
+## 13. Secrets Reference
+
+| Secret name | Where to get the value | What it does |
+|---|---|---|
+| `SUPABASE_URL` | Supabase → Project Settings → API → **Project URL** | Injected into `index.html`, `login.html`, `methodology.html` at build time; also used to set the exact CSP `connect-src` hostname |
+| `SUPABASE_KEY` | Supabase → Project Settings → API → **anon public** | Injected into `index.html`, `login.html`, `methodology.html` at build time; this is the public browser key |
+
+---
+
+## 14. Verification Checklist
+
+Work through this after completing all 8 steps.
+
+- [ ] GitHub Actions workflow run is green (no red steps)
+- [ ] GitHub Pages URL opens and the landing page loads
+- [ ] `login.html` loads and the sign-in form renders correctly
+- [ ] Email/password sign-up and sign-in work
+- [ ] "Sign in with Google" completes the full OAuth flow
+- [ ] "Sign in with GitHub" completes the full OAuth flow
+- [ ] Opening `index.html` while signed out redirects to `login.html`
+- [ ] Opening `methodology.html` while signed out redirects to `login.html`
+- [ ] Both pages load correctly after signing in
+- [ ] Browser DevTools → Console shows no `Content-Security-Policy` violation errors
+- [ ] Leaving the site idle for 5 minutes shows a warning banner, then signs out automatically
+
+---
+
+## 15. Local Development Setup
+
+For any developer who wants to run the site locally:
+
+**Prerequisites:** Node.js 20+
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/<org-or-user>/OpenTextSummit.git
+# Clone your company's repository
+git clone https://github.com/<your-org>/OpenTextSummit.git
 cd OpenTextSummit
 
-# 2. Install Tailwind CSS (for CSS rebuilds only — optional for just viewing the site)
-npx tailwindcss@3.4.17 -c tailwind.config.js --content "*.html" -o tailwind.css --watch
+# Generate the CSS (required for correct styling)
+npx tailwindcss@3.4.17 -c tailwind.config.js --content "*.html" -o tailwind.css
 
-# 3. Substitute Supabase credentials in the HTML files locally
-#    Replace YOUR_SUPABASE_URL and YOUR_SUPABASE_KEY with real values
-sed -i "s|process.env.SUPABASE_URL|YOUR_SUPABASE_URL|g" index.html login.html methodology.html
-sed -i "s|process.env.SUPABASE_KEY|YOUR_SUPABASE_KEY|g" index.html login.html methodology.html
+# Substitute Supabase credentials locally (do NOT commit these changes)
+sed -i "s|process.env.SUPABASE_URL|https://your-project.supabase.co|g" index.html login.html methodology.html
+sed -i "s|process.env.SUPABASE_KEY|your-anon-key|g" index.html login.html methodology.html
 
-# 4. Open in browser (any static file server works)
+# Serve locally
 npx serve .
-# or just open index.html directly in your browser
 ```
 
-> **Important:** Do not commit the HTML files after substituting credentials locally. Use `git checkout index.html login.html methodology.html` to restore the placeholders before committing.
+Open `http://localhost:3000/login.html` in your browser.
+
+> **Before committing:** restore the placeholder strings so credentials are not accidentally committed:
+> ```bash
+> git checkout index.html login.html methodology.html
+> ```
+
+> **Note:** Google and GitHub OAuth will not work on `localhost` unless you add `http://localhost:3000` to the Supabase Redirect URLs and to each OAuth app's allowed callback URLs. For local development, email/password login is the easiest method to test.
 
 ---
 
-## 6. GitHub Repository Handover Options
+## 16. Ongoing Maintenance Notes
 
-The repository currently lives on a personal GitHub account. There are three ways to give the company ownership or access.
+### Supabase SDK version and SRI hash
 
----
-
-### Option A — Transfer the repository to the company org (Recommended)
-
-GitHub's built-in transfer feature moves the repo permanently to the company's GitHub organisation.
-
-**Pros:**
-- Company owns the repo entirely (billing, settings, branch protection)
-- All git history, issues, pull requests, and releases are preserved
-- GitHub automatically sets up a redirect from the old URL so existing clones still work
-- GitHub Actions workflows carry over (but secrets do **not** — see step 8)
-- GitHub Pages will need to be re-enabled under the new org
-
-**Cons:**
-- Irreversible without the company transferring it back
-- The original owner loses admin access unless the company adds them back
-
-**How to do it:**  
-Repo → **Settings** → **Danger Zone** → **Transfer ownership** → enter the company org name.
-
----
-
-### Option B — Fork to the company org
-
-The company creates a fork of the repository under their GitHub org.
-
-**Pros:**
-- The personal repo is kept intact
-- Company gets their own independent copy
-
-**Cons:**
-- GitHub Actions secrets are not copied — must be re-added
-- No URL redirect from old to new
-- The fork relationship shows in GitHub UI (can be confusing)
-- Any changes made to the personal repo after forking are not automatically in the company fork
-
----
-
-### Option C — Add company members as collaborators
-
-Add individual company GitHub accounts (or the whole org team) as collaborators on the personal repo.
-
-**Pros:**
-- Immediate access without moving anything
-- No secrets or settings need changing
-
-**Cons:**
-- Repo stays on personal billing and account
-- If the personal account is closed or leaves, access is lost
-- Company does not own the repo — only has contributor access
-- Not suitable as a permanent arrangement
-
----
-
-**Recommendation: Option A** (transfer to company org). It gives the company full ownership and is the cleanest long-term arrangement.
-
----
-
-## 7. Supabase Handover Options
-
-The Supabase project (which handles authentication) is currently on a personal supabase.com account. There are three ways to give the company access.
-
----
-
-### Option A — Transfer the Supabase project to a company Supabase organisation (Recommended)
-
-Supabase supports transferring a project from one organisation to another.
-
-**Pros:**
-- Company owns the project, its billing, and all user data
-- Existing `SUPABASE_URL` and `SUPABASE_KEY` values stay the same — no secrets need updating in GitHub
-- All registered users and auth settings carry over seamlessly
-
-**Cons:**
-- Requires the company to have a Supabase organisation (free to create)
-- Personal account loses ownership
-
-**How to do it:**
-1. Ask the company to create a Supabase account and organisation at [supabase.com](https://supabase.com)
-2. In your Supabase dashboard: **Project → Settings → General → Transfer project**
-3. Enter the destination organisation name and confirm
-
----
-
-### Option B — Create a new Supabase project under the company account
-
-The company creates a brand-new Supabase project and the application is pointed at it.
-
-**Pros:**
-- Company starts with a clean, company-owned project
-- No dependency on the personal account at all
-
-**Cons:**
-- All existing registered users will be lost (they cannot be migrated without a paid Supabase plan and manual export/import)
-- OAuth redirect URLs must be re-configured in Google Cloud Console and GitHub OAuth app settings
-- `SUPABASE_URL` and `SUPABASE_KEY` secrets in GitHub must be updated to the new project values
-- A new deployment must be triggered after updating secrets
-
-**Steps if taking this option:**
-1. Company creates a new Supabase project
-2. Enable the same auth providers: **Email**, **Google**, **GitHub** (see section 10)
-3. Copy the new `SUPABASE_URL` and `SUPABASE_ANON_KEY` from Supabase → **Project Settings → API**
-4. Update GitHub Actions secrets (repo → Settings → Secrets) with the new values
-5. Update OAuth redirect URLs in Google and GitHub (see section 10)
-6. Push a commit to `main` to trigger a fresh deployment
-
----
-
-### Option C — Add company team members to the existing personal Supabase project
-
-Invite company members as members of your Supabase organisation so they can access the project dashboard.
-
-**Pros:**
-- Immediate shared access with no migration
-- Existing users and credentials unchanged
-
-**Cons:**
-- Project stays on personal billing
-- If the personal account is closed, the project is at risk
-- Not suitable as a permanent arrangement
-
-**How to do it:**  
-Supabase dashboard → **Organisation Settings → Members → Invite** → enter company email(s) with Owner or Admin role.
-
----
-
-**Recommendation: Option A** (transfer to company Supabase org). It preserves all existing users and keeps credentials unchanged, meaning no re-deployment is needed.
-
----
-
-## 8. Step-by-Step Handover Procedure (Recommended Path)
-
-This procedure follows **GitHub Option A** (repo transfer) + **Supabase Option A** (project transfer).
-
-### Pre-Transfer Checklist
-
-- [ ] Confirm the company has a GitHub organisation set up
-- [ ] Confirm the company has a Supabase account and organisation set up
-- [ ] Note down the current `SUPABASE_URL` and `SUPABASE_KEY` values (you will need to re-add them as secrets after the GitHub transfer)
-- [ ] Confirm the live site is working before starting
-
-### Step 1 — Transfer the GitHub Repository
-
-1. Go to the repository on GitHub
-2. Navigate to **Settings → Danger Zone → Transfer ownership**
-3. Type the company's GitHub organisation name and confirm
-4. The repo is now at `https://github.com/<company-org>/OpenTextSummit`
-5. Your old URL (`https://github.com/<you>/OpenTextSummit`) will redirect automatically
-
-### Step 2 — Re-add GitHub Actions Secrets
-
-The transfer does **not** carry over repository secrets. You must re-add them:
-
-1. Go to the transferred repo: **Settings → Secrets and variables → Actions**
-2. Add `SUPABASE_URL` — the Supabase project URL (e.g. `https://abcdefghij.supabase.co`)
-3. Add `SUPABASE_KEY` — the Supabase anon/public API key
-
-Both values can be found in: Supabase dashboard → **Project Settings → API**
-
-### Step 3 — Re-enable GitHub Pages
-
-GitHub Pages may need to be re-enabled under the new org:
-
-1. Repo → **Settings → Pages**
-2. Set **Source** to **GitHub Actions**
-3. Save
-
-### Step 4 — Transfer the Supabase Project
-
-1. In your Supabase dashboard, open the project
-2. Go to **Settings → General**
-3. Scroll to **Transfer project** and enter the company's Supabase organisation name
-4. Confirm the transfer
-
-The `SUPABASE_URL` and `SUPABASE_KEY` values do **not** change — no secrets update needed.
-
-### Step 5 — Trigger a Fresh Deployment
-
-Push a trivial commit to `main` (or manually re-run the GitHub Actions workflow) to confirm the pipeline runs successfully with the new org's secrets.
-
-```bash
-git commit --allow-empty -m "chore: trigger post-handover deployment"
-git push origin main
-```
-
-### Step 6 — Update OAuth Redirect URLs (if the Pages URL changed)
-
-If the GitHub Pages URL changed because the org name changed (e.g. from `<you>.github.io/OpenTextSummit` to `<company>.github.io/OpenTextSummit`), you must update the OAuth callback URLs. See section 10.
-
----
-
-## 9. GitHub Actions Secrets Reference
-
-| Secret name | Where to find the value | What it's used for |
-|---|---|---|
-| `SUPABASE_URL` | Supabase dashboard → Project Settings → API → Project URL | Injected into index.html, login.html, methodology.html at build time; also used to narrow the CSP to the exact Supabase hostname |
-| `SUPABASE_KEY` | Supabase dashboard → Project Settings → API → `anon` `public` key | Injected into index.html, login.html, methodology.html at build time; this is the public/anon key, safe to expose in browser JS |
-
-> The `SUPABASE_KEY` here is the **anon/public** key — it is designed to be used in browser-side JavaScript. It is not the `service_role` key, which must never be used client-side.
-
----
-
-## 10. OAuth Provider Configuration
-
-The application supports Google and GitHub OAuth sign-in. These are configured in two places: the Supabase dashboard, and the OAuth app registration on each provider.
-
-### Supabase Dashboard
-
-In Supabase → **Authentication → Providers**:
-
-- **Google** — requires a Google OAuth Client ID and Client Secret (from Google Cloud Console)
-- **GitHub** — requires a GitHub OAuth App Client ID and Client Secret (from GitHub Developer Settings)
-
-The Supabase callback URL to register with each provider is shown in the Supabase dashboard when you enable the provider. It looks like:
-
-```
-https://<your-supabase-project-id>.supabase.co/auth/v1/callback
-```
-
-### Google OAuth App
-
-Managed at: [console.cloud.google.com](https://console.cloud.google.com) → APIs & Services → Credentials → OAuth 2.0 Client IDs
-
-After a transfer, if the **Supabase project URL did not change** (i.e. you used Option A for Supabase), the Google OAuth callback URL does not need updating.
-
-If you created a **new Supabase project** (Option B), update the **Authorized redirect URIs** to the new Supabase callback URL.
-
-### GitHub OAuth App
-
-Managed at: [github.com/settings/developers](https://github.com/settings/developers) → OAuth Apps
-
-Same rule applies: if the Supabase project URL did not change, no update is needed. If a new Supabase project was created, update the **Authorization callback URL** to the new Supabase callback URL.
-
----
-
-## 11. Post-Transfer Verification Checklist
-
-Run through these checks after completing the handover to confirm everything is working.
-
-- [ ] **GitHub Actions pipeline passes** — check the Actions tab in the transferred repo; the latest run should be green
-- [ ] **Live site loads** — open the GitHub Pages URL and confirm the landing page appears
-- [ ] **Redirect from old URL works** — open the old personal GitHub URL and confirm it redirects to the new org URL
-- [ ] **Login page loads** — navigate to `login.html` and confirm the sign-in form renders
-- [ ] **Email/password login works** — sign in with an existing account
-- [ ] **Google OAuth works** — click "Sign in with Google" and complete the flow
-- [ ] **GitHub OAuth works** — click "Sign in with GitHub" and complete the flow
-- [ ] **Auth-gated pages redirect correctly** — open `index.html` without being logged in; should redirect to `login.html`
-- [ ] **Methodology page is accessible after login**
-- [ ] **No CSP errors in browser console** — open DevTools → Console and look for any `Content-Security-Policy` violations
-- [ ] **Inactivity timeout works** — leave a logged-in page idle for 5 minutes and confirm the warning banner appears, then logout occurs
-
----
-
-## 12. Ongoing Maintenance Notes
-
-### Supabase SDK version
-
-The Supabase JS SDK is loaded from a CDN with a pinned version and SRI hash in each HTML file:
+The Supabase JS SDK is loaded from a CDN with a pinned version and integrity hash in `index.html`, `login.html`, and `methodology.html`:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1/dist/umd/supabase.js"
-        integrity="sha384-..."
+        integrity="sha384-pNDx8ebKKncqRMS1aZKjmB1T1jdd6psogvE0+sPrwW/Sy94M6geGuQpYXQnLCdRq"
         crossorigin="anonymous"></script>
 ```
 
-To upgrade the SDK version: update the version number **and** the `integrity` hash in all HTML files. The new hash can be computed with:
+To upgrade the SDK: update both the version number **and** the `integrity` hash in all three files. Compute the new hash with:
 
 ```bash
 curl -s https://cdn.jsdelivr.net/npm/@supabase/supabase-js@<new-version>/dist/umd/supabase.js | \
@@ -454,23 +337,19 @@ curl -s https://cdn.jsdelivr.net/npm/@supabase/supabase-js@<new-version>/dist/um
 
 ### Tailwind CSS version
 
-Tailwind is pinned in the GitHub Actions workflow (`tailwindcss@3.4.17`). To upgrade, update the version in `.github/workflows/deploy.yml`.
+Tailwind is pinned in the workflow: `tailwindcss@3.4.17`. To upgrade, update the version string in `.github/workflows/deploy.yml`. Do not upgrade to Tailwind v4 without testing — it has a completely different configuration API.
 
 ### CSP hashes
 
-The CSP script and style hashes in `_headers` are **automatically recomputed on every deployment** by `scripts/inject-csp-hashes.js`. You do not need to manage them manually. However, if you add a new inline `<script>` or `<style>` block to any HTML file, the hash will be updated automatically on the next deployment.
+The CSP hashes in `_headers` are **recomputed automatically on every deployment** by `scripts/inject-csp-hashes.js`. You never need to manage them manually. Any change to inline `<script>` or `<style>` content in the HTML files will produce correct hashes on the next push.
 
 ### Adding new pages
 
-If you add a new HTML page that requires authentication or has inline scripts:
-1. Add the page to the minification step in `.github/workflows/deploy.yml`
-2. Add the page to `scripts/inject-csp-hashes.js` (the `HTML_FILES` array at the top of the file)
-3. Add any required CSP header entries to `_headers`
+If you add a new HTML page that contains inline scripts or needs authentication:
+1. Add it to the minification step in `.github/workflows/deploy.yml`
+2. Add it to the `HTML_FILES` array at the top of `scripts/inject-csp-hashes.js`
+3. Add appropriate CSP header entries to `_headers`
 
-### Supabase Auth settings
+### GitHub Actions action pins
 
-The Supabase project's auth settings (allowed email domains, JWT expiry, session length, etc.) are managed in the Supabase dashboard under **Authentication → Settings**. These are not stored in the repository.
-
-### Analytics
-
-Umami analytics is loaded from `cloud.umami.is`. The website ID is embedded in the `<script>` tag in each HTML file. If you need to transfer the Umami account or create a new one, update the `data-website-id` attribute and the `src` URL in each HTML file.
+All `uses:` directives in `deploy.yml` are pinned to commit SHAs (not version tags). This is a supply-chain security measure. To update an action, find the new SHA for the desired release tag in that action's GitHub repository and update the reference in `deploy.yml`.
